@@ -14,6 +14,7 @@ class ApiConstants {
 
   // live
   static String onLoginApi = "UserAuthentication";
+  static String onForgotPasswordApi = "ForgotPasswordV2";
   static String onLogoutApi = "Logout";
   static String getPointsApi = "RetailStatus";
   static String getTrendingApi = "ActivityStreamList";

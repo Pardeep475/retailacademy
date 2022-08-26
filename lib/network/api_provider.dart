@@ -9,6 +9,8 @@ import '../common/app_strings.dart';
 import '../common/utils.dart';
 import 'api_constants.dart';
 import 'logging_interceptor.dart';
+import 'modal/base/base_response.dart';
+import 'modal/forgot_password/forgot_password_request.dart';
 import 'modal/logout/logout_request.dart';
 import 'modal/points/point_request.dart';
 
@@ -86,12 +88,24 @@ class ApiProvider {
         ApiConstants.addTrendingLike,
         data: request.toJson(),
       );
-      return PointResponse.fromJson(response.data);
+      return BaseResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;
     }
   }
 
+  Future<dynamic> forgotPasswordApi({required ForgotPasswordRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.onForgotPasswordApi,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
 
 }

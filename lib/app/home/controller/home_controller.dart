@@ -4,6 +4,7 @@ import '../../../common/app_strings.dart';
 import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
+import '../../../network/modal/base/base_response.dart';
 import '../../../network/modal/points/point_response.dart';
 import '../../../network/modal/trending/like_trending_request.dart';
 import '../../../network/modal/trending/trending_response.dart';
@@ -77,14 +78,14 @@ class HomeController extends GetxController {
           userid: userId,
         ));
         if (response != null) {
-          PointResponse pointResponse = (response as PointResponse);
-          if (pointResponse.status) {
+          BaseResponse baseResponse = (response as BaseResponse);
+          if (baseResponse.status) {
             ActivityStream item = dataList[index];
             item.hasLiked = !item.hasLiked;
             dataList[index] = item;
             dataList.refresh();
           } else {
-            Utils.errorSnackBar(AppStrings.error, pointResponse.message);
+            Utils.errorSnackBar(AppStrings.error, baseResponse.message);
           }
         }
       } catch (e) {

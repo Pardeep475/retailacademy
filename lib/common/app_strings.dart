@@ -17,7 +17,7 @@ class AppStrings {
   static const String robotoFont = "Roboto";
 
   static const String checkYourInternetConnectivity =
-      "check_your_internet_connectivity";
+      "Check your internet connectivity";
   static const String error = "Error";
   static const String success = "Success";
   static const String userName = "User name";
@@ -27,6 +27,8 @@ class AppStrings {
   static const String help = "Help";
   static const String usernameIsRequired = "Username is required";
   static const String passwordIsRequired = "Password is required";
+  static const String emailIsRequired = "Email is required";
+  static const String provideValidEmail = "Please provide valid email address";
   static const String home = "Home";
   static const String knowledge = "Knowledge";
   static const String retailReels = "Retail Reels";
@@ -51,13 +53,12 @@ class AppStrings {
   static const String whatsHotBlog = "What's Hot Blog";
   static const String podCast = "Podcast";
 
-  static const String funFactsDescription = "Brand/Product Flyer and Cheat Sheets";
+  static const String funFactsDescription =
+      "Brand/Product Flyer and Cheat Sheets";
   static const String masterClassDescription = "Brand/Product Master Class";
   static const String quizMasterDescription = "Master Class Quizs";
   static const String whatsHotBlogDescription = "Blogs";
   static const String podCastDescription = "Health and Wellness Podcasts";
 
-
-
-
+  static const String submit = "Submit";
 }

@@ -16,5 +16,6 @@ class BindingConst {
   static const String infoSessionsScreenBinding = "INFO_SESSIONS_SCREEN_BINDING";
   static const String profileScreenBinding = "PROFILE_SCREEN_BINDING";
   static const String funFactsAndMasterClassScreenBinding = "FUN_FACTS_AND_MASTER_CLASS_SCREEN_BINDING";
+  static const String forgotPasswordScreenBinding = "FORGOT_PASSWORD_SCREEN_BINDING";
 
 }

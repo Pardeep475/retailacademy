@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:retail_academy/app/auth/login/page/forgot_password_screen.dart';
 import 'package:retail_academy/app/knowledge/page/fun_facts_and_master_class_screen.dart';
 import 'package:retail_academy/common/routes/route_strings.dart';
 
@@ -24,6 +25,10 @@ class Routes {
       GetPage(
         name: RouteString.funFactsAndMasterClassScreen,
         page: () => FunFactsAndMasterClassScreen(),
+      ),
+      GetPage(
+        name: RouteString.forgotPasswordScreen,
+        page: () => ForgotPasswordScreen(),
       ),
     ];
   }
