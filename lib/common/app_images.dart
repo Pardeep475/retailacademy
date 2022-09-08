@@ -13,12 +13,17 @@ class AppImages {
   static const imgNoImageFound = "assets/images/no_image_found.png";
   static const iconChat = "assets/images/icon_chat.svg";
   static const iconHeart = "assets/images/icon_heart.svg";
-  static const iconInfoSessionBackground = "assets/images/icon_info_session_background.svg";
+  static const imgInfoSessionBackground = "assets/images/img_info_session_background.png";
 
   static const String iconFunFacts = "assets/images/icon_heart.svg";
   static const String iconMasterClass = "assets/images/icon_heart.svg";
   static const String iconQuizMaster = "assets/images/icon_heart.svg";
   static const String iconWhatsHotBlog = "assets/images/icon_heart.svg";
   static const String iconPodCast = "assets/images/icon_heart.svg";
+  static const String imgKnowledgeFunFacts = "assets/images/img_knowledge_fun_facts.png";
+  static const String imgKnowledgeMasterClass = "assets/images/img_knowledge_master_class.png";
+  static const String imgKnowledgeQuizMaster = "assets/images/img_knowledge_quiz_master.png";
+  static const String imgKnowledgePodcast = "assets/images/img_knowledge_podcast.png";
+  static const String imgKnowledgeWhatHotBlog = "assets/images/img_knowledge_what_hot_blog.png";
 
 }

@@ -51,34 +51,34 @@ class KnowledgeRepository {
           title: AppStrings.funFacts,
           description: AppStrings.funFactsDescription,
           color: AppColor.yellowKnowledge,
-          icon: AppImages.iconFunFacts,
+          icon: AppImages.imgKnowledgeFunFacts,
       ),
 
       KnowledgeEntity(
           title: AppStrings.masterClass,
           description: AppStrings.masterClassDescription,
           color: AppColor.redKnowledge,
-          icon: AppImages.iconMasterClass,
+          icon: AppImages.imgKnowledgeMasterClass,
       ),
 
       KnowledgeEntity(
         title: AppStrings.quizMaster,
         description: AppStrings.quizMasterDescription,
         color: AppColor.pinkKnowledge,
-        icon: AppImages.iconQuizMaster,
+        icon: AppImages.imgKnowledgeQuizMaster,
       ),
 
       KnowledgeEntity(
         title: AppStrings.whatsHotBlog,
         description: AppStrings.whatsHotBlogDescription,
         color: AppColor.greenKnowledge,
-        icon: AppImages.iconWhatsHotBlog,
+        icon: AppImages.imgKnowledgeWhatHotBlog,
       ),
       KnowledgeEntity(
         title: AppStrings.podCast,
         description: AppStrings.podCastDescription,
         color: AppColor.darkBlueKnowledge,
-        icon: AppImages.iconPodCast,
+        icon: AppImages.imgKnowledgePodcast,
       ),
     ];
   }

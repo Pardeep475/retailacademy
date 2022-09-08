@@ -11,6 +11,8 @@ import 'api_constants.dart';
 import 'logging_interceptor.dart';
 import 'modal/base/base_response.dart';
 import 'modal/forgot_password/forgot_password_request.dart';
+import 'modal/knowledge/content_knowledge_request.dart';
+import 'modal/knowledge/content_knowledge_response.dart';
 import 'modal/logout/logout_request.dart';
 import 'modal/points/point_request.dart';
 
@@ -70,7 +72,8 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> getTrendingApi({required String userId, required String orgId}) async {
+  Future<dynamic> getTrendingApi(
+      {required String userId, required String orgId}) async {
     try {
       Response response = await _dio.get(
         ApiConstants.getTrendingApi + '?userid=$userId&orgid=$orgId',
@@ -82,7 +85,8 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> trendingLikeApi({required LikeTrendingRequest request}) async {
+  Future<dynamic> trendingLikeApi(
+      {required LikeTrendingRequest request}) async {
     try {
       Response response = await _dio.post(
         ApiConstants.addTrendingLike,
@@ -95,7 +99,8 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> forgotPasswordApi({required ForgotPasswordRequest request}) async {
+  Future<dynamic> forgotPasswordApi(
+      {required ForgotPasswordRequest request}) async {
     try {
       Response response = await _dio.post(
         ApiConstants.onForgotPasswordApi,
@@ -108,4 +113,16 @@ class ApiProvider {
     }
   }
 
+  Future<dynamic> getContentKnowledgeSectionApi({required ContentKnowledgeRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.getContentKnowledgeSection,
+        data: request.toJson(),
+      );
+      return ContentKnowledgeResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
 }

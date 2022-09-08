@@ -3,13 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/app/knowledge/controller/knowledge_controller.dart';
 import 'package:retail_academy/app/knowledge/modal/knowledge_entity.dart';
-import 'package:retail_academy/common/widget/app_text.dart';
-
 import '../../../common/app_strings.dart';
 import '../../../common/routes/route_strings.dart';
-import '../../../common/routes/routes.dart';
 import '../../../common/widget/custom_app_bar.dart';
-import '../../home/widgets/item_trending.dart';
 import '../widget/item_knowledge.dart';
 
 class KnowledgeScreen extends StatefulWidget {
@@ -64,6 +60,10 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
                               var arguments = <String, dynamic>{
                                 "title": knowledgeEntity.title,
                                 "color": knowledgeEntity.color,
+                                "fileId":
+                                    knowledgeEntity.title == AppStrings.funFacts
+                                        ? 6
+                                        : 5,
                               };
                               Get.toNamed(
                                   RouteString.funFactsAndMasterClassScreen,

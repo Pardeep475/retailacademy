@@ -26,7 +26,7 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen>{
             title: AppStrings.infoSessions,
           ),
           Expanded(
-            child: Image.asset(AppImages.imgNoImageFound),
+            child: Image.asset(AppImages.imgInfoSessionBackground),
           ),
           AppText(
             text: AppStrings.nextSession,

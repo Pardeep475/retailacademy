@@ -5,7 +5,6 @@ import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 import '../../../network/modal/base/base_response.dart';
-import '../../../network/modal/points/point_response.dart';
 import '../../../network/modal/trending/like_trending_request.dart';
 import '../../../network/modal/trending/trending_response.dart';
 

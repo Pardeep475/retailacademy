@@ -7,7 +7,7 @@ import '../../../network/api_provider.dart';
 import '../../../network/modal/knowledge/content_knowledge_request.dart';
 import '../../../network/modal/knowledge/content_knowledge_response.dart';
 
-class FunFactsAndMasterClassController extends GetxController {
+class FunFactsAndMasterClassContentController extends GetxController {
   var showLoader = false.obs;
   RxList<FileElement> dataList = RxList();
   var fileId = 0;
@@ -46,11 +46,11 @@ class FunFactsAndMasterClassController extends GetxController {
         String userId = await SessionManager.getUserId();
         var response = await ApiProvider.apiProvider
             .getContentKnowledgeSectionApi(
-                request: ContentKnowledgeRequest(
-                    folderId: fileId, userId: int.parse(userId)));
+            request: ContentKnowledgeRequest(
+                folderId: fileId, userId: int.parse(userId)));
         if (response != null) {
           ContentKnowledgeResponse contentResponse =
-              (response as ContentKnowledgeResponse);
+          (response as ContentKnowledgeResponse);
           if (contentResponse.status) {
             dataList.clear();
             dataList.addAll(contentResponse.files ?? []);

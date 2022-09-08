@@ -19,6 +19,7 @@ class ApiConstants {
   static String getPointsApi = "RetailStatus";
   static String getTrendingApi = "ActivityStreamList";
   static String addTrendingLike = "ActivityStreamLike";
+  static String getContentKnowledgeSection = "ContentListV2";
 
 
 

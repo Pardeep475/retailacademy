@@ -10,7 +10,8 @@ class ItemKnowledge extends StatelessWidget {
   final KnowledgeEntity item;
   final VoidCallback onPressed;
 
-  const ItemKnowledge({required this.item,required this.onPressed, Key? key}) : super(key: key);
+  const ItemKnowledge({required this.item, required this.onPressed, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class ItemKnowledge extends StatelessWidget {
                   ],
                 ),
               ),
-              SvgPicture.asset(
+              Image.asset(
                 item.icon,
                 width: 150.w,
               ),

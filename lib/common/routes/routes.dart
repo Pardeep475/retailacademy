@@ -6,6 +6,7 @@ import 'package:retail_academy/common/routes/route_strings.dart';
 import '../../app/auth/login/page/login_screen.dart';
 import '../../app/auth/splash/page/splash_screen.dart';
 import '../../app/dashboard/page/dashboard_screen.dart';
+import '../../app/knowledge/page/fun_facts_and_master_class_content_screen.dart';
 
 class Routes {
   static List<GetPage>? generateRoute() {
@@ -20,11 +21,15 @@ class Routes {
       ),
       GetPage(
         name: RouteString.dashBoardScreen,
-        page: () => DashboardScreen(),
+        page: () => const DashboardScreen(),
       ),
       GetPage(
         name: RouteString.funFactsAndMasterClassScreen,
-        page: () => FunFactsAndMasterClassScreen(),
+        page: () => const FunFactsAndMasterClassScreen(),
+      ),
+      GetPage(
+        name: RouteString.funFactsAndMasterClassContentScreen,
+        page: () => const FunFactsAndMasterClassContentScreen(),
       ),
       GetPage(
         name: RouteString.forgotPasswordScreen,
