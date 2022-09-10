@@ -75,17 +75,26 @@ class FunFactsAndMasterClassDetailController extends GetxController {
     var status = await Permission.storage.status;
     if (status.isGranted) {
       return true;
-    } else {
+    }
+    if (await Permission.storage.request().isGranted) {
+      return true;
+    }
+    var value = await Permission.storage.status;
+    if (value.isDenied) {
+      if (await Permission.storage.request().isGranted) {
+        return true;
+      }else {
+        return false;
+      }
+    }
+    if (value.isPermanentlyDenied) {
+      await openAppSettings();
       return false;
     }
-    if (status.isDenied) {
-      // We didn't ask for permission yet or the permission has been denied before but not permanently.
+    if (value.isRestricted) {
+      return await requestPermission();
     }
-    // You can can also directly ask the permission about its status.
-    if (await Permission.location.isRestricted) {
-      // The OS restricts access, for example because of parental controls.
-    }
-    // await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    return false;
   }
 
   Future likeOrDislikeContentKnowledgeSectionApi(

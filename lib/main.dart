@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -8,8 +9,20 @@ import 'common/app_strings.dart';
 import 'common/binding/application_binding.dart';
 import 'common/routes/route_strings.dart';
 import 'common/routes/routes.dart';
+
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global =  MyHttpOverrides();
   // Locale locale = await fetchLanguage();
   runApp(const MyApp());
 }

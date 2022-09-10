@@ -29,7 +29,7 @@ class _FunFactsAndMasterClassDetailScreenState
           ? Get.find<FunFactsAndMasterClassDetailController>()
           : Get.put(FunFactsAndMasterClassDetailController());
 
-  PDFViewController? _pdfViewController;
+  // PDFViewController? _pdfViewController;
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _FunFactsAndMasterClassDetailScreenState
                       debugPrint('_totalPages $_pages');
                     },
                     onViewCreated: (PDFViewController vc) {
-                      _pdfViewController = vc;
+                      // _pdfViewController = vc;
                     },
                     onPageChanged: (int? page, int? total) {
                       debugPrint("_currentPage = $page");
