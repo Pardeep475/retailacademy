@@ -82,10 +82,9 @@ class LoginController extends GetxController {
     if (value) {
       try {
         showLoader.value = true;
-        String userId = await SessionManager.getUserId();
         var response = await ApiProvider.apiProvider.pointsApi(
           request: PointRequest(
-            userid: userId,
+            userid: loginResponse.userid,
           ),
         );
         if (response != null) {

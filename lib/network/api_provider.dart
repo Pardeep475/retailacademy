@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:retail_academy/network/modal/knowledge/like_or_dislike_content_knowledge_section_request.dart';
 import 'package:retail_academy/network/modal/login/login_request.dart';
 import 'package:retail_academy/network/modal/login/login_response.dart';
 import 'package:retail_academy/network/modal/logout/logout_response.dart';
@@ -125,4 +126,19 @@ class ApiProvider {
       return null;
     }
   }
+
+  Future<dynamic> likeOrDislikeContentKnowledgeSectionApi(
+      {required LikeOrDislikeContentKnowledgeSectionRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.likeOrDislikeContentKnowledgeSection,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
 }

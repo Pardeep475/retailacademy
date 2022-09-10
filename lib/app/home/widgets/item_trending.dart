@@ -66,7 +66,8 @@ class ItemTrending extends StatelessWidget {
               onPressed: onLikeButtonPressed,
               icon: SvgPicture.asset(
                 AppImages.iconHeart,
-                color: AppColor.black,
+                color: item.hasLiked ? AppColor.red :AppColor.black,
+
                 height: 24.r,
               ),
             ),

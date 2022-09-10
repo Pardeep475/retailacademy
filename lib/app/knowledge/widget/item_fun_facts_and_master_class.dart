@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/app/knowledge/page/fun_facts_and_master_class_detail_screen.dart';
 import 'package:retail_academy/common/app_images.dart';
@@ -41,10 +40,24 @@ class ItemFolderKnowledge extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                AppImages.iconHeart,
-                height: 80.h,
-                width: 80.w,
+              Container(
+                padding: EdgeInsets.all(15.r),
+                decoration:const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 5.0,
+                      ),
+                    ]),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: Image.asset(
+                  'assets/images/${item.fileId}.png',
+                  height: 48.h,
+                  width: 48.w,
+
+                ),
               ),
               SizedBox(
                 height: 20.h,
