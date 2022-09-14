@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:retail_academy/network/modal/knowledge/like_or_dislike_content_knowledge_section_request.dart';
+import 'package:retail_academy/network/modal/knowledge/whats_hot_blog_content_response.dart';
 import 'package:retail_academy/network/modal/login/login_request.dart';
 import 'package:retail_academy/network/modal/login/login_response.dart';
-import 'package:retail_academy/network/modal/logout/logout_response.dart';
 import 'package:retail_academy/network/modal/points/point_response.dart';
 import 'package:retail_academy/network/modal/trending/like_trending_request.dart';
 import 'package:retail_academy/network/modal/trending/trending_response.dart';
@@ -14,8 +14,14 @@ import 'modal/base/base_response.dart';
 import 'modal/forgot_password/forgot_password_request.dart';
 import 'modal/knowledge/content_knowledge_request.dart';
 import 'modal/knowledge/content_knowledge_response.dart';
-import 'modal/logout/logout_request.dart';
+import 'modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
+import 'modal/knowledge/whats_hot_blog_content_request.dart';
+import 'modal/knowledge/whats_hot_blog_response.dart';
 import 'modal/points/point_request.dart';
+import 'modal/profile/logout_request.dart';
+import 'modal/profile/logout_response.dart';
+import 'modal/profile/profile_response.dart';
+import 'modal/profile/update_profile_image_request.dart';
 
 class ApiProvider {
   static final ApiProvider apiProvider = ApiProvider._internal();
@@ -60,6 +66,32 @@ class ApiProvider {
     }
   }
 
+  Future<dynamic> fetchUserDetails({required String userId}) async {
+    try {
+      Response response = await _dio.get(
+        ApiConstants.fetchUserDetails(userId: userId),
+      );
+      return ProfileResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> updateProfileImage(
+      {required UpdateProfileImageRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.updateProfileImage,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
   Future<dynamic> pointsApi({required PointRequest request}) async {
     try {
       Response response = await _dio.post(
@@ -77,7 +109,7 @@ class ApiProvider {
       {required String userId, required String orgId}) async {
     try {
       Response response = await _dio.get(
-        ApiConstants.getTrendingApi + '?userid=$userId&orgid=$orgId',
+        ApiConstants.getTrendingApi(userId: userId, orgId: orgId),
       );
       return TrendingResponse.fromJson(response.data);
     } catch (error) {
@@ -114,7 +146,8 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> getContentKnowledgeSectionApi({required ContentKnowledgeRequest request}) async {
+  Future<dynamic> getContentKnowledgeSectionApi(
+      {required ContentKnowledgeRequest request}) async {
     try {
       Response response = await _dio.post(
         ApiConstants.getContentKnowledgeSection,
@@ -132,6 +165,46 @@ class ApiProvider {
     try {
       Response response = await _dio.post(
         ApiConstants.likeOrDislikeContentKnowledgeSection,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchWhatsHotBlog() async {
+    try {
+      Response response = await _dio.get(
+        ApiConstants.fetchBlogCategories,
+      );
+      return WhatsHotBlogResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchWhatsHotBlogContent(
+      {required WhatsHotBlogContentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.fetchBlogContent,
+        data: request.toJson(),
+      );
+      return WhatsHotBlogContentResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> likeOrDislikeBlogApi(
+      {required WhatsHotBlogContentLikeOrDisLikeRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.fetchBlogLikeContent,
         data: request.toJson(),
       );
       return BaseResponse.fromJson(response.data);

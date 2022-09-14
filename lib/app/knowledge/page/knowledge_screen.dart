@@ -70,6 +70,13 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
                                   arguments: arguments);
                             }
                             break;
+                          case AppStrings.whatsHotBlog:
+                            {
+                              Get.toNamed(
+                                RouteString.whatsHotBlogScreen,
+                              );
+                            }
+                            break;
                           default:
                             {}
                         }

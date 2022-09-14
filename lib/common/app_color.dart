@@ -23,5 +23,6 @@ class AppColor {
   static const pinkKnowledge = Color(0xFFD479F2);
   static const greenKnowledge = Color(0xFF44CB7E);
   static const darkBlueKnowledge = Color(0xFF23608F);
+  static const lightNavyBlue = Color(0xFF004566);
 
 }

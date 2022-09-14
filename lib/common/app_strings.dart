@@ -61,4 +61,9 @@ class AppStrings {
   static const String podCastDescription = "Health and Wellness Podcasts";
 
   static const String submit = "Submit";
+  static const String cancel = "Cancel";
+  static const String pickImageFromGallery = "Pick image from gallery";
+  static const String pickImageFromCamera = "Pick image from camera";
+  static const String imageCancelByUser = "Image cancel by user";
+
 }

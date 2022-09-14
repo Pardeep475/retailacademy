@@ -13,5 +13,7 @@ class RouteString {
   static const String funFactsAndMasterClassScreen = "/FUN_FACTS_AND_MASTER_CLASS_SCREEN";
   static const String funFactsAndMasterClassContentScreen = "/FUN_FACTS_AND_MASTER_CLASS_CONTENT_SCREEN";
   static const String forgotPasswordScreen = "/FORGOT_PASSWORD_SCREEN";
+  static const String whatsHotBlogScreen = "/WHATS_HOT_BLOG_SCREEN";
+  static const String whatsHotBlogContentScreen = "/WHATS_HOT_BLOG_CONTENT_SCREEN";
 
 }

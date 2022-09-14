@@ -19,5 +19,7 @@ class BindingConst {
   static const String funFactsAndMasterClassContentScreenBinding = "FUN_FACTS_AND_MASTER_CLASS_CONTENT_SCREEN_BINDING";
   static const String funFactsAndMasterClassDetailScreenBinding = "FUN_FACTS_AND_MASTER_CLASS_DETAIL_SCREEN_BINDING";
   static const String forgotPasswordScreenBinding = "FORGOT_PASSWORD_SCREEN_BINDING";
+  static const String whatsHotBlogScreenBinding = "WHATS_HOT_BLOG_SCREEN_BINDING";
+  static const String whatsHotBlogContentScreenBinding = "WHATS_HOT_BLOG_CONTENT_SCREEN_BINDING";
 
 }
