@@ -4,6 +4,10 @@ import 'package:retail_academy/app/home/controller/home_controller.dart';
 import 'package:retail_academy/app/info_sessions/controller/info_sessions_controller.dart';
 import 'package:retail_academy/app/knowledge/controller/fun_facts_and_master_class_controller.dart';
 import 'package:retail_academy/app/knowledge/controller/knowledge_controller.dart';
+import 'package:retail_academy/app/knowledge/controller/pod_cast_content_controller.dart';
+import 'package:retail_academy/app/knowledge/controller/pod_cast_controller.dart';
+import 'package:retail_academy/app/knowledge/controller/pod_cast_detail_controller.dart';
+import 'package:retail_academy/app/knowledge/controller/quiz_master_controller.dart';
 import 'package:retail_academy/app/knowledge/controller/whats_hot_blog_controller.dart';
 import 'package:retail_academy/app/profile/controller/profile_controller.dart';
 import 'package:retail_academy/app/retails_reels/controller/retail_reels_controller.dart';
@@ -12,6 +16,7 @@ import '../../app/auth/splash/controller/splash_controller.dart';
 import '../../app/dashboard/controller/dashboard_controller.dart';
 import '../../app/knowledge/controller/fun_facts_and_master_class_content_controller.dart';
 import '../../app/knowledge/controller/fun_facts_and_master_class_detail_controller.dart';
+import '../../app/knowledge/controller/quiz_master_detail_controller.dart';
 import '../../app/knowledge/controller/whats_hot_blog_content_controller.dart';
 import 'binding_consts.dart';
 
@@ -44,5 +49,15 @@ class ApplicationBinding implements Bindings {
         tag: BindingConst.whatsHotBlogScreenBinding);
     Get.lazyPut(() => WhatsHotBlogContentController(),
         tag: BindingConst.whatsHotBlogContentScreenBinding);
+    Get.lazyPut(() => PodCastController(),
+        tag: BindingConst.podCastScreenBinding);
+    Get.lazyPut(() => PodCastContentController(),
+        tag: BindingConst.podCastContentScreenBinding);
+    Get.lazyPut(() => PodCastDetailController(),
+        tag: BindingConst.podCastDetailScreenBinding);
+    Get.lazyPut(() => QuizMasterController(),
+        tag: BindingConst.quizMasterScreenBinding);
+    Get.lazyPut(() => QuizMasterDetailController(),
+        tag: BindingConst.quizMasterDetailScreenBinding);
   }
 }

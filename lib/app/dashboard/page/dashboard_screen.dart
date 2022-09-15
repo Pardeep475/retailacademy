@@ -53,8 +53,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget buildMyNavBar(BuildContext context) {
     return Container(
-      height: 70.h,
+      height: 80.h,
       color: AppColor.black,
+      alignment: Alignment.topCenter,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -66,8 +67,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 splashColor: Colors.white54,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 8.h,
+                    ),
                     const Icon(
                       Icons.home_filled,
                       color: Colors.white,
@@ -93,8 +97,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 splashColor: Colors.white54,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 8.h,
+                    ),
                     const Icon(
                       Icons.work_outline_outlined,
                       color: Colors.white,
@@ -120,8 +127,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 splashColor: Colors.white54,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 8.h,
+                    ),
                     const Icon(
                       Icons.widgets_outlined,
                       color: Colors.white,
@@ -147,8 +157,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 splashColor: Colors.white54,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 8.h,
+                    ),
                     const Icon(
                       Icons.person_outline,
                       color: Colors.white,
@@ -174,8 +187,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 splashColor: Colors.white54,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 8.h,
+                    ),
                     const Icon(
                       Icons.language,
                       color: Colors.white,

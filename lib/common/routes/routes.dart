@@ -1,6 +1,12 @@
 import 'package:get/get.dart';
 import 'package:retail_academy/app/auth/login/page/forgot_password_screen.dart';
+import 'package:retail_academy/app/knowledge/controller/pod_cast_content_controller.dart';
 import 'package:retail_academy/app/knowledge/page/fun_facts_and_master_class_screen.dart';
+import 'package:retail_academy/app/knowledge/page/pod_cast_content_screen.dart';
+import 'package:retail_academy/app/knowledge/page/pod_cast_detail_screen.dart';
+import 'package:retail_academy/app/knowledge/page/pod_cast_screen.dart';
+import 'package:retail_academy/app/knowledge/page/quiz_master_detail_screen.dart';
+import 'package:retail_academy/app/knowledge/page/quiz_master_screen.dart';
 import 'package:retail_academy/app/knowledge/page/whats_hot_blog_screen.dart';
 import 'package:retail_academy/common/routes/route_strings.dart';
 
@@ -44,6 +50,26 @@ class Routes {
       GetPage(
         name: RouteString.whatsHotBlogContentScreen,
         page: () => const WhatsHotBlogContentScreen(),
+      ),
+      GetPage(
+        name: RouteString.podCastScreen,
+        page: () => const PodCastScreen(),
+      ),
+      GetPage(
+        name: RouteString.quizMasterScreen,
+        page: () => const QuizMasterScreen(),
+      ),
+      GetPage(
+        name: RouteString.podCastContentScreen,
+        page: () => const PodCastContentScreen(),
+      ),
+      GetPage(
+        name: RouteString.podCastDetailScreen,
+        page: () => const PodCastDetailScreen(),
+      ),
+      GetPage(
+        name: RouteString.quizMasterDetailScreen,
+        page: () => const QuizMasterDetailScreen(),
       ),
     ];
   }

@@ -77,6 +77,20 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
                               );
                             }
                             break;
+                          case AppStrings.podCast:
+                            {
+                              Get.toNamed(
+                                RouteString.podCastScreen,
+                              );
+                            }
+                            break;
+                          case AppStrings.quizMaster:
+                            {
+                              Get.toNamed(
+                                RouteString.quizMasterScreen,
+                              );
+                            }
+                            break;
                           default:
                             {}
                         }

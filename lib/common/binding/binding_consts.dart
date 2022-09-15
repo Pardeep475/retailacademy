@@ -21,5 +21,10 @@ class BindingConst {
   static const String forgotPasswordScreenBinding = "FORGOT_PASSWORD_SCREEN_BINDING";
   static const String whatsHotBlogScreenBinding = "WHATS_HOT_BLOG_SCREEN_BINDING";
   static const String whatsHotBlogContentScreenBinding = "WHATS_HOT_BLOG_CONTENT_SCREEN_BINDING";
+  static const String podCastScreenBinding = "POD_CAST_SCREEN_BINDING";
+  static const String podCastContentScreenBinding = "POD_CAST_CONTENT_SCREEN_BINDING";
+  static const String podCastDetailScreenBinding = "POD_CAST_DETAIL_SCREEN_BINDING";
+  static const String quizMasterScreenBinding = "QUIZ_MASTER_SCREEN_BINDING";
+  static const String quizMasterDetailScreenBinding = "QUIZ_MASTER_DETAIL_SCREEN_BINDING";
 
 }
