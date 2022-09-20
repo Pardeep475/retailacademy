@@ -23,6 +23,8 @@ class ApiConstants {
   static String updateProfileImage = "ProfilePhotoUpdate";
   static String getPointsApi = "RetailStatus";
   static String getTrendingApi({required String userId,required String orgId}) => "ActivityStreamList?userid=$userId&orgid=$orgId";
+  static String getTrendingApiWithPagination = "ActivityStreamList";
+  static String getKnowledgeApi({required String userId,required String orgId}) => "FolderListV2?userid=$userId&orgid=$orgId";
   static String addTrendingLike = "ActivityStreamLike";
   static String getContentKnowledgeSection = "ContentListV2";
   static String likeOrDislikeContentKnowledgeSection = "ContentLikes";

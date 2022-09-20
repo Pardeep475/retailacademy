@@ -14,6 +14,7 @@ import 'modal/base/base_response.dart';
 import 'modal/forgot_password/forgot_password_request.dart';
 import 'modal/knowledge/content_knowledge_request.dart';
 import 'modal/knowledge/content_knowledge_response.dart';
+import 'modal/knowledge/knowledge_api_response.dart';
 import 'modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
 import 'modal/knowledge/whats_hot_blog_content_request.dart';
 import 'modal/knowledge/whats_hot_blog_response.dart';
@@ -22,6 +23,7 @@ import 'modal/profile/logout_request.dart';
 import 'modal/profile/logout_response.dart';
 import 'modal/profile/profile_response.dart';
 import 'modal/profile/update_profile_image_request.dart';
+import 'modal/trending/trending_pagination_request.dart';
 
 class ApiProvider {
   static final ApiProvider apiProvider = ApiProvider._internal();
@@ -118,6 +120,20 @@ class ApiProvider {
     }
   }
 
+  Future<dynamic> getTrendingApiWithPagination(
+      {required TrendingPaginationRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.getTrendingApiWithPagination,
+        data: request.toJson(),
+      );
+      return TrendingResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
   Future<dynamic> trendingLikeApi(
       {required LikeTrendingRequest request}) async {
     try {
@@ -140,6 +156,19 @@ class ApiProvider {
         data: request.toJson(),
       );
       return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> getKnowledgeApi(
+      {required String userId, required String orgId}) async {
+    try {
+      Response response = await _dio.get(
+        ApiConstants.getKnowledgeApi(userId: userId, orgId: orgId),
+      );
+      return KnowledgeApiResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;

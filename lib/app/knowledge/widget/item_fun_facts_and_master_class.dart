@@ -19,6 +19,7 @@ class ItemFolderKnowledge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('${item.thumbnailImage}\n');
     return Container(
       decoration:
           BoxDecoration(color: color, borderRadius: BorderRadius.circular(8.r)),
@@ -42,7 +43,7 @@ class ItemFolderKnowledge extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(15.r),
-                decoration:const BoxDecoration(
+                decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                     boxShadow: [
@@ -52,11 +53,37 @@ class ItemFolderKnowledge extends StatelessWidget {
                       ),
                     ]),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: Image.asset(
-                  'assets/images/${item.fileId}.png',
+                child: CachedNetworkImage(
+                  imageUrl: item.thumbnailImage,
                   height: 48.h,
                   width: 48.w,
-
+                  imageBuilder: (context, imageProvider) => Container(
+                    height: 48.h,
+                    width: 48.w,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => Container(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                        height: 36.r,
+                        width: 36.r,
+                        child: const CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(color: AppColor.grey),
+                    child: Image.asset(
+                      AppImages.imgNoImageFound,
+                      height: 48.h,
+                      width: 48.w,
+                      color: AppColor.black,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(
@@ -93,7 +120,7 @@ class ItemContentKnowledge extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Get.to(
-              FunFactsAndMasterClassDetailScreen(
+              () => FunFactsAndMasterClassDetailScreen(
                 item: item,
               ),
             );
@@ -108,7 +135,7 @@ class ItemContentKnowledge extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.r),
                   child: CachedNetworkImage(
-                    imageUrl: '',
+                    imageUrl: item.thumbnailImage,
                     imageBuilder: (context, imageProvider) => Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(

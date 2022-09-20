@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSAppTransportSecurity</key>
-	<dict/>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Needs permission to capture video</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Needs camera permission to capture picture</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Needs permission to get picture on this application </string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -32,6 +24,14 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict/>
+	<key>NSCameraUsageDescription</key>
+	<string>Needs camera permission to capture picture</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Needs permission to capture video</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Needs permission to get picture on this application </string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

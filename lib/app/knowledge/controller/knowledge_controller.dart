@@ -3,12 +3,15 @@ import 'package:retail_academy/common/app_color.dart';
 import 'package:retail_academy/common/app_images.dart';
 import 'package:retail_academy/common/app_strings.dart';
 
+import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
+import '../../../network/api_provider.dart';
+import '../../../network/modal/knowledge/knowledge_api_response.dart';
 import '../modal/knowledge_entity.dart';
 
 class KnowledgeController extends GetxController {
   var showLoader = false.obs;
-  final RxList<KnowledgeEntity> dataList = RxList();
+  final RxList<KnowledgeElement> dataList = RxList();
 
 
   @override
@@ -29,18 +32,52 @@ class KnowledgeController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  getKnowledgeData() {
-    if (dataList.isNotEmpty) {
-      dataList.clear();
+
+  Future getKnowledgeApi({bool isLoader = true}) async {
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+        if (isLoader) {
+          showLoader.value = true;
+        }
+        String userId = await SessionManager.getUserId();
+        var response = await ApiProvider.apiProvider.getKnowledgeApi(
+          userId: userId,
+          orgId: AppStrings.orgId,
+        );
+        if (response != null) {
+          KnowledgeApiResponse knowledgeResponse = (response as KnowledgeApiResponse);
+          if (knowledgeResponse.status) {
+            dataList.clear();
+            dataList.addAll(knowledgeResponse.knowledgeElement ?? []);
+            dataList.refresh();
+          } else {
+            Utils.errorSnackBar(AppStrings.error, knowledgeResponse.message);
+          }
+        }
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+        if (isLoader) {
+          showLoader.value = false;
+        }
+      }
     }
-
-    KnowledgeRepository _knowledgeRepository = KnowledgeRepository();
-    List<KnowledgeEntity> entityList =
-    _knowledgeRepository.getKnowledgeData();
-
-    dataList.addAll(entityList);
-    dataList.refresh();
+    return null;
   }
+
+  // getKnowledgeData() {
+  //   if (dataList.isNotEmpty) {
+  //     dataList.clear();
+  //   }
+  //
+  //   KnowledgeRepository _knowledgeRepository = KnowledgeRepository();
+  //   List<KnowledgeEntity> entityList =
+  //   _knowledgeRepository.getKnowledgeData();
+  //
+  //   dataList.addAll(entityList);
+  //   dataList.refresh();
+  // }
 
 }
 

@@ -6,11 +6,13 @@ import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 import '../../../network/modal/base/base_response.dart';
 import '../../../network/modal/trending/like_trending_request.dart';
+import '../../../network/modal/trending/trending_pagination_request.dart';
 import '../../../network/modal/trending/trending_response.dart';
 
 class HomeController extends GetxController {
   var showLoader = false.obs;
   RxList<ActivityStream> dataList = RxList();
+  var showPagination = false.obs;
 
   @override
   void onInit() {
@@ -58,6 +60,37 @@ class HomeController extends GetxController {
         if (isLoader) {
           showLoader.value = false;
         }
+      }
+    }
+    return null;
+  }
+
+  Future getTrendingApiWithPagination() async {
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+        showPagination.value = true;
+        String userId = await SessionManager.getUserId();
+        var response =
+            await ApiProvider.apiProvider.getTrendingApiWithPagination(
+          request: TrendingPaginationRequest(
+              userId: int.parse(userId),
+              orgId: AppStrings.orgId,
+              aIDAfter: dataList[dataList.length - 1].activityStreamId),
+        );
+        if (response != null) {
+          TrendingResponse trendingResponse = (response as TrendingResponse);
+          if (trendingResponse.status) {
+            dataList.addAll(trendingResponse.activityStreams ?? []);
+            dataList.refresh();
+          } else {
+            Utils.errorSnackBar(AppStrings.error, trendingResponse.message);
+          }
+        }
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+        showPagination.value = false;
       }
     }
     return null;

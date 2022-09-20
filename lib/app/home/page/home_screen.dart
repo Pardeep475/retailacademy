@@ -21,12 +21,40 @@ class _HomeScreenState extends State<HomeScreen> {
       ? Get.find<HomeController>()
       : Get.put(HomeController());
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    setUpScrollListener();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _controller.getTrendingApi();
     });
+  }
+
+  setUpScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels > 10) {
+        if (_scrollController.position.pixels >
+            _scrollController.position.maxScrollExtent - 100) {
+          paginationImplementation();
+        }
+      }
+    });
+  }
+
+  void paginationImplementation() async {
+    if (_controller.dataList.isNotEmpty && !_controller.showPagination.value) {
+      debugPrint("MESSAGE_TAB_TESTING:-   ");
+      debugPrint(
+          "MESSAGE_TAB_TESTING:-  paginationImplementation INSIDE  ${_controller.dataList.length}");
+
+      if (_controller.dataList.length % 10 == 0) {
+        if (_controller.showPagination.value) return;
+        _controller.showPagination.value = true;
+        _controller.getTrendingApiWithPagination();
+      }
+    }
   }
 
   @override
@@ -48,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         physics: const BouncingScrollPhysics(
                             parent: ClampingScrollPhysics()),
                         shrinkWrap: true,
+                        controller: _scrollController,
                         itemCount: _controller.dataList.length,
                         padding: EdgeInsets.symmetric(
                             horizontal: 16.w, vertical: 20.h),
@@ -65,6 +94,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }),
               ),
+              Obx(() {
+                debugPrint(
+                    "PAGINATION_TESTING:-     ${_controller.showPagination.value}");
+
+                return _controller.showPagination.value
+                    ? Container(
+                        height: 100.h,
+                        alignment: Alignment.bottomCenter,
+                        color: Colors.transparent,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                AppColor.loaderColor),
+                          ),
+                        ),
+                      )
+                    : const SizedBox();
+              }),
             ],
           ),
           Obx(

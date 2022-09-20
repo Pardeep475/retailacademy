@@ -31,8 +31,8 @@ class AppStrings {
   static const String provideValidEmail = "Please provide valid email address";
   static const String home = "Home";
   static const String knowledge = "Knowledge";
-  static const String retailReels = "Retail Reels";
-  static const String infoSessions = "Info Sessions";
+  static const String retailReels = "Reels";//Retail
+  static const String infoSessions = "Sessions";//Info
   static const String profile = "Profile";
   static const String points = "Points";
   static const String trending = "Trending";

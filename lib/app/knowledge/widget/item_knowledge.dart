@@ -1,12 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:retail_academy/app/knowledge/modal/knowledge_entity.dart';
 import 'package:retail_academy/common/app_color.dart';
 
+import '../../../common/app_images.dart';
+import '../../../common/utils.dart';
 import '../../../common/widget/app_text.dart';
+import '../../../network/modal/knowledge/knowledge_api_response.dart';
 
 class ItemKnowledge extends StatelessWidget {
-  final KnowledgeEntity item;
+  final KnowledgeElement item;
   final VoidCallback onPressed;
 
   const ItemKnowledge({required this.item, required this.onPressed, Key? key})
@@ -16,10 +19,11 @@ class ItemKnowledge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: item.color,
+        color: Utils.hexToColor(item.colourCode),
         borderRadius: BorderRadius.circular(10.r),
       ),
       margin: EdgeInsets.only(bottom: 10.h),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -37,8 +41,11 @@ class ItemKnowledge extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     AppText(
-                      text: item.title,
+                      text: item.folderName,
                       textSize: 20.sp,
                       color: AppColor.white,
                       fontWeight: FontWeight.w600,
@@ -47,7 +54,7 @@ class ItemKnowledge extends StatelessWidget {
                       height: 10.h,
                     ),
                     AppText(
-                      text: item.description,
+                      text: item.folderDescription,
                       textSize: 16.sp,
                       color: AppColor.white,
                       fontWeight: FontWeight.w400,
@@ -58,9 +65,36 @@ class ItemKnowledge extends StatelessWidget {
                   ],
                 ),
               ),
-              Image.asset(
-                item.icon,
+              CachedNetworkImage(
+                imageUrl: item.thumbnailImage,
                 width: 150.w,
+                height: 150.h,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 150.w,
+                  height: 150.h,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                placeholder: (context, url) => Container(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                      height: 36.r,
+                      width: 36.r,
+                      child: const CircularProgressIndicator()),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(color: AppColor.grey),
+                  child: Image.asset(
+                    AppImages.imgNoImageFound,
+                    width: 150.w,
+                    height: 150.h,
+                  ),
+                ),
               ),
             ],
           ),

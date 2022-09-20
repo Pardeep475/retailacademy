@@ -1,4 +1,4 @@
-package com.mobisprint.retailacademy.retail_academy
+package application.raybiztech.retailacademy
 
 import io.flutter.embedding.android.FlutterActivity
 

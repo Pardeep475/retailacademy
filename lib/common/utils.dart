@@ -36,12 +36,14 @@ class Utils {
         ),
   );
 
-  static errorSnackBar(String title, String message,{bool isSuccess = false}) {
+  static errorSnackBar(String title, String message, {bool isSuccess = false}) {
     Get.snackbar(
       title,
       message,
       margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 10.h),
-      backgroundColor: isSuccess ? AppColor.greenKnowledge.withOpacity(0.9) : AppColor.red.withOpacity(0.9),
+      backgroundColor: isSuccess
+          ? AppColor.greenKnowledge.withOpacity(0.9)
+          : AppColor.red.withOpacity(0.9),
       borderRadius: 5.sp,
       snackPosition: SnackPosition.BOTTOM,
       colorText: AppColor.red,
@@ -154,12 +156,17 @@ class Utils {
         .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
   }
 
-  static bool checkIfDatesExistInCurrentWeek(DateTime currentDate){
+  static bool checkIfDatesExistInCurrentWeek(DateTime currentDate) {
     DateTime firstDate = findFirstDateOfTheWeek();
     DateTime lastDate = findLastDateOfTheWeek();
 
-    return currentDate.isAfter(firstDate.subtract(const Duration(days: 1))) && currentDate.isBefore(lastDate);
+    return currentDate.isAfter(firstDate.subtract(const Duration(days: 1))) &&
+        currentDate.isBefore(lastDate);
 
     // return (firstDate.isAfter(currentDate) && lastDate.isBefore(currentDate));
+  }
+
+  static Color hexToColor(String code) {
+    return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }

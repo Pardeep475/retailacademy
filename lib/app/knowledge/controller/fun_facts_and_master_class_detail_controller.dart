@@ -19,6 +19,9 @@ class FunFactsAndMasterClassDetailController extends GetxController {
 
   var fileUrl = ''.obs;
 
+  var updatePage = 0;
+  var currentPage = 0.obs;
+
   void clearValue() {
     showLoader.value = false;
 
@@ -83,7 +86,7 @@ class FunFactsAndMasterClassDetailController extends GetxController {
     if (value.isDenied) {
       if (await Permission.storage.request().isGranted) {
         return true;
-      }else {
+      } else {
         return false;
       }
     }
@@ -126,4 +129,10 @@ class FunFactsAndMasterClassDetailController extends GetxController {
     }
     return null;
   }
+
+  void updateCurrentPage(int value){
+    currentPage.value = value;
+  }
+
+
 }
