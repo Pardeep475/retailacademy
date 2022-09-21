@@ -108,8 +108,9 @@ class ItemFolderKnowledge extends StatelessWidget {
 
 class ItemContentKnowledge extends StatelessWidget {
   final FileElement item;
+  final VoidCallback onPressed;
 
-  const ItemContentKnowledge({Key? key, required this.item}) : super(key: key);
+  const ItemContentKnowledge({Key? key,required this.onPressed, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -118,13 +119,7 @@ class ItemContentKnowledge extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-            Get.to(
-              () => FunFactsAndMasterClassDetailScreen(
-                item: item,
-              ),
-            );
-          },
+          onTap: onPressed,
           splashColor: Colors.white54,
           borderRadius: BorderRadius.circular(8.r),
           child: Column(

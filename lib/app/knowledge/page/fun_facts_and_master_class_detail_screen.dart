@@ -13,8 +13,10 @@ import '../controller/fun_facts_and_master_class_detail_controller.dart';
 
 class FunFactsAndMasterClassDetailScreen extends StatefulWidget {
   final FileElement item;
+  final String filePath;
 
-  const FunFactsAndMasterClassDetailScreen({required this.item, Key? key})
+  const FunFactsAndMasterClassDetailScreen(
+      {required this.item, required this.filePath, Key? key})
       : super(key: key);
 
   @override
@@ -32,38 +34,9 @@ class _FunFactsAndMasterClassDetailScreenState
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      _controller.clearValue();
-      _controller.getFileFromUrl(widget.item.filesUrl);
-    });
+
   }
 
-  PDFViewController? _pdfViewController;
-
-  updatePage() async {
-    if (_pdfViewController == null) {
-      return;
-    }
-    var currentPage = await _pdfViewController!.getCurrentPage() ?? 0;
-    var totalPage = await _pdfViewController!.getPageCount() ?? 0;
-    debugPrint(
-        'value :----------   ${_controller.updatePage == 0 ? 'left' : 'right'}');
-    if (_controller.updatePage == 0) {
-      if (currentPage != 0) {
-        var value = --currentPage;
-        debugPrint('value :----------   $value');
-        _controller.updateCurrentPage(value);
-        // _pdfViewController!.setPage(value);
-      }
-    } else {
-      if (currentPage < (totalPage - 1)) {
-        var value = ++currentPage;
-        debugPrint('value :----------   $value');
-        _controller.updateCurrentPage(value);
-        // _pdfViewController!.setPage(value);
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,60 +54,27 @@ class _FunFactsAndMasterClassDetailScreenState
                 isSearchButtonVisible: false,
               ),
               Expanded(
-                child: Obx(() {
-                  debugPrint(
-                      'asdfghjkl   ${_controller.fileUrl.value}  ${_controller.currentPage.value}');
-                  if (_controller.fileUrl.value.isEmpty) {
-                    return const SizedBox();
-                  }
-                  return GestureDetector(
-                    onVerticalDragUpdate: (details) {
-                      if (details.delta.dy > 0) {
-                        _controller.updatePage = 0;
-                      } else {
-                        _controller.updatePage = 1;
-                      }
-                    },
-                    onHorizontalDragEnd: (details) {
-                      updatePage();
-                    },
-                    onVerticalDragEnd: (details) {
-                      updatePage();
-                    },
-                    onHorizontalDragUpdate: (details) {
-                      if (details.delta.dx > 0) {
-                        _controller.updatePage = 0;
-                      } else {
-                        _controller.updatePage = 1;
-                      }
-                    },
-                    child: PDFView(
-                      filePath: _controller.fileUrl.value,
-                      autoSpacing: true,
-                      nightMode: false,
-                      swipeHorizontal: true,
-                      enableSwipe: true,
-                      defaultPage: _controller.currentPage.value,
-                      fitPolicy: FitPolicy.BOTH,
-                      onError: (e) {
-                        //Show some error message or UI
-                        debugPrint('PDFVIEW  onError $e');
-                      },
-                      onRender: (_pages) {
-                        debugPrint('_totalPages $_pages');
-                      },
-                      onViewCreated: (PDFViewController vc) {
-                        _pdfViewController = vc;
-                      },
-                      onPageChanged: (int? page, int? total) {
-                        debugPrint("_currentPage = $page");
-                      },
-                      onPageError: (page, e) {
-                        debugPrint('PDFVIEW  onPageError $e');
-                      },
-                    ),
-                  );
-                }),
+                child: PDFView(
+                  filePath: widget.filePath,
+                  autoSpacing: true,
+                  fitPolicy: FitPolicy.BOTH,
+                  onError: (e) {
+                    //Show some error message or UI
+                    debugPrint('PDFVIEW  onError $e');
+                  },
+                  onRender: (_pages) {
+                    debugPrint('_totalPages $_pages');
+                  },
+                  onViewCreated: (PDFViewController vc) {
+
+                  },
+                  onPageChanged: (int? page, int? total) {
+                    debugPrint("_currentPage = $page");
+                  },
+                  onPageError: (page, e) {
+                    debugPrint('PDFVIEW  onPageError $e');
+                  },
+                ),
               ),
               SizedBox(height: 12.h),
               Row(

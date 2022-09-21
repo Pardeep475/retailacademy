@@ -3,15 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/common/app_color.dart';
 
+import '../../../common/app_strings.dart';
+import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../network/modal/knowledge/content_knowledge_response.dart';
 import '../controller/fun_facts_and_master_class_content_controller.dart';
 import '../widget/item_fun_facts_and_master_class.dart';
+import 'fun_facts_and_master_class_detail_screen.dart';
 
 class FunFactsAndMasterClassContentScreen extends StatefulWidget {
   const FunFactsAndMasterClassContentScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _FunFactsAndMasterClassContentScreenState();
+  State<StatefulWidget> createState() =>
+      _FunFactsAndMasterClassContentScreenState();
 }
 
 class _FunFactsAndMasterClassContentScreenState
@@ -20,9 +25,9 @@ class _FunFactsAndMasterClassContentScreenState
   Color? color;
 
   final FunFactsAndMasterClassContentController _controller =
-  Get.isRegistered<FunFactsAndMasterClassContentController>()
-      ? Get.find<FunFactsAndMasterClassContentController>()
-      : Get.put(FunFactsAndMasterClassContentController());
+      Get.isRegistered<FunFactsAndMasterClassContentController>()
+          ? Get.find<FunFactsAndMasterClassContentController>()
+          : Get.put(FunFactsAndMasterClassContentController());
 
   @override
   void initState() {
@@ -50,18 +55,37 @@ class _FunFactsAndMasterClassContentScreenState
               ),
               Expanded(
                 child: Obx(() {
-                  debugPrint('item length:---   ${_controller.dataList.length}');
+                  debugPrint(
+                      'item length:---   ${_controller.dataList.length}');
                   return GridView.builder(
                     itemCount: _controller.dataList.length,
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 8.0,
-                        childAspectRatio: 1.3,
-                        mainAxisSpacing: 16.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 8.0,
+                            childAspectRatio: 1.3,
+                            mainAxisSpacing: 16.0),
                     itemBuilder: (BuildContext context, int index) {
+                      FileElement item = _controller.dataList[index];
                       return ItemContentKnowledge(
-                        item: _controller.dataList[index],
+                        item: item,
+                        onPressed: () async {
+                          String? filePath =
+                              await _controller.getFileFromUrl(item.filesUrl);
+                          if (filePath != null) {
+                            Get.to(
+                              () => FunFactsAndMasterClassDetailScreen(
+                                item: item,
+                                filePath: filePath,
+                              ),
+                            );
+                          } else {
+                            Utils.errorSnackBar(
+                                AppStrings.error, 'Something went wrong');
+                          }
+                        },
                       );
                     },
                   );
@@ -70,22 +94,22 @@ class _FunFactsAndMasterClassContentScreenState
             ],
           ),
           Obx(
-                () => Positioned.fill(
+            () => Positioned.fill(
               child: _controller.showLoader.value
                   ? Container(
-                color: Colors.transparent,
-                width: Get.width,
-                height: Get.height,
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColor.loaderColor),
-                  ),
-                ),
-              )
+                      color: Colors.transparent,
+                      width: Get.width,
+                      height: Get.height,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColor.loaderColor),
+                        ),
+                      ),
+                    )
                   : Container(
-                width: 0,
-              ),
+                      width: 0,
+                    ),
             ),
           ),
         ],
