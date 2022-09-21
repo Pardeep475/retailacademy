@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:retail_academy/app/auth/login/controller/forgot_password_controller.dart';
 
 import '../../../../common/app_color.dart';
 import '../../../../common/app_images.dart';
 import '../../../../common/app_strings.dart';
 import '../../../../common/widget/app_button.dart';
 import '../../../../common/widget/app_text_field.dart';
+import '../controller/help_and_contact_retail_controller.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  ForgotPasswordScreen({Key? key}) : super(key: key);
+class HelpAndContactRetailScreen extends StatelessWidget {
+  final int screenType;
 
-  final ForgotPasswordController _controller =
-      Get.isRegistered<ForgotPasswordController>()
-          ? Get.find<ForgotPasswordController>()
-          : Get.put(ForgotPasswordController());
+  HelpAndContactRetailScreen({required this.screenType, Key? key})
+      : super(key: key);
 
-  final TextEditingController _emailController =
-      TextEditingController();
+  final HelpAndContactRetailController _controller =
+      Get.isRegistered<HelpAndContactRetailController>()
+          ? Get.find<HelpAndContactRetailController>()
+          : Get.put(HelpAndContactRetailController());
+
+  final TextEditingController _txtController = TextEditingController();
   final _formGlobalKey = GlobalKey<FormState>();
 
   @override
@@ -46,22 +48,24 @@ class ForgotPasswordScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: Get.height * 0.15,
+                      height: 50.h,
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: 16.w, vertical: 20.h),
                       child: AppTextField(
-                        placeHolder: AppStrings.emailAddress,
-                        controller: _emailController,
-                        validator: (value) =>
-                            _controller.validateEmail(value: value),
+                        placeHolder: AppStrings.typeHere,
+                        controller: _txtController,
+                        minLines: 5,
+                        maxLines: 5,
+                        validator: (value) => _controller.validateValue(
+                            value: value, screenType: screenType),
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(16.w, 0, 16.h, 10.h),
                       child: AppButton(
-                        txt: AppStrings.submit,
+                        txt: AppStrings.send,
                         onPressed: () => _submitClickListener(),
                       ),
                     ),
@@ -112,9 +116,15 @@ class ForgotPasswordScreen extends StatelessWidget {
   _submitClickListener() {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_formGlobalKey.currentState!.validate()) {
-      _controller.forgotPasswordApi(
-        emailId: _emailController.text.toString(),
-      );
+      if (screenType == 0) {
+        _controller.helpApi(
+          txt: _txtController.text.toString(),
+        );
+      } else {
+        _controller.contactRetailApi(
+          txt: _txtController.text.toString(),
+        );
+      }
     }
   }
 }

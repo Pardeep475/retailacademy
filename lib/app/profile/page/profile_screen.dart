@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -12,6 +10,7 @@ import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../auth/login/page/help_and_contact_retail_screen.dart';
 import '../controller/profile_controller.dart';
 import '../widget/item_custom_button_profile.dart';
 
@@ -55,41 +54,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: Get.height * 0.3,
                         child: Stack(
                           children: [
-
-                                 CachedNetworkImage(
-                                    imageUrl: _controller.profileImage.value,
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    placeholder: (context, url) => Container(
-                                      alignment: Alignment.center,
-                                      child: SizedBox(
-                                          height: 36.r,
-                                          width: 36.r,
-                                          child:
-                                              const CircularProgressIndicator()),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                      alignment: Alignment.center,
-                                      decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColor.grey),
-                                      child: SvgPicture.asset(
-                                        AppImages.iconUserImagePlaceHolder,
-                                        height: Get.height * 0.2,
-                                        color: AppColor.black,
-                                      ),
-                                    ),
-                                  )
-                                ,
+                            CachedNetworkImage(
+                              imageUrl: _controller.profileImage.value,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              placeholder: (context, url) => Container(
+                                alignment: Alignment.center,
+                                child: SizedBox(
+                                    height: 36.r,
+                                    width: 36.r,
+                                    child: const CircularProgressIndicator()),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                alignment: Alignment.center,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColor.grey),
+                                child: SvgPicture.asset(
+                                  AppImages.iconUserImagePlaceHolder,
+                                  height: Get.height * 0.2,
+                                  color: AppColor.black,
+                                ),
+                              ),
+                            ),
                             Positioned(
                               bottom: 0,
                               right: 20,
@@ -162,7 +157,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text: AppStrings.contactRetailTeam,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          debugPrint('Tap Here onTap');
+                          Get.to(
+                              () => HelpAndContactRetailScreen(screenType: 1));
                         },
                       style: TextStyle(
                           fontWeight: FontWeight.w500,

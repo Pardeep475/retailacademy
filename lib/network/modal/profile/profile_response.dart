@@ -21,6 +21,7 @@ class ProfileResponse {
     this.mobileNumber = '',
     this.landNumber = '',
     this.message = '',
+    this.storeName = '',
   });
 
   bool status;
@@ -31,16 +32,18 @@ class ProfileResponse {
   String mobileNumber;
   String landNumber;
   String message;
+  String storeName;
 
-  factory ProfileResponse.fromJson(Map<String, dynamic> json) => ProfileResponse(
-    status: json["status"] ?? false,
-    employeeNumber: json["employeenumber"] ?? '',
-    userFullName: json["userfullname"] ?? '',
-    profilePic: json["avatarurl"] ?? '',
-    emailId: json["emailid"] ?? '',
-    mobileNumber: json["mobilenumber"] ?? '',
-    landNumber: json["landnumber"] ?? '',
-    message: json["message"] ?? '',
-  );
-
+  factory ProfileResponse.fromJson(Map<String, dynamic> json) =>
+      ProfileResponse(
+        status: json["status"] ?? false,
+        employeeNumber: json["employeenumber"] ?? '',
+        userFullName: json["userfullname"] ?? '',
+        profilePic: json["avatarurl"] ?? '',
+        emailId: json["emailid"] ?? '',
+        mobileNumber: json["mobilenumber"] ?? '',
+        landNumber: json["landnumber"] ?? '',
+        message: json["message"] ?? '',
+        storeName: json["storename"] ?? 'Store name',
+      );
 }

@@ -20,6 +20,7 @@ class WhatsHotBlogContentScreen extends StatefulWidget {
 
 class _WhatsHotBlogContentScreenState extends State<WhatsHotBlogContentScreen> {
   String? title;
+  String? description;
   String? categoryId;
 
   final WhatsHotBlogContentController _controller =
@@ -31,6 +32,7 @@ class _WhatsHotBlogContentScreenState extends State<WhatsHotBlogContentScreen> {
   void initState() {
     Map<String, dynamic> value = Get.arguments;
     title = value['title'];
+    description = value['description'];
     _controller.categoryId = value['categoryId'];
     super.initState();
 
@@ -46,8 +48,8 @@ class _WhatsHotBlogContentScreenState extends State<WhatsHotBlogContentScreen> {
         children: [
           Column(
             children: [
-              const CustomAppBar(
-                title: AppStrings.whatsHotBlog,
+              CustomAppBar(
+                title: title ?? '',
                 isBackButtonVisible: true,
                 isSearchButtonVisible: false,
                 isNotificationButtonVisible: true,
@@ -60,9 +62,9 @@ class _WhatsHotBlogContentScreenState extends State<WhatsHotBlogContentScreen> {
                     children: [
                       Container(
                         padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0),
+                        alignment: Alignment.centerLeft,
                         child: AppText(
-                          text:
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                          text: description ?? '',
                           textSize: 16.sp,
                           textAlign: TextAlign.left,
                           color: AppColor.black,

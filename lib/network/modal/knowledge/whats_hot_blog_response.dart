@@ -37,20 +37,14 @@ class BlogCategoryElement {
   bool hasViewed;
   Color color;
 
-  factory BlogCategoryElement.fromJson(Map<String, dynamic> json) =>
-      BlogCategoryElement(
-        categoryId: json["categoryid"],
-        blogCategory: json["blogcategory"],
-        hasViewed: json["hasviewed"],
-        color: colorList[Random().nextInt(6)]
-      );
+  int value = 0;
+
+  factory BlogCategoryElement.fromJson(Map<String, dynamic> json) => BlogCategoryElement(
+      categoryId: json["categoryid"],
+      blogCategory: json["blogcategory"],
+      hasViewed: json["hasviewed"],
+
+  );
+
 }
 
-const colorList =  [
-   Color(0xffFCED22),
-   Color(0xff83E7F7),
-   Color(0xffF76D6D),
-   Color(0xffF8A5AD),
-   Color(0xffE3A541),
-   Color(0xffC1FF5C),
-];

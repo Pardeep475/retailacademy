@@ -91,7 +91,7 @@ class ProfileController extends GetxController {
           if (profileResponse.status) {
             profileImage.value = profileResponse.profilePic;
             staffName.value = profileResponse.userFullName;
-            storeName.value = '';
+            storeName.value = profileResponse.storeName;
             staffIdNumber.value = profileResponse.employeeNumber;
             emailAddress.value = profileResponse.emailId;
           } else {

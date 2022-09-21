@@ -28,11 +28,12 @@ class AppStrings {
   static const String usernameIsRequired = "Username is required";
   static const String passwordIsRequired = "Password is required";
   static const String emailIsRequired = "Email is required";
+  static const String valueIsRequired = "Value must not empty";
   static const String provideValidEmail = "Please provide valid email address";
   static const String home = "Home";
   static const String knowledge = "Knowledge";
-  static const String retailReels = "Reels";//Retail
-  static const String infoSessions = "Sessions";//Info
+  static const String retailReels = "Reels"; //Retail
+  static const String infoSessions = "Sessions"; //Info
   static const String profile = "Profile";
   static const String points = "Points";
   static const String trending = "Trending";
@@ -41,6 +42,7 @@ class AppStrings {
   static const String storeName = "Store Name";
   static const String staffIdNumber = "Staff ID Number";
   static const String emailAddress = "Email Address";
+  static const String typeHere = "Type here...";
   static const String needToEditProfile = "Need to edit profile?";
   static const String contactRetailTeam = " Contact retail team.";
   static const String logout = "Log out";
@@ -61,9 +63,9 @@ class AppStrings {
   static const String podCastDescription = "Health and Wellness Podcasts";
 
   static const String submit = "Submit";
+  static const String send = "Send";
   static const String cancel = "Cancel";
   static const String pickImageFromGallery = "Pick image from gallery";
   static const String pickImageFromCamera = "Pick image from camera";
   static const String imageCancelByUser = "Image cancel by user";
-
 }

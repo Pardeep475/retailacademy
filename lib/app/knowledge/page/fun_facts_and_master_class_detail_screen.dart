@@ -110,10 +110,10 @@ class _FunFactsAndMasterClassDetailScreenState
                     },
                     child: PDFView(
                       filePath: _controller.fileUrl.value,
-                      autoSpacing: false,
-                      nightMode: true,
-                      swipeHorizontal: false,
-                      enableSwipe: false,
+                      autoSpacing: true,
+                      nightMode: false,
+                      swipeHorizontal: true,
+                      enableSwipe: true,
                       defaultPage: _controller.currentPage.value,
                       fitPolicy: FitPolicy.BOTH,
                       onError: (e) {
