@@ -10,6 +10,7 @@ import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_content_response.dart';
 import '../controller/whats_hot_blog_detail_controller.dart';
+import '../widget/video_items.dart';
 
 class WhatsHotBogDetailScreen extends StatefulWidget {
   final BlogContentElement item;
@@ -28,27 +29,20 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
       Get.isRegistered<WhatsHotBlogDetailController>()
           ? Get.find<WhatsHotBlogDetailController>()
           : Get.put(WhatsHotBlogDetailController());
-  late VideoPlayerController _videoPlayerController;
+
 
   @override
   void initState() {
     _controller.hasLiked.value = widget.item.hasLiked;
     super.initState();
-    _videoPlayerInit('');
+
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       _controller.fetchWhatsHotContentApi(
           categoryId: widget.categoryId, blogId: widget.item.blogId);
     });
   }
 
-  _videoPlayerInit(String url) {
-    _videoPlayerController = VideoPlayerController.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,25 +60,16 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
                 isSearchButtonVisible: false,
                 isNotificationButtonVisible: true,
               ),
-              // Expanded(
-              //   child: Obx(() {
-              //     _videoPlayerInit(_controller.videoUrl.value);
-              //     return _videoPlayerController.value.isInitialized
-              //         ? AspectRatio(
-              //             aspectRatio: _videoPlayerController.value.aspectRatio,
-              //             child: VideoPlayer(_videoPlayerController),
-              //           )
-              //         : const SizedBox();
-              //   }),
-              // ),
-
               Expanded(
-                  child: _videoPlayerController.value.isInitialized
-                      ? AspectRatio(
-                          aspectRatio: _videoPlayerController.value.aspectRatio,
-                          child: VideoPlayer(_videoPlayerController),
-                        )
-                      : const SizedBox()),
+                child: VideoItems(
+                  videoPlayerController: VideoPlayerController.network(
+                    // widget.item.videoUrl,
+                    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'
+                  ),
+                  key: UniqueKey(),
+                  padding: EdgeInsets.zero,
+                ),
+              ),
               SizedBox(height: 12.h),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

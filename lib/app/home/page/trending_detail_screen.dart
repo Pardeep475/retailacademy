@@ -3,12 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
+import '../../../common/utils.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../network/modal/trending/trending_response.dart';
+import '../../knowledge/widget/video_items.dart';
 import '../controller/trending_detail_controller.dart';
 
 class TrendingDetailScreen extends StatefulWidget {
@@ -50,30 +53,39 @@ class _TrendingDetailScreenState extends State<TrendingDetailScreen> {
                 isNotificationButtonVisible: true,
               ),
               Expanded(
-                child: PhotoView(
-                  imageProvider: NetworkImage(widget.item.activityImage),
-                  backgroundDecoration: const BoxDecoration(color: AppColor.white),
-                  loadingBuilder: (context, event) => Container(
-                    color: Colors.transparent,
-                    width: Get.width,
-                    height: Get.height,
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColor.loaderColor),
+                child: Utils.isVideo(widget.item.activityImage)
+                    ? VideoItems(
+                        videoPlayerController: VideoPlayerController.network(
+                          'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4' /*widget.item.activityImage*/,
+                        ),
+                        key: UniqueKey(),
+                        padding: EdgeInsets.zero,
+                      )
+                    : PhotoView(
+                        imageProvider: NetworkImage(widget.item.activityImage),
+                        backgroundDecoration:
+                            const BoxDecoration(color: AppColor.white),
+                        loadingBuilder: (context, event) => Container(
+                          color: Colors.transparent,
+                          width: Get.width,
+                          height: Get.height,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppColor.loaderColor),
+                            ),
+                          ),
+                        ),
+                        errorBuilder: (context, error, stacktrace) => Container(
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(color: AppColor.grey),
+                          child: Image.asset(
+                            AppImages.imgNoImageFound,
+                            height: Get.height * 0.15,
+                            color: AppColor.black,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  errorBuilder: (context, error,stacktrace) => Container(
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(color: AppColor.grey),
-                    child: Image.asset(
-                      AppImages.imgNoImageFound,
-                      height: Get.height * 0.15,
-                      color: AppColor.black,
-                    ),
-                  ),
-                ),
               ),
               SizedBox(height: 12.h),
               Row(

@@ -33,7 +33,7 @@ class Utils {
         printEmojis: true,
         // Print an emoji for each log message
         printTime: false // Should each log print contain a timestamp
-        ),
+    ),
   );
 
   static errorSnackBar(String title, String message, {bool isSuccess = false}) {
@@ -90,7 +90,7 @@ class Utils {
   static DateTime stringToDateOtherFormat({var selectedDate}) {
     try {
       DateTime dateTime =
-          DateTime.fromMillisecondsSinceEpoch(selectedDate /*, isUtc: true*/);
+      DateTime.fromMillisecondsSinceEpoch(selectedDate /*, isUtc: true*/);
       debugPrint("date time :-   $dateTime");
       return dateTime;
       // DateFormat originalFormat = new DateFormat("dd/MM/yyyy");
@@ -168,5 +168,19 @@ class Utils {
 
   static Color hexToColor(String code) {
     return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+  }
+
+  static bool isVideo(String path) {
+    if (path.contains('MP4') ||
+        path.contains('MOV') ||
+        path.contains('WMV') ||
+        path.contains('AVI') ||
+        path.contains('MKV') ||
+        path.contains('MPEG-2') ||
+        path.contains('WEBM') ||
+        path.contains('AVCHD')) {
+      return true;
+    }
+    return false;
   }
 }
