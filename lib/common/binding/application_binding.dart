@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:retail_academy/app/auth/login/controller/forgot_password_controller.dart';
 import 'package:retail_academy/app/auth/login/controller/help_and_contact_retail_controller.dart';
 import 'package:retail_academy/app/home/controller/home_controller.dart';
+import 'package:retail_academy/app/home/controller/trending_detail_controller.dart';
 import 'package:retail_academy/app/info_sessions/controller/info_sessions_controller.dart';
 import 'package:retail_academy/app/knowledge/controller/fun_facts_and_master_class_controller.dart';
 import 'package:retail_academy/app/knowledge/controller/knowledge_controller.dart';
@@ -62,5 +63,7 @@ class ApplicationBinding implements Bindings {
         tag: BindingConst.quizMasterDetailScreenBinding);
     Get.lazyPut(() => HelpAndContactRetailController(),
         tag: BindingConst.helpAndContactRetailScreenBinding);
+    Get.lazyPut(() => TrendingDetailController(),
+        tag: BindingConst.trendingDetailScreenBinding);
   }
 }

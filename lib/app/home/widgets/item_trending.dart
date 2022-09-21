@@ -8,6 +8,7 @@ import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../network/modal/trending/trending_response.dart';
+import '../page/trending_detail_screen.dart';
 
 class ItemTrending extends StatelessWidget {
   final ActivityStream item;
@@ -29,31 +30,40 @@ class ItemTrending extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         SizedBox(height: 10.h),
-        CachedNetworkImage(
-          imageUrl: item.activityImage,
-          height: Get.height * 0.4,
-          imageBuilder: (context, imageProvider) => Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.contain,
+        GestureDetector(
+          onTap: () {
+            Get.to(
+              () => TrendingDetailScreen(
+                item: item,
+              ),
+            );
+          },
+          child: CachedNetworkImage(
+            imageUrl: item.activityImage,
+            height: Get.height * 0.4,
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-          ),
-          placeholder: (context, url) => Container(
-            alignment: Alignment.center,
-            child: SizedBox(
-                height: 36.r,
-                width: 36.r,
-                child: const CircularProgressIndicator()),
-          ),
-          errorWidget: (context, url, error) => Container(
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(color: AppColor.grey),
-            child: Image.asset(
-              AppImages.imgNoImageFound,
-              height: Get.height * 0.15,
-              color: AppColor.black,
+            placeholder: (context, url) => Container(
+              alignment: Alignment.center,
+              child: SizedBox(
+                  height: 36.r,
+                  width: 36.r,
+                  child: const CircularProgressIndicator()),
+            ),
+            errorWidget: (context, url, error) => Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(color: AppColor.grey),
+              child: Image.asset(
+                AppImages.imgNoImageFound,
+                height: Get.height * 0.15,
+                color: AppColor.black,
+              ),
             ),
           ),
         ),
@@ -66,8 +76,7 @@ class ItemTrending extends StatelessWidget {
               onPressed: onLikeButtonPressed,
               icon: SvgPicture.asset(
                 AppImages.iconHeart,
-                color: item.hasLiked ? AppColor.red :AppColor.black,
-
+                color: item.hasLiked ? AppColor.red : AppColor.black,
                 height: 24.r,
               ),
             ),

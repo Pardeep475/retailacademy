@@ -46,9 +46,7 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
         'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {
-
-        });
+        setState(() {});
       });
   }
 
@@ -59,6 +57,8 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
       body: Stack(
         children: [
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomAppBar(
                 title: widget.item.blogTitle,
