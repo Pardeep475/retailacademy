@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class WhatsHotBlogResponse {
@@ -28,23 +26,27 @@ class BlogCategoryElement {
   BlogCategoryElement({
     this.categoryId = -1,
     this.blogCategory = '',
+    this.thumbnailImage = '',
+    this.description = '',
     this.hasViewed = false,
     this.color = const Color(0xffFCED22),
   });
 
   int categoryId;
   String blogCategory;
+  String thumbnailImage;
+  String description;
   bool hasViewed;
   Color color;
 
   int value = 0;
 
-  factory BlogCategoryElement.fromJson(Map<String, dynamic> json) => BlogCategoryElement(
-      categoryId: json["categoryid"],
-      blogCategory: json["blogcategory"],
-      hasViewed: json["hasviewed"],
-
-  );
-
+  factory BlogCategoryElement.fromJson(Map<String, dynamic> json) =>
+      BlogCategoryElement(
+        categoryId: json["categoryid"] ?? -1,
+        blogCategory: json["blogcategory"] ?? '',
+        thumbnailImage: json["thumbnailImage"] ?? '',
+        description: json["description"] ?? '',
+        hasViewed: json["hasviewed"] ?? false,
+      );
 }
-

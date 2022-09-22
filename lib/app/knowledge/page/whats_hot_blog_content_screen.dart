@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:retail_academy/common/app_strings.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/widget/app_text.dart';
@@ -68,6 +67,7 @@ class _WhatsHotBlogContentScreenState extends State<WhatsHotBlogContentScreen> {
                           textSize: 16.sp,
                           textAlign: TextAlign.left,
                           color: AppColor.black,
+                          lineHeight: 1.3,
                           maxLines: 12,
                           fontWeight: FontWeight.w500,
                         ),

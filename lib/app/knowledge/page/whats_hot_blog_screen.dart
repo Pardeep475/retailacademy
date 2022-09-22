@@ -70,7 +70,7 @@ class _WhatsHotBlogScreenState extends State<WhatsHotBlogScreen> {
                             var arguments = <String, dynamic>{
                               "title": item.blogCategory,
                               "categoryId": item.categoryId,
-                              "description": 'item.categoryId',
+                              "description": item.description,
                             };
                             Get.toNamed(RouteString.whatsHotBlogContentScreen,
                                 arguments: arguments);

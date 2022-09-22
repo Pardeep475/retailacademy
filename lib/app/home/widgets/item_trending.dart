@@ -13,9 +13,13 @@ import '../page/trending_detail_screen.dart';
 class ItemTrending extends StatelessWidget {
   final ActivityStream item;
   final VoidCallback onLikeButtonPressed;
+  final VoidCallback onCommentButtonPressed;
 
   const ItemTrending(
-      {required this.item, required this.onLikeButtonPressed, Key? key})
+      {required this.item,
+      required this.onLikeButtonPressed,
+      required this.onCommentButtonPressed,
+      Key? key})
       : super(key: key);
 
   @override
@@ -43,6 +47,7 @@ class ItemTrending extends StatelessWidget {
             height: Get.height * 0.4,
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
+                color: AppColor.commentBlack,
                 image: DecorationImage(
                   image: imageProvider,
                   fit: BoxFit.contain,
@@ -81,7 +86,7 @@ class ItemTrending extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: onCommentButtonPressed,
               icon: SvgPicture.asset(
                 AppImages.iconChat,
                 color: AppColor.black,

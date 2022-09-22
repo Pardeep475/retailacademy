@@ -28,5 +28,6 @@ class BindingConst {
   static const String quizMasterDetailScreenBinding = "QUIZ_MASTER_DETAIL_SCREEN_BINDING";
   static const String helpAndContactRetailScreenBinding = "HELP_AND_CONTACT_RETAIL_SCREEN_BINDING";
   static const String trendingDetailScreenBinding = "TRENDING_DETAIL_SCREEN_BINDING";
+  static const String commentScreenBinding = "COMMENT_SCREEN_BINDING";
 
 }

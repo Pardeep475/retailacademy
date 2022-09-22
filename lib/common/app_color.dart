@@ -24,5 +24,7 @@ class AppColor {
   static const greenKnowledge = Color(0xFF44CB7E);
   static const darkBlueKnowledge = Color(0xFF23608F);
   static const lightNavyBlue = Color(0xFF004566);
+  static const commentBlack = Color(0xFF333333);
+  static const commentTextFieldBackgroundColor = Color(0xFFCBCBCB);
 
 }

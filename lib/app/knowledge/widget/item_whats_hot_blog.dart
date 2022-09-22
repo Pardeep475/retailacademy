@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../common/app_color.dart';
+import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
 
@@ -28,7 +30,37 @@ class ItemWhatsHotBlog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SizedBox(width: Get.width,),
+              SizedBox(
+                width: Get.width,
+              ),
+              Expanded(
+                child: CachedNetworkImage(
+                  imageUrl: item.thumbnailImage,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => Container(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                        height: 36.r,
+                        width: 36.r,
+                        child: const CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(color: AppColor.grey),
+                    child: Image.asset(
+                      AppImages.imgNoImageFound,
+                      color: AppColor.black,
+                    ),
+                  ),
+                ),
+              ),
               AppText(
                 text: item.blogCategory,
                 textSize: 20.sp,
