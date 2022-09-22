@@ -68,4 +68,8 @@ class AppStrings {
   static const String pickImageFromGallery = "Pick image from gallery";
   static const String pickImageFromCamera = "Pick image from camera";
   static const String imageCancelByUser = "Image cancel by user";
+  static const String alert = "Alert";
+  static const String ok = "OK";
+  static const String quizAlreadyAttempted = " quiz already attempted.";
+  static const String doYouWantToCancel = "Do you want to cancel?";
 }

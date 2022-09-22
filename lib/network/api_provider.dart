@@ -15,6 +15,7 @@ import 'modal/forgot_password/forgot_password_request.dart';
 import 'modal/knowledge/content_knowledge_request.dart';
 import 'modal/knowledge/content_knowledge_response.dart';
 import 'modal/knowledge/knowledge_api_response.dart';
+import 'modal/knowledge/quiz_category_response.dart';
 import 'modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
 import 'modal/knowledge/whats_hot_blog_content_request.dart';
 import 'modal/knowledge/whats_hot_blog_response.dart';
@@ -243,4 +244,16 @@ class ApiProvider {
     }
   }
 
+  Future<dynamic> getQuizCategoryApi(
+      {required String userId, required String orgId}) async {
+    try {
+      Response response = await _dio.get(
+        ApiConstants.getQuizCategory(userId: userId, orgId: orgId),
+      );
+      return QuizCategoryResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
 }

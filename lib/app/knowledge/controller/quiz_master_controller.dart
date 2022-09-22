@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 
 import '../../../common/app_strings.dart';
+import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
-import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
+import '../../../network/modal/knowledge/quiz_category_response.dart';
 
-class QuizMasterController extends GetxController{
+class QuizMasterController extends GetxController {
   var showLoader = false.obs;
-  final RxList<BlogCategoryElement> dataList = RxList();
-
+  final RxList<QuizCategoryElement> dataList = RxList();
 
   @override
   void onInit() {
@@ -28,7 +28,6 @@ class QuizMasterController extends GetxController{
     Utils.logger.e("on close");
   }
 
-
   Future getQuizMasterApi({bool isLoader = true}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
@@ -36,15 +35,20 @@ class QuizMasterController extends GetxController{
         if (isLoader) {
           showLoader.value = true;
         }
-        var response = await ApiProvider.apiProvider.fetchWhatsHotBlog();
+        String userId = await SessionManager.getUserId();
+        var response = await ApiProvider.apiProvider.getQuizCategoryApi(
+          userId: userId,
+          orgId: AppStrings.orgId,
+        );
         if (response != null) {
-          WhatsHotBlogResponse whatsHotBlogResponse = (response as WhatsHotBlogResponse);
-          if (whatsHotBlogResponse.status) {
+          QuizCategoryResponse quizCategoryResponse =
+              (response as QuizCategoryResponse);
+          if (quizCategoryResponse.status) {
             dataList.clear();
-            dataList.addAll(whatsHotBlogResponse.blogCategoryList ?? []);
+            dataList.addAll(quizCategoryResponse.quizCategories ?? []);
             dataList.refresh();
           } else {
-            Utils.errorSnackBar(AppStrings.error, whatsHotBlogResponse.message);
+            Utils.errorSnackBar(AppStrings.error, quizCategoryResponse.message);
           }
         }
       } catch (e) {
@@ -57,5 +61,4 @@ class QuizMasterController extends GetxController{
     }
     return null;
   }
-
 }

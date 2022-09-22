@@ -8,7 +8,8 @@ class ApiConstants {
   ApiConstants._internal();
 
   // live
-  static String baseUrl = "https://demo1kentico8.raybiztech.com/api/";
+  static String baseUrl = "https://demo5kentico8.raybiztech.com/api/";
+  // static String baseUrl = "https://demo1kentico8.raybiztech.com/api/";
 
   // local
   // static String baseUrl = "http://3190-2405-201-300b-38-85cd-c84c-4b95-dd45.ngrok.io";
@@ -31,4 +32,6 @@ class ApiConstants {
   static String fetchBlogCategories = "BlogCategory";
   static String fetchBlogContent = "Blog";
   static String fetchBlogLikeContent = "BlogLikes";
+  static String getQuizCategory({required String userId,required String orgId}) => "UserQuizCategoryInfoV2?userid=$userId&orgid=$orgId";
+
 }

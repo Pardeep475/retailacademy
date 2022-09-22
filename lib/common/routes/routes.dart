@@ -67,10 +67,7 @@ class Routes {
         name: RouteString.podCastDetailScreen,
         page: () => const PodCastDetailScreen(),
       ),
-      GetPage(
-        name: RouteString.quizMasterDetailScreen,
-        page: () => const QuizMasterDetailScreen(),
-      ),
+
     ];
   }
 }

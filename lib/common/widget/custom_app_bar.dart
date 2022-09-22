@@ -33,6 +33,8 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           height: kToolbarHeight *
@@ -105,6 +107,8 @@ class CustomAppBar extends StatelessWidget {
         AppText(
           text: title,
           textSize: 25.sp,
+          maxLines: 2,
+          textAlign: TextAlign.center,
           fontWeight: FontWeight.w600,
         ),
         SizedBox(
