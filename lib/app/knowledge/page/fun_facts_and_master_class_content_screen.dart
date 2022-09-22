@@ -6,6 +6,7 @@ import 'package:retail_academy/common/app_color.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/no_data_available.dart';
 import '../../../network/modal/knowledge/content_knowledge_response.dart';
 import '../controller/fun_facts_and_master_class_content_controller.dart';
 import '../widget/item_fun_facts_and_master_class.dart';
@@ -57,37 +58,51 @@ class _FunFactsAndMasterClassContentScreenState
                 child: Obx(() {
                   debugPrint(
                       'item length:---   ${_controller.dataList.length}');
-                  return GridView.builder(
-                    itemCount: _controller.dataList.length,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 8.0,
-                            childAspectRatio: 1.3,
-                            mainAxisSpacing: 16.0),
-                    itemBuilder: (BuildContext context, int index) {
-                      FileElement item = _controller.dataList[index];
-                      return ItemContentKnowledge(
-                        item: item,
-                        onPressed: () async {
-                          String? filePath =
-                              await _controller.getFileFromUrl(item.filesUrl);
-                          if (filePath != null) {
-                            Get.to(
-                              () => FunFactsAndMasterClassDetailScreen(
-                                item: item,
-                                filePath: filePath,
-                              ),
-                            );
-                          } else {
-                            Utils.errorSnackBar(
-                                AppStrings.error, 'Something went wrong');
-                          }
-                        },
-                      );
-                    },
+
+                  if (!_controller.showLoader.value &&
+                      _controller.dataList.isEmpty) {
+                    return NoDataAvailable(
+                      onPressed: () {
+                        _controller.getContentKnowledgeSection();
+                      },
+                    );
+                  }
+
+                  return RefreshIndicator(
+                    onRefresh: () =>
+                        _controller.getContentKnowledgeSection(isLoader: false),
+                    child: GridView.builder(
+                      itemCount: _controller.dataList.length,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 20.h),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8.0,
+                              childAspectRatio: 1.3,
+                              mainAxisSpacing: 16.0),
+                      itemBuilder: (BuildContext context, int index) {
+                        FileElement item = _controller.dataList[index];
+                        return ItemContentKnowledge(
+                          item: item,
+                          onPressed: () async {
+                            String? filePath =
+                                await _controller.getFileFromUrl(item.filesUrl);
+                            if (filePath != null) {
+                              Get.to(
+                                () => FunFactsAndMasterClassDetailScreen(
+                                  item: item,
+                                  filePath: filePath,
+                                ),
+                              );
+                            } else {
+                              Utils.errorSnackBar(
+                                  AppStrings.error, 'Something went wrong');
+                            }
+                          },
+                        );
+                      },
+                    ),
                   );
                 }),
               ),

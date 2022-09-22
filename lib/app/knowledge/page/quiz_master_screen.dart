@@ -8,6 +8,7 @@ import '../../../common/app_strings.dart';
 import '../../../common/widget/alert_dialog_box.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/no_data_available.dart';
 import '../../../network/modal/knowledge/quiz_category_response.dart';
 import '../controller/quiz_master_controller.dart';
 
@@ -51,6 +52,14 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
               Expanded(
                 child: Obx(() {
                   debugPrint('length:-  ${_controller.dataList.length}');
+
+                  if (!_controller.showLoader.value &&
+                      _controller.dataList.isEmpty) {
+                    return NoDataAvailable(
+                      onPressed: () => _controller.getQuizMasterApi(),
+                    );
+                  }
+
                   return RefreshIndicator(
                     onRefresh: () =>
                         _controller.getQuizMasterApi(isLoader: false),

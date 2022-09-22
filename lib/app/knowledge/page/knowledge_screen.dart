@@ -7,6 +7,7 @@ import '../../../common/app_strings.dart';
 import '../../../common/routes/route_strings.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/no_data_available.dart';
 import '../../../network/modal/knowledge/knowledge_api_response.dart';
 import '../widget/item_knowledge.dart';
 
@@ -44,6 +45,13 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
               ),
               Expanded(
                 child: Obx(() {
+                  if (!_controller.showLoader.value &&
+                      _controller.dataList.isEmpty) {
+                    return NoDataAvailable(
+                      onPressed: () => _controller.getKnowledgeApi(),
+                    );
+                  }
+
                   return RefreshIndicator(
                     onRefresh: () =>
                         _controller.getKnowledgeApi(isLoader: false),

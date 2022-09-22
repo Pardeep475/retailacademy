@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../common/app_color.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/no_data_available.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_content_response.dart';
 import '../controller/whats_hot_blog_content_controller.dart';
 import '../widget/item_whats_hot_blog_content.dart';
@@ -53,61 +54,62 @@ class _WhatsHotBlogContentScreenState extends State<WhatsHotBlogContentScreen> {
                 isSearchButtonVisible: false,
                 isNotificationButtonVisible: true,
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(
-                      parent: ClampingScrollPhysics()),
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0),
-                        alignment: Alignment.centerLeft,
-                        child: AppText(
-                          text: description ?? '',
-                          textSize: 16.sp,
-                          textAlign: TextAlign.left,
-                          color: AppColor.black,
-                          lineHeight: 1.3,
-                          maxLines: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Obx(() {
-                        return RefreshIndicator(
-                          onRefresh: () => _controller.fetchWhatsHotContentApi(
-                              isLoader: false),
-                          child: GridView.builder(
-                            itemCount: _controller.dataList.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            padding: EdgeInsets.symmetric(vertical: 20.h),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 3.0,
-                                    childAspectRatio: .8,
-                                    mainAxisSpacing: 3.0),
-                            itemBuilder: (BuildContext context, int index) {
-                              BlogContentElement item =
-                                  _controller.dataList[index];
-                              return ItemWhatsHotBlogContent(
-                                item: item,
-                                onPressed: () {
-                                  Get.to(
-                                    WhatsHotBogDetailScreen(
-                                      item: item,
-                                      categoryId: _controller.categoryId,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        );
-                      })
-                    ],
-                  ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0),
+                alignment: Alignment.centerLeft,
+                child: AppText(
+                  text: description ?? '',
+                  textSize: 16.sp,
+                  textAlign: TextAlign.left,
+                  color: AppColor.black,
+                  lineHeight: 1.3,
+                  maxLines: 12,
+                  fontWeight: FontWeight.w500,
                 ),
+              ),
+              Expanded(
+                child: Obx(() {
+                  if (!_controller.showLoader.value &&
+                      _controller.dataList.isEmpty) {
+                    return NoDataAvailable(
+                      onPressed: () =>
+                          _controller.fetchWhatsHotContentApi(),
+                    );
+                  }
+
+                  return RefreshIndicator(
+                    onRefresh: () => _controller.fetchWhatsHotContentApi(
+                        isLoader: false),
+                    child: GridView.builder(
+                      itemCount: _controller.dataList.length,
+                      physics: const AlwaysScrollableScrollPhysics(
+                          parent: ClampingScrollPhysics()),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.symmetric(vertical: 20.h),
+                      gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 3.0,
+                          childAspectRatio: .8,
+                          mainAxisSpacing: 3.0),
+                      itemBuilder: (BuildContext context, int index) {
+                        BlogContentElement item =
+                        _controller.dataList[index];
+                        return ItemWhatsHotBlogContent(
+                          item: item,
+                          onPressed: () {
+                            Get.to(
+                              WhatsHotBogDetailScreen(
+                                item: item,
+                                categoryId: _controller.categoryId,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  );
+                }),
               ),
             ],
           ),

@@ -6,6 +6,7 @@ import 'package:retail_academy/common/app_strings.dart';
 import '../../../common/app_color.dart';
 import '../../../common/routes/route_strings.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/no_data_available.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
 import '../controller/whats_hot_blog_controller.dart';
 import '../widget/item_whats_hot_blog.dart';
@@ -47,6 +48,13 @@ class _WhatsHotBlogScreenState extends State<WhatsHotBlogScreen> {
               ),
               Expanded(
                 child: Obx(() {
+                  if (!_controller.showLoader.value &&
+                      _controller.dataList.isEmpty) {
+                    return NoDataAvailable(
+                      onPressed: () => _controller.fetchWhatsHotApi(),
+                    );
+                  }
+
                   return RefreshIndicator(
                     onRefresh: () =>
                         _controller.fetchWhatsHotApi(isLoader: false),

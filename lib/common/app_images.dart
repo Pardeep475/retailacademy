@@ -25,5 +25,6 @@ class AppImages {
   static const String imgKnowledgeQuizMaster = "assets/images/img_knowledge_quiz_master.png";
   static const String imgKnowledgePodcast = "assets/images/img_knowledge_podcast.png";
   static const String imgKnowledgeWhatHotBlog = "assets/images/img_knowledge_what_hot_blog.png";
+  static const String imgNoDataFound = "assets/images/no_data_found.jpg";
 
 }

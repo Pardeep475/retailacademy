@@ -53,10 +53,11 @@ class ItemWhatsHotBlog extends StatelessWidget {
                   ),
                   errorWidget: (context, url, error) => Container(
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(color: AppColor.grey),
                     child: Image.asset(
                       AppImages.imgNoImageFound,
                       color: AppColor.black,
+                      height: 50.h,
+                      width: 50.h,
                     ),
                   ),
                 ),

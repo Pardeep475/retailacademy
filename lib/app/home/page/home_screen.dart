@@ -7,6 +7,7 @@ import 'package:retail_academy/network/modal/trending/trending_response.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/no_data_available.dart';
 import '../controller/home_controller.dart';
 import '../widgets/item_trending.dart';
 
@@ -70,6 +71,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Expanded(
                 child: Obx(() {
+                  if (!_controller.showLoader.value &&
+                      _controller.dataList.isEmpty) {
+                    return NoDataAvailable(
+                      onPressed: () {
+                        _controller.getTrendingApi();
+                      },
+                    );
+                  }
                   return RefreshIndicator(
                     onRefresh: () =>
                         _controller.getTrendingApi(isLoader: false),

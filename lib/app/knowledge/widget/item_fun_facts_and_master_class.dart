@@ -76,11 +76,10 @@ class ItemFolderKnowledge extends StatelessWidget {
                   ),
                   errorWidget: (context, url, error) => Container(
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(color: AppColor.grey),
                     child: Image.asset(
                       AppImages.imgNoImageFound,
-                      height: 48.h,
-                      width: 48.w,
+                      height: 36.h,
+                      width: 36.w,
                       color: AppColor.black,
                     ),
                   ),

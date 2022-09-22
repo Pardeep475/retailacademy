@@ -73,4 +73,5 @@ class AppStrings {
   static const String quizAlreadyAttempted = " quiz already attempted.";
   static const String doYouWantToCancel = "Do you want to cancel?";
   static const String pdfError = "File not in PDF format or corrupted.";
+  static const String tapToReload = "Tap to reload";
 }
