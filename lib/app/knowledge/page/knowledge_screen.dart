@@ -72,9 +72,12 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
                                     arguments: arguments);
                               } else {
                                 if (knowledgeEntity.folderId == -1) {
-                                  Get.toNamed(
-                                    RouteString.quizMasterScreen,
-                                  );
+                                  var arguments = <String, dynamic>{
+                                    "color": Utils.hexToColor(
+                                        knowledgeEntity.colourCode),
+                                  };
+                                  Get.toNamed(RouteString.quizMasterScreen,
+                                      arguments: arguments);
                                 } else if (knowledgeEntity.folderId == -2) {
                                   Get.toNamed(
                                     RouteString.whatsHotBlogScreen,

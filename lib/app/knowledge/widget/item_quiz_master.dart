@@ -8,9 +8,13 @@ import '../../../network/modal/knowledge/quiz_category_response.dart';
 class ItemQuizMaster extends StatelessWidget {
   final QuizCategoryElement item;
   final VoidCallback onItemPressed;
+  final Color color;
 
   const ItemQuizMaster(
-      {required this.item, required this.onItemPressed, Key? key})
+      {required this.item,
+      required this.onItemPressed,
+      this.color = AppColor.pinkKnowledge,
+      Key? key})
       : super(key: key);
 
   @override
@@ -18,7 +22,7 @@ class ItemQuizMaster extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.r),
-          color: AppColor.pinkKnowledge),
+          color: color),
       margin: EdgeInsets.only(bottom: 10.h),
       child: Material(
         color: Colors.transparent,

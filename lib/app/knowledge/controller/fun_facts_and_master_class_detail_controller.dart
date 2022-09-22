@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:retail_academy/network/modal/knowledge/like_or_dislike_content_knowledge_section_request.dart';
 import '../../../common/app_strings.dart';
@@ -11,6 +10,8 @@ import '../../../network/modal/knowledge/content_knowledge_response.dart';
 
 class FunFactsAndMasterClassDetailController extends GetxController {
   var showLoader = false.obs;
+
+  var isError = false.obs;
 
   @override
   void onInit() {
@@ -28,6 +29,11 @@ class FunFactsAndMasterClassDetailController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  clearValue(){
+    showLoader.value = false;
+    isError.value = false;
   }
 
   Future likeOrDislikeContentKnowledgeSectionApi(
@@ -60,5 +66,7 @@ class FunFactsAndMasterClassDetailController extends GetxController {
     return null;
   }
 
-
+  updateError(bool error) {
+    isError.value = error;
+  }
 }

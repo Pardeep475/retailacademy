@@ -12,6 +12,8 @@ import 'api_constants.dart';
 import 'logging_interceptor.dart';
 import 'modal/base/base_response.dart';
 import 'modal/forgot_password/forgot_password_request.dart';
+import 'modal/knowledge/consolidated_quiz_questions_request.dart';
+import 'modal/knowledge/consolidated_quiz_questions_response.dart';
 import 'modal/knowledge/content_knowledge_request.dart';
 import 'modal/knowledge/content_knowledge_response.dart';
 import 'modal/knowledge/knowledge_api_response.dart';
@@ -251,6 +253,20 @@ class ApiProvider {
         ApiConstants.getQuizCategory(userId: userId, orgId: orgId),
       );
       return QuizCategoryResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> consolidatedQuizQuestionsApi(
+      {required ConsolidatedQuizQuestions request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.consolidatedQuizQuestions,
+        data: request.toJson(),
+      );
+      return ConsolidatedQuizQuestionsResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;

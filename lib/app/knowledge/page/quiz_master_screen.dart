@@ -19,6 +19,8 @@ class QuizMasterScreen extends StatefulWidget {
 }
 
 class _QuizMasterScreenState extends State<QuizMasterScreen> {
+  Color? color;
+
   final QuizMasterController _controller =
       Get.isRegistered<QuizMasterController>()
           ? Get.find<QuizMasterController>()
@@ -26,6 +28,8 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
 
   @override
   void initState() {
+    Map<String, dynamic> value = Get.arguments;
+    color = value['color'];
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _controller.getQuizMasterApi();
@@ -62,12 +66,16 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
                               _controller.dataList[index];
                           return ItemQuizMaster(
                             item: item,
+                            color: color ?? AppColor.pinkKnowledge,
                             onItemPressed: () {
                               // if (item.isAttempted) {
                               //   openAlreadySubmittedDialogBox(
                               //       title: item.categoryName);
                               // } else {
-                              Get.to(() => QuizMasterDetailScreen(item: item));
+                              Get.to(() => QuizMasterDetailScreen(
+                                    item: item,
+                                    color: color ?? AppColor.pinkKnowledge,
+                                  ));
                               // }
                             },
                           );

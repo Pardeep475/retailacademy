@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
+import '../../../common/app_strings.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../network/modal/knowledge/content_knowledge_response.dart';
@@ -33,10 +34,9 @@ class _FunFactsAndMasterClassDetailScreenState
 
   @override
   void initState() {
+    _controller.clearValue();
     super.initState();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,27 +54,40 @@ class _FunFactsAndMasterClassDetailScreenState
                 isSearchButtonVisible: false,
               ),
               Expanded(
-                child: PDFView(
-                  filePath: widget.filePath,
-                  autoSpacing: true,
-                  fitPolicy: FitPolicy.BOTH,
-                  onError: (e) {
-                    //Show some error message or UI
-                    debugPrint('PDFVIEW  onError $e');
-                  },
-                  onRender: (_pages) {
-                    debugPrint('_totalPages $_pages');
-                  },
-                  onViewCreated: (PDFViewController vc) {
-
-                  },
-                  onPageChanged: (int? page, int? total) {
-                    debugPrint("_currentPage = $page");
-                  },
-                  onPageError: (page, e) {
-                    debugPrint('PDFVIEW  onPageError $e');
-                  },
-                ),
+                child: Obx(() {
+                  return _controller.isError.value
+                      ? Align(
+                          alignment: Alignment.center,
+                          child: AppText(
+                            text: AppStrings.pdfError,
+                            textSize: 20.sp,
+                            lineHeight: 1.1,
+                            fontWeight: FontWeight.w500,
+                            maxLines: 5,
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : PDFView(
+                          filePath: widget.filePath,
+                          autoSpacing: true,
+                          fitPolicy: FitPolicy.BOTH,
+                          onError: (e) {
+                            //Show some error message or UI
+                            debugPrint('PDFVIEWonError $e');
+                            _controller.updateError(true);
+                          },
+                          onRender: (_pages) {
+                            debugPrint('_totalPages $_pages');
+                          },
+                          onViewCreated: (PDFViewController vc) {},
+                          onPageChanged: (int? page, int? total) {
+                            debugPrint("_currentPage = $page");
+                          },
+                          onPageError: (page, e) {
+                            debugPrint('PDFVIEW  onPageError $e');
+                          },
+                        );
+                }),
               ),
               SizedBox(height: 12.h),
               Row(
