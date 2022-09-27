@@ -112,10 +112,7 @@ class HomeController extends GetxController {
         if (response != null) {
           BaseResponse baseResponse = (response as BaseResponse);
           if (baseResponse.status) {
-            ActivityStream item = dataList[index];
-            item.hasLiked = !item.hasLiked;
-            dataList[index] = item;
-            dataList.refresh();
+            updateLikeTrending(index: index);
           } else {
             Utils.errorSnackBar(AppStrings.error, baseResponse.message);
           }
@@ -127,5 +124,17 @@ class HomeController extends GetxController {
       }
     }
     return null;
+  }
+
+  updateLikeTrending({required int index, bool? value}) {
+    ActivityStream item = dataList[index];
+    if (value == null) {
+      item.hasLiked = !item.hasLiked;
+    } else {
+      item.hasLiked = value;
+    }
+
+    dataList[index] = item;
+    dataList.refresh();
   }
 }

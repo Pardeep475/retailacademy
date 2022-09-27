@@ -34,5 +34,7 @@ class ApiConstants {
   static String fetchBlogLikeContent = "BlogLikes";
   static String getQuizCategory({required String userId,required String orgId}) => "UserQuizCategoryInfoV2?userid=$userId&orgid=$orgId";
   static String consolidatedQuizQuestions = "ConsolidatedQuizQuestions";
+  static String trendingCommentList = "ActivityStreamCommentList";
+  static String knowledgeCommentList = "ContentComments";
 
 }

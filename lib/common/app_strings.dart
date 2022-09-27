@@ -74,4 +74,5 @@ class AppStrings {
   static const String doYouWantToCancel = "Do you want to cancel?";
   static const String pdfError = "File not in PDF format or corrupted.";
   static const String tapToReload = "Tap to reload";
+  static const String commentMustNotBeEmpty = "Comment must not be empty";
 }

@@ -94,6 +94,7 @@ class ProfileController extends GetxController {
             storeName.value = profileResponse.storeName;
             staffIdNumber.value = profileResponse.employeeNumber;
             emailAddress.value = profileResponse.emailId;
+            SessionManager.setProfileImage(profileImage.value);
           } else {
             Utils.errorSnackBar(AppStrings.error, profileResponse.message);
           }
@@ -108,7 +109,6 @@ class ProfileController extends GetxController {
   }
 
   Future updateProfileImage({required String imgUrl}) async {
-
     List<int> imageBytes = await File(imgUrl).readAsBytes();
     String base64Image = base64Encode(imageBytes);
     bool value = await Utils.checkConnectivity();

@@ -3,6 +3,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:retail_academy/app/comment/page/knowledge_content_comment_screen.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
@@ -106,7 +107,7 @@ class _FunFactsAndMasterClassDetailScreenState
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => _commentButtonPressed(item: widget.item),
                     icon: SvgPicture.asset(
                       AppImages.iconChat,
                       color: AppColor.black,
@@ -159,5 +160,18 @@ class _FunFactsAndMasterClassDetailScreenState
         ],
       ),
     );
+  }
+
+  _commentButtonPressed({required FileElement item}) {
+    Get.to(() => KnowledgeContentCommentScreen(
+          title: item.fileName,
+          hasLike: false,
+          itemMediaUrl: item.thumbnailImage,
+          fileId: item.fileId,
+        ))?.then((value) {
+      if (value != null && value is bool) {
+        // _controller.updateLikeTrending(index: index, value: value);
+      }
+    });
   }
 }

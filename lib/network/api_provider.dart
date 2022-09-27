@@ -17,6 +17,8 @@ import 'modal/knowledge/consolidated_quiz_questions_response.dart';
 import 'modal/knowledge/content_knowledge_request.dart';
 import 'modal/knowledge/content_knowledge_response.dart';
 import 'modal/knowledge/knowledge_api_response.dart';
+import 'modal/knowledge/knowledge_content_comment_request.dart';
+import 'modal/knowledge/knowledge_content_comment_response.dart';
 import 'modal/knowledge/quiz_category_response.dart';
 import 'modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
 import 'modal/knowledge/whats_hot_blog_content_request.dart';
@@ -26,6 +28,8 @@ import 'modal/profile/logout_request.dart';
 import 'modal/profile/logout_response.dart';
 import 'modal/profile/profile_response.dart';
 import 'modal/profile/update_profile_image_request.dart';
+import 'modal/trending/trending_comment_request.dart';
+import 'modal/trending/trending_comment_response.dart';
 import 'modal/trending/trending_pagination_request.dart';
 
 class ApiProvider {
@@ -267,6 +271,34 @@ class ApiProvider {
         data: request.toJson(),
       );
       return ConsolidatedQuizQuestionsResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> trendingCommentsApi(
+      {required TrendingCommentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.trendingCommentList,
+        data: request.toJson(),
+      );
+      return TrendingCommentResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> knowledgeContentCommentsApi(
+      {required KnowledgeContentCommentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.knowledgeCommentList,
+        data: request.toJson(),
+      );
+      return KnowledgeContentCommentResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;

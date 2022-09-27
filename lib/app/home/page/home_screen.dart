@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:retail_academy/app/comment/page/comment_screen.dart';
+import 'package:retail_academy/app/comment/page/trending_comment_screen.dart';
 import 'package:retail_academy/network/modal/trending/trending_response.dart';
 
 import '../../../common/app_color.dart';
@@ -94,13 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ActivityStream item = _controller.dataList[index];
                           return ItemTrending(
                             item: item,
-                            onCommentButtonPressed: () {
-                              Get.to(() => CommentScreen(
-                                    title: item.userName,
-                                    hasLike: item.hasLiked,
-                                    itemMediaUrl: item.activityImage,
-                                  ));
-                            },
+                            onCommentButtonPressed: () =>
+                                _commentButtonPressed(index: index, item: item),
                             onLikeButtonPressed: () {
                               _controller.trendingLikeApi(
                                   index: index,
@@ -153,5 +148,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  _commentButtonPressed({required int index, required ActivityStream item}) {
+    Get.to(() => TrendingCommentScreen(
+          title: item.userName,
+          hasLike: item.hasLiked,
+          itemMediaUrl: item.activityImage,
+          activityStreamId: item.activityStreamId,
+        ))?.then((value) {
+      if (value != null && value is bool) {
+        _controller.updateLikeTrending(index: index, value: value);
+      }
+    });
   }
 }
