@@ -11,6 +11,7 @@ import '../../../common/utils.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../network/modal/trending/trending_response.dart';
+import '../../comment/page/trending_comment_screen.dart';
 import '../../knowledge/widget/video_items.dart';
 import '../controller/trending_detail_controller.dart';
 
@@ -39,118 +40,142 @@ class _TrendingDetailScreenState extends State<TrendingDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomAppBar(
-                title: widget.item.userName,
-                isBackButtonVisible: true,
-                isSearchButtonVisible: false,
-                isNotificationButtonVisible: true,
-              ),
-              Expanded(
-                child: Utils.isVideo(widget.item.activityImage)
-                    ? VideoItems(
-                        videoPlayerController: VideoPlayerController.network(
-                          'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4' /*widget.item.activityImage*/,
-                        ),
-                        key: UniqueKey(),
-                        padding: EdgeInsets.zero,
-                      )
-                    : PhotoView(
-                        imageProvider: NetworkImage(widget.item.activityImage),
-                        backgroundDecoration:
-                            const BoxDecoration(color: AppColor.white),
-                        loadingBuilder: (context, event) => Container(
-                          color: Colors.transparent,
-                          width: Get.width,
-                          height: Get.height,
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppColor.loaderColor),
+    return WillPopScope(
+      onWillPop: () {
+        Get.back(result: _controller.hasLike.value);
+        return Future.value(true);
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomAppBar(
+                  title: widget.item.userName,
+                  isBackButtonVisible: true,
+                  isSearchButtonVisible: false,
+                  isNotificationButtonVisible: true,
+                  onBackPressed: () =>
+                      Get.back(result: _controller.hasLike.value),
+                ),
+                Expanded(
+                  child: Utils.isVideo(widget.item.activityImage)
+                      ? VideoItems(
+                          videoPlayerController: VideoPlayerController.network(
+                            'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4' /*widget.item.activityImage*/,
+                          ),
+                          key: UniqueKey(),
+                          padding: EdgeInsets.zero,
+                        )
+                      : PhotoView(
+                          imageProvider:
+                              NetworkImage(widget.item.activityImage),
+                          backgroundDecoration:
+                              const BoxDecoration(color: AppColor.white),
+                          loadingBuilder: (context, event) => Container(
+                            color: Colors.transparent,
+                            width: Get.width,
+                            height: Get.height,
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColor.loaderColor),
+                              ),
+                            ),
+                          ),
+                          errorBuilder: (context, error, stacktrace) =>
+                              Container(
+                            alignment: Alignment.center,
+                            decoration:
+                                const BoxDecoration(color: AppColor.grey),
+                            child: Image.asset(
+                              AppImages.imgNoImageFound,
+                              height: Get.height * 0.15,
+                              color: AppColor.black,
                             ),
                           ),
                         ),
-                        errorBuilder: (context, error, stacktrace) => Container(
-                          alignment: Alignment.center,
-                          decoration: const BoxDecoration(color: AppColor.grey),
-                          child: Image.asset(
-                            AppImages.imgNoImageFound,
-                            height: Get.height * 0.15,
-                            color: AppColor.black,
-                          ),
-                        ),
-                      ),
-              ),
-              SizedBox(height: 12.h),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      _controller.trendingLikeApi(
-                          activityStreamId: widget.item.activityStreamId);
-                    },
-                    icon: Obx(() {
-                      return SvgPicture.asset(
-                        AppImages.iconHeart,
-                        color: _controller.hasLike.value
-                            ? AppColor.red
-                            : AppColor.black,
-                        height: 24.r,
-                      );
-                    }),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(
-                      AppImages.iconChat,
-                      color: AppColor.black,
-                      height: 24.r,
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
-                child: AppText(
-                  text: widget.item.activityStreamText,
-                  textSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  maxLines: 5,
-                  lineHeight: 1.2,
-                  textAlign: TextAlign.start,
                 ),
-              ),
-            ],
-          ),
-          Obx(
-            () => Positioned.fill(
-              child: _controller.showLoader.value
-                  ? Container(
-                      color: Colors.transparent,
-                      width: Get.width,
-                      height: Get.height,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColor.loaderColor),
-                        ),
+                SizedBox(height: 12.h),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        _controller.trendingLikeApi(
+                            activityStreamId: widget.item.activityStreamId);
+                      },
+                      icon: Obx(() {
+                        return SvgPicture.asset(
+                          AppImages.iconHeart,
+                          color: _controller.hasLike.value
+                              ? AppColor.red
+                              : AppColor.black,
+                          height: 24.r,
+                        );
+                      }),
+                    ),
+                    IconButton(
+                      onPressed: () => _commentButtonPressed(item: widget.item),
+                      icon: SvgPicture.asset(
+                        AppImages.iconChat,
+                        color: AppColor.black,
+                        height: 24.r,
                       ),
                     )
-                  : Container(
-                      width: 0,
-                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
+                  child: AppText(
+                    text: widget.item.activityStreamText,
+                    textSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    maxLines: 5,
+                    lineHeight: 1.2,
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            Obx(
+              () => Positioned.fill(
+                child: _controller.showLoader.value
+                    ? Container(
+                        color: Colors.transparent,
+                        width: Get.width,
+                        height: Get.height,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                AppColor.loaderColor),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        width: 0,
+                      ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  _commentButtonPressed({required ActivityStream item}) {
+    Get.to(() => TrendingCommentScreen(
+          title: item.userName,
+          hasLike: _controller.hasLike.value,
+          itemMediaUrl: item.activityImage,
+          activityStreamId: item.activityStreamId,
+        ))?.then((value) {
+      if (value != null && value is bool) {
+        _controller.hasLike.value = value;
+      }
+    });
   }
 }

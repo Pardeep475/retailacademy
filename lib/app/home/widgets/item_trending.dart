@@ -14,11 +14,13 @@ class ItemTrending extends StatelessWidget {
   final ActivityStream item;
   final VoidCallback onLikeButtonPressed;
   final VoidCallback onCommentButtonPressed;
+  final VoidCallback onItemPressed;
 
   const ItemTrending(
       {required this.item,
       required this.onLikeButtonPressed,
       required this.onCommentButtonPressed,
+      required this.onItemPressed,
       Key? key})
       : super(key: key);
 
@@ -35,13 +37,7 @@ class ItemTrending extends StatelessWidget {
         ),
         SizedBox(height: 10.h),
         GestureDetector(
-          onTap: () {
-            Get.to(
-              () => TrendingDetailScreen(
-                item: item,
-              ),
-            );
-          },
+          onTap: onItemPressed,
           child: CachedNetworkImage(
             imageUrl: item.activityImage,
             height: Get.height * 0.4,

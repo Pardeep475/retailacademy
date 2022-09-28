@@ -10,6 +10,7 @@ import '../../../common/widget/custom_app_bar.dart';
 import '../../../common/widget/no_data_available.dart';
 import '../controller/home_controller.dart';
 import '../widgets/item_trending.dart';
+import 'trending_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -101,6 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   index: index,
                                   activityStreamId: item.activityStreamId);
                             },
+                            onItemPressed: () => _onItemDetailClickEvent(
+                                index: index, item: item),
                           );
                         }),
                   );
@@ -157,6 +160,18 @@ class _HomeScreenState extends State<HomeScreen> {
           itemMediaUrl: item.activityImage,
           activityStreamId: item.activityStreamId,
         ))?.then((value) {
+      if (value != null && value is bool) {
+        _controller.updateLikeTrending(index: index, value: value);
+      }
+    });
+  }
+
+  _onItemDetailClickEvent({required int index, required ActivityStream item}) {
+    Get.to(
+      () => TrendingDetailScreen(
+        item: item,
+      ),
+    )?.then((value) {
       if (value != null && value is bool) {
         _controller.updateLikeTrending(index: index, value: value);
       }
