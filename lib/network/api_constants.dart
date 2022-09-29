@@ -36,5 +36,7 @@ class ApiConstants {
   static String consolidatedQuizQuestions = "ConsolidatedQuizQuestions";
   static String trendingCommentList = "ActivityStreamCommentList";
   static String knowledgeCommentList = "ContentComments";
+  static String trendingDeleteCommentApi = "ActivityStreamDeleteComment";
+  static String knowledgeContentDeleteCommentApi = "ContentDeleteComment";
 
 }

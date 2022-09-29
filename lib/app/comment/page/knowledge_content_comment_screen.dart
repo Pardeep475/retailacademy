@@ -10,11 +10,14 @@ import '../../../common/app_images.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../network/modal/knowledge/knowledge_content_comment_response.dart';
 import '../../knowledge/widget/item_fun_facts_and_master_class.dart';
 import '../controller/knowledge_content_comment_controller.dart';
 import '../widgets/item_comment.dart';
 import '../widgets/item_content_comment_knowledge.dart';
+import '../widgets/item_no_comment_found.dart';
 import '../widgets/item_sent_comment.dart';
+import 'full_screen_image_and_video_screen.dart';
 
 class KnowledgeContentCommentScreen extends StatefulWidget {
   final String title;
@@ -85,30 +88,40 @@ class _KnowledgeContentScreenState
                     Get.back(result: _controller.hasLiked.value);
                   },
                 ),
-                CachedNetworkImage(
-                  imageUrl: widget.itemMediaUrl,
-                  height: Get.height * 0.25,
-                  imageBuilder: (context, imageProvider) => Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.black,
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.contain),
+                GestureDetector(
+                  onTap: () {
+                    if (widget.itemMediaUrl.isNotEmpty) {
+                      Get.to(() => FullScreenImageAndVideoScreen(
+                            url: widget.itemMediaUrl,
+                            title: widget.title,
+                          ));
+                    }
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl: widget.itemMediaUrl,
+                    height: Get.height * 0.25,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.black,
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.contain),
+                      ),
                     ),
-                  ),
-                  placeholder: (context, url) => Container(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                        height: 36.r,
-                        width: 36.r,
-                        child: const CircularProgressIndicator()),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(color: AppColor.grey),
-                    child: Image.asset(
-                      AppImages.imgNoImageFound,
-                      height: Get.height * 0.15,
-                      color: AppColor.black,
+                    placeholder: (context, url) => Container(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                          height: 36.r,
+                          width: 36.r,
+                          child: const CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(color: AppColor.grey),
+                      child: Image.asset(
+                        AppImages.imgNoImageFound,
+                        height: Get.height * 0.15,
+                        color: AppColor.black,
+                      ),
                     ),
                   ),
                 ),
@@ -162,6 +175,12 @@ class _KnowledgeContentScreenState
                           child: Obx(() {
                             debugPrint(
                                 'length:----   ${_controller.dataList.length}  ${_controller.isCommentShown.value}');
+
+                            if (!_controller.showLoader.value &&
+                                _controller.dataList.isEmpty) {
+                              return const ItemNoCommentFound();
+                            }
+
                             return Visibility(
                               visible: _controller.isCommentShown.value,
                               child: ListView.builder(
@@ -175,8 +194,16 @@ class _KnowledgeContentScreenState
                                   itemCount: _controller.dataList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
+                                    final KnowledgeContentCommentElement item =
+                                        _controller.dataList[index];
                                     return ItemContentCommentKnowledge(
-                                      item: _controller.dataList[index],
+                                      item: item,
+                                      userId: int.parse(_controller.userId),
+                                      onDeleteButtonPressed: () {
+                                        _controller.deleteKnowledgeContentApi(
+                                            index: index,
+                                            commentId: item.commentId);
+                                      },
                                     );
                                   }),
                             );

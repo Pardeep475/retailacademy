@@ -10,6 +10,7 @@ import '../../../common/app_images.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/read_more_text.dart';
 import '../../../network/modal/trending/trending_response.dart';
 import '../../comment/page/trending_comment_screen.dart';
 import '../../knowledge/widget/video_items.dart';
@@ -130,13 +131,26 @@ class _TrendingDetailScreenState extends State<TrendingDetailScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
-                  child: AppText(
-                    text: widget.item.activityStreamText,
-                    textSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    maxLines: 5,
-                    lineHeight: 1.2,
-                    textAlign: TextAlign.start,
+                  child: ReadMoreText(
+                    widget.item.activityStreamText,
+                    trimLines: 2,
+                    colorClickableText: AppColor.lightNavyBlue,
+                    trimMode: TrimMode.line,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.sp,
+                        height: 1.6,
+                        color: AppColor.black),
+                    moreStyle: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12.sp,
+                        height: 1.6,
+                        color: AppColor.lightNavyBlue),
+                    lessStyle: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12.sp,
+                        height: 1.6,
+                        color: AppColor.lightNavyBlue),
                   ),
                 ),
               ],

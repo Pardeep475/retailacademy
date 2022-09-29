@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
+import '../../../common/widget/read_more_text.dart';
 import '../../../network/modal/trending/trending_response.dart';
 import '../page/trending_detail_screen.dart';
 
@@ -92,13 +93,34 @@ class ItemTrending extends StatelessWidget {
           ],
         ),
         SizedBox(height: 5.h),
-        AppText(
-          text: item.activityStreamText,
-          textSize: 16.sp,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-          fontWeight: FontWeight.w400,
+        ReadMoreText(
+          item.activityStreamText,
+          trimLines: 2,
+          colorClickableText: AppColor.lightNavyBlue,
+          trimMode: TrimMode.line,
+          style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16.sp,
+              height: 1.6,
+              color: AppColor.black),
+          moreStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12.sp,
+              height: 1.6,
+              color: AppColor.lightNavyBlue),
+          lessStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12.sp,
+              height: 1.6,
+              color: AppColor.lightNavyBlue),
         ),
+        // AppText(
+        //   text: item.activityStreamText,
+        //   textSize: 16.sp,
+        //   maxLines: 3,
+        //   overflow: TextOverflow.ellipsis,
+        //   fontWeight: FontWeight.w400,
+        // ),
         SizedBox(height: 20.h),
       ],
     );

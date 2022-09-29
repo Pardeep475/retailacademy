@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../common/app_color.dart';
 
 class VideoItems extends StatefulWidget {
   final VideoPlayerController videoPlayerController;
@@ -19,7 +18,7 @@ class VideoItems extends StatefulWidget {
     this.padding,
     this.looping = true,
     this.autoplay = true,
-    this.showControllers = false,
+    this.showControllers = true,
     this.aspectRatio = 8 / 10,
     Key? key,
   }) : super(key: key);
@@ -46,10 +45,11 @@ class _VideoItemsState extends State<VideoItems> {
       autoPlay: widget.autoplay,
       looping: widget.looping,
       showControls: widget.showControllers,
-      showOptions: false,
-      showControlsOnInitialize: false,
+      showOptions: true,
+      showControlsOnInitialize: true,
       allowFullScreen: widget.showControllers,
-      allowMuting: false,
+      allowMuting: true,
+
       errorBuilder: (context, errorMessage) {
         return Center(
           child: Text(
@@ -65,8 +65,9 @@ class _VideoItemsState extends State<VideoItems> {
 
   @override
   void dispose() {
-    super.dispose();
+    widget.videoPlayerController.dispose();
     _chewieController.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,7 +77,6 @@ class _VideoItemsState extends State<VideoItems> {
       child: Chewie(
         key: UniqueKey(),
         controller: _chewieController,
-
       ),
     );
     // return Obx(() {

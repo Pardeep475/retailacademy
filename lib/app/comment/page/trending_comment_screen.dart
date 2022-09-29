@@ -10,9 +10,12 @@ import '../../../common/app_images.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../network/modal/trending/trending_comment_response.dart';
 import '../controller/trending_comment_controller.dart';
 import '../widgets/item_comment.dart';
+import '../widgets/item_no_comment_found.dart';
 import '../widgets/item_sent_comment.dart';
+import 'full_screen_image_and_video_screen.dart';
 
 class TrendingCommentScreen extends StatefulWidget {
   final String title;
@@ -41,7 +44,6 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-
   @override
   void initState() {
     _controller.clearValues();
@@ -53,14 +55,12 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
       await _controller.trendingCommentsApi();
       _scrollToBottom();
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(
-        'KeyboardVisibility update. Builder Is visible: null');
-    if(MediaQuery.of(context).viewInsets.bottom != 0){
+    debugPrint('KeyboardVisibility update. Builder Is visible: null');
+    if (MediaQuery.of(context).viewInsets.bottom != 0) {
       _scrollToBottom();
     }
     return WillPopScope(
@@ -85,30 +85,40 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
                     Get.back(result: _controller.hasLiked.value);
                   },
                 ),
-                CachedNetworkImage(
-                  imageUrl: widget.itemMediaUrl,
-                  height: Get.height * 0.25,
-                  imageBuilder: (context, imageProvider) => Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.black,
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.contain),
+                GestureDetector(
+                  onTap: () {
+                    if (widget.itemMediaUrl.isNotEmpty) {
+                      Get.to(() => FullScreenImageAndVideoScreen(
+                            url: widget.itemMediaUrl,
+                        title: widget.title,
+                          ));
+                    }
+                  },
+                  child: CachedNetworkImage(
+                    imageUrl: widget.itemMediaUrl,
+                    height: Get.height * 0.25,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.black,
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.contain),
+                      ),
                     ),
-                  ),
-                  placeholder: (context, url) => Container(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                        height: 36.r,
-                        width: 36.r,
-                        child: const CircularProgressIndicator()),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(color: AppColor.grey),
-                    child: Image.asset(
-                      AppImages.imgNoImageFound,
-                      height: Get.height * 0.15,
-                      color: AppColor.black,
+                    placeholder: (context, url) => Container(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                          height: 36.r,
+                          width: 36.r,
+                          child: const CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(color: AppColor.grey),
+                      child: Image.asset(
+                        AppImages.imgNoImageFound,
+                        height: Get.height * 0.15,
+                        color: AppColor.black,
+                      ),
                     ),
                   ),
                 ),
@@ -162,12 +172,17 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
                           child: Obx(() {
                             debugPrint(
                                 'length:----   ${_controller.dataList.length}  ${_controller.isCommentShown.value}');
+                            if (!_controller.showLoader.value &&
+                                _controller.dataList.isEmpty) {
+                              return const ItemNoCommentFound();
+                            }
+
                             return Visibility(
                               visible: _controller.isCommentShown.value,
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   physics:
-                                  const AlwaysScrollableScrollPhysics(),
+                                      const AlwaysScrollableScrollPhysics(),
                                   padding: EdgeInsets.only(
                                     top: 10.h,
                                   ),
@@ -175,8 +190,16 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
                                   itemCount: _controller.dataList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
+                                    final CommentElement item =
+                                        _controller.dataList[index];
                                     return ItemComment(
-                                      item: _controller.dataList[index],
+                                      item: item,
+                                      userId: int.parse(_controller.userId),
+                                      onDeleteButtonPressed: () {
+                                        _controller.deleteTrendingApi(
+                                            index: index,
+                                            commentId: item.commentId);
+                                      },
                                     );
                                   }),
                             );
@@ -240,5 +263,4 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
           duration: const Duration(milliseconds: 100), curve: Curves.easeInOut);
     });
   }
-
 }

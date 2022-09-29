@@ -10,8 +10,10 @@ import '../../../network/modal/knowledge/knowledge_content_comment_response.dart
 
 class ItemContentCommentKnowledge extends StatelessWidget {
   final KnowledgeContentCommentElement item;
-
-  const ItemContentCommentKnowledge({required this.item, Key? key})
+  final VoidCallback onDeleteButtonPressed;
+  final int userId;
+  const ItemContentCommentKnowledge(
+      {required this.item, required this.onDeleteButtonPressed,required this.userId, Key? key})
       : super(key: key);
 
   @override
@@ -97,6 +99,14 @@ class ItemContentCommentKnowledge extends StatelessWidget {
                   ],
                 ),
               ),
+              item.userId == userId ?
+              IconButton(
+                onPressed: onDeleteButtonPressed,
+                icon: const Icon(
+                  Icons.delete,
+                  color: AppColor.white,
+                ),
+              ):
               SizedBox(
                 width: 16.w,
               ),

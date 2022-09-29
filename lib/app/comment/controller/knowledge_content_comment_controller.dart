@@ -6,6 +6,7 @@ import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 import '../../../network/modal/base/base_response.dart';
+import '../../../network/modal/knowledge/delete_knowledge_content_request.dart';
 import '../../../network/modal/knowledge/knowledge_content_comment_request.dart';
 import '../../../network/modal/knowledge/knowledge_content_comment_response.dart';
 import '../../../network/modal/trending/like_trending_request.dart';
@@ -18,6 +19,7 @@ class KnowledgeContentCommentController extends GetxController {
   var userProfileImage = ''.obs;
   var hasLiked = false.obs;
   var isCommentShown = true.obs;
+  var userId = '';
 
   @override
   void onInit() {
@@ -59,7 +61,9 @@ class KnowledgeContentCommentController extends GetxController {
         if (isLoader) {
           showLoader.value = true;
         }
-        String userId = await SessionManager.getUserId();
+        if (userId.isEmpty) {
+          userId = await SessionManager.getUserId();
+        }
         debugPrint('FILEID:--  $fileId');
         var response =
             await ApiProvider.apiProvider.knowledgeContentCommentsApi(
@@ -74,8 +78,10 @@ class KnowledgeContentCommentController extends GetxController {
             dataList.addAll(contentCommentResponse.commentElementList ?? []);
             dataList.refresh();
           } else {
-            Utils.errorSnackBar(
-                AppStrings.error, contentCommentResponse.message);
+            if (contentCommentResponse.message.isNotEmpty) {
+              Utils.errorSnackBar(
+                  AppStrings.error, contentCommentResponse.message);
+            }
           }
         }
       } catch (e) {
@@ -94,7 +100,9 @@ class KnowledgeContentCommentController extends GetxController {
     if (value) {
       try {
         showLoader.value = true;
-        String userId = await SessionManager.getUserId();
+        if (userId.isEmpty) {
+          userId = await SessionManager.getUserId();
+        }
         var response =
             await ApiProvider.apiProvider.knowledgeContentCommentsApi(
           request: KnowledgeContentCommentRequest(
@@ -108,8 +116,10 @@ class KnowledgeContentCommentController extends GetxController {
             dataList.addAll(contentCommentResponse.commentElementList ?? []);
             dataList.refresh();
           } else {
-            Utils.errorSnackBar(
-                AppStrings.error, contentCommentResponse.message);
+            if (contentCommentResponse.message.isNotEmpty) {
+              Utils.errorSnackBar(
+                  AppStrings.error, contentCommentResponse.message);
+            }
           }
         }
       } catch (e) {
@@ -157,7 +167,9 @@ class KnowledgeContentCommentController extends GetxController {
     if (value) {
       try {
         showLoader.value = true;
-        String userId = await SessionManager.getUserId();
+        if (userId.isEmpty) {
+          userId = await SessionManager.getUserId();
+        }
         var response = await ApiProvider.apiProvider.trendingLikeApi(
             request: LikeTrendingRequest(
           orgId: AppStrings.orgId,
@@ -169,7 +181,9 @@ class KnowledgeContentCommentController extends GetxController {
           if (baseResponse.status) {
             hasLiked.value = !hasLiked.value;
           } else {
-            Utils.errorSnackBar(AppStrings.error, baseResponse.message);
+            if (baseResponse.message.isNotEmpty) {
+              Utils.errorSnackBar(AppStrings.error, baseResponse.message);
+            }
           }
         }
       } catch (e) {
@@ -183,5 +197,45 @@ class KnowledgeContentCommentController extends GetxController {
 
   updateCommentShown() {
     isCommentShown.value = !isCommentShown.value;
+  }
+
+  Future deleteKnowledgeContentApi(
+      {required int index, required int commentId}) async {
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+        showLoader.value = true;
+        if (userId.isEmpty) {
+          userId = await SessionManager.getUserId();
+        }
+        var response =
+            await ApiProvider.apiProvider.deleteKnowledgeContentCommentApi(
+                request: DeleteKnowledgeContentRequest(
+          commentId: commentId,
+          userId: int.parse(userId),
+          fileId: fileId,
+        ));
+        if (response != null) {
+          BaseResponse baseResponse = (response as BaseResponse);
+          if (baseResponse.status) {
+            dataList.removeAt(index);
+            dataList.refresh();
+          } else {
+            if (baseResponse.message.isNotEmpty) {
+              Utils.errorSnackBar(AppStrings.error, baseResponse.message);
+            }
+          }
+        }
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+        showLoader.value = false;
+      }
+    }
+    return null;
+  }
+
+  fetchUserId() async {
+    userId = await SessionManager.getUserId();
   }
 }

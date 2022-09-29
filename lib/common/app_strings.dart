@@ -75,4 +75,7 @@ class AppStrings {
   static const String pdfError = "File not in PDF format or corrupted.";
   static const String tapToReload = "Tap to reload";
   static const String commentMustNotBeEmpty = "Comment must not be empty";
+  static const String noCommentFound = "No comments found";
+  static const String moreReadText = "more";
+  static const String lessReadText = "less";
 }

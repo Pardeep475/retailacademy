@@ -10,8 +10,12 @@ import '../../../network/modal/trending/trending_comment_response.dart';
 
 class ItemComment extends StatelessWidget {
   final CommentElement item;
+  final VoidCallback onDeleteButtonPressed;
+  final int userId;
 
-  const ItemComment({required this.item, Key? key}) : super(key: key);
+  const ItemComment(
+      {required this.item, required this.onDeleteButtonPressed,required this.userId, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +100,14 @@ class ItemComment extends StatelessWidget {
                   ],
                 ),
               ),
+              item.userId == userId ?
+              IconButton(
+                onPressed: onDeleteButtonPressed,
+                icon: const Icon(
+                  Icons.delete,
+                  color: AppColor.white,
+                ),
+              ):
               SizedBox(
                 width: 16.w,
               ),
