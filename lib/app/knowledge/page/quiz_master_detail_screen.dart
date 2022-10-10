@@ -6,11 +6,11 @@ import 'package:retail_academy/app/knowledge/widget/item_quiz_master_detail.dart
 
 import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
+import '../../../common/local_storage/hive/quiz_element_modal.dart';
 import '../../../common/widget/alert_dialog_box.dart';
 import '../../../common/widget/app_button.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
-import '../../../network/modal/knowledge/consolidated_quiz_questions_response.dart';
 import '../../../network/modal/knowledge/quiz_category_response.dart';
 import '../controller/quiz_master_detail_controller.dart';
 
@@ -36,8 +36,10 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
 
   @override
   void initState() {
+    _controller.categoryValue = widget.item.categoryId;
+    _controller.currentPage = 0;
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.consolidatedQuizQuestionsApi(
         categoryId: widget.item.categoryId,
       );
@@ -73,7 +75,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                     itemCount: _controller.dataList.length,
                     itemBuilder: (BuildContext context, int baseItemIndex,
                         int pageViewIndex) {
-                      QuizResponseElement item =
+                      QuizElementModal item =
                           _controller.dataList[baseItemIndex];
                       return ItemQuizMasterDetail(
                         item: item,
@@ -86,7 +88,9 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                                 baseIndex: baseItemIndex,
                                 itemIndex: -1,
                                 value: value);
+                            // _controller.checkHive();
                           } else {
+                            // _controller.checkHive();
                             _controller.updateAnswers(
                                 baseIndex: baseItemIndex,
                                 itemIndex: itemIndex,
@@ -100,7 +104,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                       height: Get.height,
                       // aspectRatio: 16 / 9,
                       viewportFraction: 1,
-                      initialPage: 0,
+                      initialPage: _controller.currentPage,
                       enableInfiniteScroll: false,
                       reverse: false,
                       autoPlay: false,
@@ -108,7 +112,9 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                       // autoPlayAnimationDuration: Duration(milliseconds: 800),
                       // autoPlayCurve: Curves.fastOutSlowIn,
                       // enlargeCenterPage: false,
-                      onPageChanged: (index, callbackFunction) {},
+                      onPageChanged: (index, callbackFunction) {
+                        _controller.currentPage = index;
+                      },
                       scrollDirection: Axis.horizontal,
                     ),
                   );
@@ -127,7 +133,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                   Expanded(
                     child: AppButton(
                       txt: AppStrings.cancel,
-                      onPressed: () => openCancelAttemptedDialogBox(),
+                      onPressed: () => _openCancelAttemptedDialogBox(),
                     ),
                   ),
                   SizedBox(
@@ -137,6 +143,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                     child: AppButton(
                       txt: AppStrings.submit,
                       onPressed: () {
+                        _controller.updateValuesOnDataBase(index: _controller.currentPage);
                         _carouselController.nextPage(
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.linear);
@@ -177,7 +184,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
     );
   }
 
-  openCancelAttemptedDialogBox() {
+  _openCancelAttemptedDialogBox() {
     AlertDialogBox(
       showCrossIcon: true,
       context: context,
@@ -233,10 +240,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () {
-                          Get.back();
-                          Get.back();
-                        },
+                        onTap: () => Get.back(),
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 15.h),
                           child: AppText(
@@ -259,7 +263,10 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () => Get.back(),
+                        onTap: () {
+                          Get.back();
+                          Get.back();
+                        },
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 15.h),
                           child: AppText(
@@ -275,6 +282,87 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                       ),
                     ),
                   )
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ).show();
+  }
+
+  _commonDialog({required String title,required VoidCallback onPressed}) {
+    AlertDialogBox(
+      showCrossIcon: true,
+      context: context,
+      barrierDismissible: true,
+      padding: EdgeInsets.zero,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 15.h,
+              ),
+              AppText(
+                text: AppStrings.alert,
+                textSize: 22.sp,
+                color: AppColor.black,
+                maxLines: 2,
+                lineHeight: 1.3,
+                fontWeight: FontWeight.w600,
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              Divider(
+                height: 1.sp,
+                color: AppColor.grey,
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              AppText(
+                text: title,
+                textSize: 18.sp,
+                color: AppColor.black,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                lineHeight: 1.3,
+                fontWeight: FontWeight.w400,
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Divider(
+                height: 1.sp,
+                color: AppColor.grey,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: onPressed,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 15.h),
+                          child: AppText(
+                            text: AppStrings.ok,
+                            textSize: 18.sp,
+                            color: Colors.lightBlue,
+                            maxLines: 2,
+                            lineHeight: 1.3,
+                            textAlign: TextAlign.center,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],

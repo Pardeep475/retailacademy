@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:video_player/video_player.dart';
+// import 'package:video_player/video_player.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
@@ -63,13 +63,13 @@ class _TrendingDetailScreenState extends State<TrendingDetailScreen> {
                 ),
                 Expanded(
                   child: Utils.isVideo(widget.item.activityImage)
-                      ? VideoItems(
+                      ? const SizedBox()/*VideoItems(
                           videoPlayerController: VideoPlayerController.network(
-                            'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4' /*widget.item.activityImage*/,
+                            'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4' *//*widget.item.activityImage*//*,
                           ),
                           key: UniqueKey(),
                           padding: EdgeInsets.zero,
-                        )
+                        )*/
                       : PhotoView(
                           imageProvider:
                               NetworkImage(widget.item.activityImage),

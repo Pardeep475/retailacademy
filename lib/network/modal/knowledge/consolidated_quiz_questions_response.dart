@@ -56,7 +56,7 @@ class QuizResponseElement {
 
   factory QuizResponseElement.fromJson(Map<String, dynamic> json) =>
       QuizResponseElement(
-        questionId: json["questionid"] = -1,
+        questionId: json["questionid"] ?? -1,
         question: json["question"] ?? '',
         questionType: json["questiontype"] ?? '',
         noOfQuestion: json["noofquestion"] ?? 0,

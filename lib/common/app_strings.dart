@@ -15,6 +15,7 @@ class AppStrings {
 
   // application fonts
   static const String robotoFont = "Roboto";
+  static const String quizDataBaseName = "RETAIL_ACADEMY_QUIZ";
 
   static const String checkYourInternetConnectivity =
       "Check your internet connectivity";
@@ -78,4 +79,12 @@ class AppStrings {
   static const String noCommentFound = "No comments found";
   static const String moreReadText = "more";
   static const String lessReadText = "less";
+  static const String pleaseSelectYourAnswer = "Please select your answer.";
+  static const String yourAnswerIsCorrect =
+      "[Staff App] your answer is correct.";
+  static const String incorrectAnswer =
+      "[Staff App] your answer is incorrect. The correct answer is: ";
+  static const String finalScore = "Your final score is :- ";
+  static const String thanksForAttemptThisQuiz =
+      "[Staff App] Thanks for attempting this Quiz.";
 }

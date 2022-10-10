@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:retail_academy/common/app_color.dart';
 
+import '../../../common/local_storage/hive/answer_element_modal.dart';
+import '../../../common/local_storage/hive/quiz_element_modal.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/multiple_checkbox_list_tile.dart';
 import '../../../common/widget/radio_list_tile.dart';
-import '../../../network/modal/knowledge/consolidated_quiz_questions_response.dart';
 
 class ItemQuizMasterDetail extends StatelessWidget {
-  final QuizResponseElement item;
+  final QuizElementModal item;
   final int index;
   final Color color;
   final int listSize;
@@ -73,19 +74,19 @@ class ItemQuizMasterDetail extends StatelessWidget {
           child: ListView.builder(
               padding: EdgeInsets.zero,
               itemCount: item.answers == null ? 0 : item.answers!.length,
-              physics: const NeverScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
-                AnswerElement itemAnswerElement = item.answers![index];
-                debugPrint('GROUP_VALUE:----    ${item.getGroupValue()}');
+                AnswerElementModal itemAnswerElement = item.answers![index];
+                debugPrint('GROUP_VALUE:----    ${''}');
                 if (item.questionType == 'Multiple Choice - Single Answer') {
                   return CustomRadioListTile(
                     onPressed: (value) {
                       debugPrint('CustomRadioListTile:----   $value');
                       onItemPressed(index, value);
                     },
-                    title: '${itemAnswerElement.answer}',
-                    groupValue: item.getGroupValue(),
+                    title: itemAnswerElement.answer,
+                    groupValue: item.groupValue,
                     value: '${itemAnswerElement.answerNo}',
                   );
                 } else {
@@ -95,7 +96,7 @@ class ItemQuizMasterDetail extends StatelessWidget {
                       onItemPressed(index, value);
                     },
                     isSelected: itemAnswerElement.isSelected,
-                    title: '${itemAnswerElement.answer}',
+                    title: itemAnswerElement.answer,
                   );
                 }
               }),
