@@ -12,7 +12,7 @@ class ConsolidatedQuizQuestions {
   int categoryId;
   bool isSubmitAnswers;
   int userId;
-  List<dynamic> submitAnswers;
+  List<SubmitAnswerElement> submitAnswers;
 
   ConsolidatedQuizQuestions(
       {required this.categoryId,
@@ -25,5 +25,28 @@ class ConsolidatedQuizQuestions {
         "userid": userId,
         "IsSubmitAnswers": isSubmitAnswers,
         "submitAnswers": submitAnswers,
+      };
+}
+
+class SubmitAnswerElement {
+  String questionId;
+  String answerSubmitted;
+  String attemptedQuestions;
+
+//  {
+//"questionid":3208,
+//"answersubmited": "1",
+// "attemptedQuestions":"0"
+
+  SubmitAnswerElement({
+    this.questionId = '',
+    this.answerSubmitted = '',
+    this.attemptedQuestions = '',
+  });
+
+  Map<String, dynamic> toJson() => {
+        "questionid": questionId,
+        "answersubmited": answerSubmitted,
+        "attemptedQuestions": attemptedQuestions,
       };
 }

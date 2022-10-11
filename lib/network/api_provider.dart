@@ -279,6 +279,20 @@ class ApiProvider {
     }
   }
 
+  Future<dynamic> consolidatedQuizSubmitApi(
+      {required ConsolidatedQuizQuestions request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.consolidatedQuizQuestions,
+        data: request.toJson(),
+      );
+      return response.statusCode;
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
   Future<dynamic> trendingCommentsApi(
       {required TrendingCommentRequest request}) async {
     try {

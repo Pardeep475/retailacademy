@@ -32,7 +32,7 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
     Map<String, dynamic> value = Get.arguments;
     color = value['color'];
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.getQuizMasterApi();
     });
   }
@@ -77,15 +77,19 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
                             item: item,
                             color: color ?? AppColor.pinkKnowledge,
                             onItemPressed: () {
-                              // if (item.isAttempted) {
-                              //   openAlreadySubmittedDialogBox(
-                              //       title: item.categoryName);
-                              // } else {
-                              Get.to(() => QuizMasterDetailScreen(
-                                    item: item,
-                                    color: color ?? AppColor.pinkKnowledge,
-                                  ));
-                              // }
+                              if (item.isAttempted) {
+                                openAlreadySubmittedDialogBox(
+                                    title: item.categoryName);
+                              } else {
+                                Get.to(() => QuizMasterDetailScreen(
+                                      item: item,
+                                      color: color ?? AppColor.pinkKnowledge,
+                                    ))?.then((value) {
+                                  if (value != null) {
+                                    _controller.getQuizMasterApi();
+                                  }
+                                });
+                              }
                             },
                           );
                         }),

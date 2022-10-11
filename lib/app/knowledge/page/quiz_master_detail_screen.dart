@@ -143,10 +143,30 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                     child: AppButton(
                       txt: AppStrings.submit,
                       onPressed: () {
-                        _controller.updateValuesOnDataBase(index: _controller.currentPage);
-                        _carouselController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.linear);
+                        // AppStrings.yourAnswerIsCorrect
+                        String value = _controller.validateQuiz();
+                        _commonDialog(
+                            title: value,
+                            onPressed: () {
+                              if (value == AppStrings.yourAnswerIsCorrect ||
+                                  value.contains(AppStrings.incorrectAnswer)) {
+                                _controller.updateValuesOnDataBase(
+                                    index: _controller.currentPage);
+                                Get.back();
+                                _carouselController.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.linear);
+                                debugPrint(
+                                    '${_controller.currentPage}   ${_controller.dataList.length - 1}');
+                                if (_controller.currentPage ==
+                                    _controller.dataList.length - 1) {
+                                  _controller.consolidatedQuizSubmitApi(
+                                      context: context);
+                                }
+                              } else {
+                                Get.back();
+                              }
+                            });
                       },
                     ),
                   ),
@@ -291,11 +311,14 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
     ).show();
   }
 
-  _commonDialog({required String title,required VoidCallback onPressed}) {
+  _commonDialog(
+      {required String title,
+      VoidCallback? onPressed,
+      bool barrierDismissible = true}) {
     AlertDialogBox(
       showCrossIcon: true,
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: barrierDismissible,
       padding: EdgeInsets.zero,
       child: Wrap(
         alignment: WrapAlignment.center,
@@ -325,14 +348,17 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
               SizedBox(
                 height: 20.h,
               ),
-              AppText(
-                text: title,
-                textSize: 18.sp,
-                color: AppColor.black,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                lineHeight: 1.3,
-                fontWeight: FontWeight.w400,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.h),
+                child: AppText(
+                  text: title,
+                  textSize: 18.sp,
+                  color: AppColor.black,
+                  maxLines: 10,
+                  textAlign: TextAlign.center,
+                  lineHeight: 1.3,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
               SizedBox(
                 height: 20.h,
@@ -347,7 +373,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: onPressed,
+                        onTap: onPressed ?? () => Get.back(),
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 15.h),
                           child: AppText(

@@ -86,5 +86,5 @@ class AppStrings {
       "[Staff App] your answer is incorrect. The correct answer is: ";
   static const String finalScore = "Your final score is :- ";
   static const String thanksForAttemptThisQuiz =
-      "[Staff App] Thanks for attempting this Quiz.";
+      " [Staff App] Thanks for attempting this Quiz.";
 }
