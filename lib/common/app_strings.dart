@@ -88,4 +88,7 @@ class AppStrings {
   static const String finalScore = "Your final score is :- ";
   static const String thanksForAttemptThisQuiz =
       " [Staff App] Thanks for attempting this Quiz.";
+  static const String continueListening = "Continue Listening";
+  static const String recent = "Recent";
+  static const String category = "Category";
 }

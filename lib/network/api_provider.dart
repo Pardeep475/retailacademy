@@ -3,6 +3,7 @@ import 'package:retail_academy/network/modal/knowledge/like_or_dislike_content_k
 import 'package:retail_academy/network/modal/knowledge/whats_hot_blog_content_response.dart';
 import 'package:retail_academy/network/modal/login/login_request.dart';
 import 'package:retail_academy/network/modal/login/login_response.dart';
+import 'package:retail_academy/network/modal/podcast/pod_cast_request.dart';
 import 'package:retail_academy/network/modal/points/point_response.dart';
 import 'package:retail_academy/network/modal/trending/like_trending_request.dart';
 import 'package:retail_academy/network/modal/trending/trending_response.dart';
@@ -24,6 +25,12 @@ import 'modal/knowledge/quiz_category_response.dart';
 import 'modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
 import 'modal/knowledge/whats_hot_blog_content_request.dart';
 import 'modal/knowledge/whats_hot_blog_response.dart';
+import 'modal/podcast/pod_cast_category_response.dart';
+import 'modal/podcast/pod_cast_comment_request.dart';
+import 'modal/podcast/pod_cast_comment_response.dart';
+import 'modal/podcast/pod_cast_delete_comment_request.dart';
+import 'modal/podcast/pod_cast_like_request.dart';
+import 'modal/podcast/pod_cast_response.dart';
 import 'modal/points/point_request.dart';
 import 'modal/profile/logout_request.dart';
 import 'modal/profile/logout_response.dart';
@@ -425,4 +432,97 @@ class ApiProvider {
       return null;
     }
   }
+
+  // podcast api's
+  Future<dynamic> getRecentPodcastListApi(
+      {required String userId, required String orgId}) async {
+    try {
+      Response response = await _dio.get(
+        ApiConstants.recentPodcastList(userId: userId, orgId: orgId),
+      );
+      return PodCastResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> getPodcastCategoryListApi(
+      {required String userId}) async {
+    try {
+      Response response = await _dio.get(
+        ApiConstants.podcastCategory(userId: userId),
+      );
+      return PodCastCategoryResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> getPodcastContinueListeningListApi({required String userId}) async {
+    try {
+      Response response = await _dio.get(ApiConstants.podcastContinueListeningList(userId: userId),);
+      return PodCastResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> getPodcastListApi({required PodCastRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.podcastList,
+        data: request.toJson(),
+      );
+      return PodCastResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> podcastLikeApi(
+      {required PodCastLikeRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.podcastLike,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> podcastDeleteCommentApi(
+      {required PodCastDeleteCommentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.podcastDeleteComment,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchAndAddPodcastCommentApi(
+      {required PodCastCommentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.podcastCommentList,
+        data: request.toJson(),
+      );
+      return PodCastCommentResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
 }

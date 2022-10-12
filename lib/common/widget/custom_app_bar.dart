@@ -16,6 +16,7 @@ class CustomAppBar extends StatelessWidget {
   final bool isSearchWidgetVisible;
   final Function(String)? onSearchChanged;
   final TextEditingController? searchController;
+  final bool isIconsTitle;
 
   const CustomAppBar(
       {required this.title,
@@ -26,6 +27,7 @@ class CustomAppBar extends StatelessWidget {
       this.isNotificationButtonVisible = false,
       this.searchController,
       this.isSearchWidgetVisible = false,
+      this.isIconsTitle = false,
       this.onSearchChanged,
       Key? key})
       : super(key: key);
@@ -104,13 +106,33 @@ class CustomAppBar extends StatelessWidget {
         SizedBox(
           height: isBackButtonVisible ? 0 : 10.h,
         ),
-        AppText(
-          text: title,
-          textSize: 25.sp,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          fontWeight: FontWeight.w600,
-        ),
+        isIconsTitle
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.mic,
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  AppText(
+                    text: title,
+                    textSize: 25.sp,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ],
+              )
+            : AppText(
+                text: title,
+                textSize: 25.sp,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                fontWeight: FontWeight.w600,
+              ),
         SizedBox(
           height: 10.h,
         ),

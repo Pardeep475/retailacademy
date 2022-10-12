@@ -28,7 +28,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.getKnowledgeApi();
     });
   }

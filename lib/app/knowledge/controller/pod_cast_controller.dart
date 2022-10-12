@@ -1,14 +1,18 @@
 import 'package:get/get.dart';
 
 import '../../../common/app_strings.dart';
+import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
-import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
+import '../../../network/modal/podcast/pod_cast_category_response.dart';
+import '../../../network/modal/podcast/pod_cast_response.dart';
 
-class PodCastController extends GetxController{
+class PodCastController extends GetxController {
   var showLoader = false.obs;
-  final RxList<BlogCategoryElement> dataList = RxList();
 
+  final RxList<PodcastElement> recentDataList = RxList();
+  final RxList<PodcastElement> continueListeningDataList = RxList();
+  final RxList<PodCastCategoryElement> categoryDataList = RxList();
 
   @override
   void onInit() {
@@ -28,7 +32,6 @@ class PodCastController extends GetxController{
     Utils.logger.e("on close");
   }
 
-
   Future getPodCastApi({bool isLoader = true}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
@@ -36,17 +39,15 @@ class PodCastController extends GetxController{
         if (isLoader) {
           showLoader.value = true;
         }
-        var response = await ApiProvider.apiProvider.fetchWhatsHotBlog();
-        if (response != null) {
-          WhatsHotBlogResponse whatsHotBlogResponse = (response as WhatsHotBlogResponse);
-          if (whatsHotBlogResponse.status) {
-            dataList.clear();
-            dataList.addAll(whatsHotBlogResponse.blogCategoryList ?? []);
-            dataList.refresh();
-          } else {
-            Utils.errorSnackBar(AppStrings.error, whatsHotBlogResponse.message);
-          }
-        }
+        String userId = await SessionManager.getUserId();
+        var responses = await Future.wait([
+          ApiProvider.apiProvider
+              .getPodcastContinueListeningListApi(userId: userId),
+          ApiProvider.apiProvider
+              .getRecentPodcastListApi(userId: userId, orgId: AppStrings.orgId),
+          ApiProvider.apiProvider.getPodcastCategoryListApi(userId: userId),
+        ]);
+        _updateAllList(responses);
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());
       } finally {
@@ -58,4 +59,48 @@ class PodCastController extends GetxController{
     return null;
   }
 
+  _updateAllList(List<dynamic> responses) {
+    for (int i = 0; i < responses.length; i++) {
+      if(responses[i] == null){
+        continue;
+      }
+      switch (i) {
+        case 0:
+          {
+            if (responses[i].status) {
+              continueListeningDataList.clear();
+              continueListeningDataList.addAll(responses[i].podcasts ?? []);
+            } else {
+              Utils.errorSnackBar(AppStrings.error, responses[i].message);
+            }
+          }
+          break;
+        case 1:
+          {
+            if (responses[i].status) {
+              recentDataList.clear();
+              recentDataList.addAll(responses[i].podcasts ?? []);
+            } else {
+              Utils.errorSnackBar(AppStrings.error, responses[i].message);
+            }
+          }
+          break;
+        case 2:
+          {
+            if (responses[i].status) {
+              categoryDataList.clear();
+              categoryDataList.addAll(responses[i].podCastCategoryList ?? []);
+            } else {
+              Utils.errorSnackBar(AppStrings.error, responses[i].message);
+            }
+          }
+          break;
+        default:
+          {}
+      }
+    }
+    continueListeningDataList.refresh();
+    recentDataList.refresh();
+    categoryDataList.refresh();
+  }
 }

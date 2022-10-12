@@ -33,7 +33,7 @@ class _FunFactsAndMasterClassScreenState
     _controller.fileId = value['fileId'];
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.getContentKnowledgeSection();
     });
   }

@@ -64,14 +64,14 @@ class Routes {
         name: RouteString.quizMasterScreen,
         page: () => const QuizMasterScreen(),
       ),
-      GetPage(
-        name: RouteString.podCastContentScreen,
-        page: () => const PodCastContentScreen(),
-      ),
-      GetPage(
-        name: RouteString.podCastDetailScreen,
-        page: () => const PodCastDetailScreen(),
-      ),
+      // GetPage(
+      //   name: RouteString.podCastContentScreen,
+      //   page: () => const PodCastContentScreen(),
+      // ),
+      // GetPage(
+      //   name: RouteString.podCastDetailScreen,
+      //   page: () => const PodCastDetailScreen(),
+      // ),
 
     ];
   }
