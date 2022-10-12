@@ -13,6 +13,7 @@ import 'package:retail_academy/app/knowledge/controller/pod_cast_detail_controll
 import 'package:retail_academy/app/knowledge/controller/quiz_master_controller.dart';
 import 'package:retail_academy/app/knowledge/controller/whats_hot_blog_controller.dart';
 import 'package:retail_academy/app/profile/controller/profile_controller.dart';
+import 'package:retail_academy/app/retails_reels/controller/retail_reels_content_controller.dart';
 import 'package:retail_academy/app/retails_reels/controller/retail_reels_controller.dart';
 import '../../app/auth/login/controller/login_controller.dart';
 import '../../app/auth/splash/controller/splash_controller.dart';
@@ -21,6 +22,7 @@ import '../../app/knowledge/controller/fun_facts_and_master_class_content_contro
 import '../../app/knowledge/controller/fun_facts_and_master_class_detail_controller.dart';
 import '../../app/knowledge/controller/quiz_master_detail_controller.dart';
 import '../../app/knowledge/controller/whats_hot_blog_content_controller.dart';
+import '../../app/retails_reels/controller/retail_reels_detail_controller.dart';
 import 'binding_consts.dart';
 
 class ApplicationBinding implements Bindings {
@@ -36,6 +38,10 @@ class ApplicationBinding implements Bindings {
         tag: BindingConst.knowledgeScreenBinding);
     Get.lazyPut(() => RetailReelsController(),
         tag: BindingConst.retailReelsScreenBinding);
+    Get.lazyPut(() => RetailReelsContentController(),
+        tag: BindingConst.retailReelsContentScreenBinding);
+    Get.lazyPut(() => RetailReelsDetailController(),
+        tag: BindingConst.retailReelsDetailScreenBinding);
     Get.lazyPut(() => InfoSessionsController(),
         tag: BindingConst.infoSessionsScreenBinding);
     Get.lazyPut(() => ProfileController(),

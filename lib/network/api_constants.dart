@@ -38,5 +38,10 @@ class ApiConstants {
   static String knowledgeCommentList = "ContentComments";
   static String trendingDeleteCommentApi = "ActivityStreamDeleteComment";
   static String knowledgeContentDeleteCommentApi = "ContentDeleteComment";
+  static String fetchRetailReelsCategories({required String userId}) => "ReelCategory?userid=$userId";
+  static String fetchRetailReelsList = "ReelsList";
+  static String retailReelsLike = "ReelLikes";
+  static String retailReelsComments = "ReelComments";
+  static String retailReelsDeleteComments = "ReelDeleteComment";
 
 }

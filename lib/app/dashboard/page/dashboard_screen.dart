@@ -11,7 +11,6 @@ import 'package:retail_academy/common/app_color.dart';
 import 'package:retail_academy/common/widget/app_text.dart';
 
 import '../../../common/app_strings.dart';
-import '../../auth/splash/controller/splash_controller.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -141,7 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       height: 5.h,
                     ),
                     const AppText(
-                      text: AppStrings.retailReels,
+                      text: AppStrings.reels,
                       color: AppColor.white,
                     )
                   ],

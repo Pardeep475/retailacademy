@@ -13,6 +13,8 @@ class BindingConst {
   static const String homeScreenBinding = "HOME_SCREEN_BINDING";
   static const String knowledgeScreenBinding = "KNOWLEDGE_SCREEN_BINDING";
   static const String retailReelsScreenBinding = "RETAIL_REELS_SCREEN_BINDING";
+  static const String retailReelsContentScreenBinding = "RETAIL_REELS_CONTENT_SCREEN_BINDING";
+  static const String retailReelsDetailScreenBinding = "RETAIL_REELS_DETAIL_SCREEN_BINDING";
   static const String infoSessionsScreenBinding = "INFO_SESSIONS_SCREEN_BINDING";
   static const String profileScreenBinding = "PROFILE_SCREEN_BINDING";
   static const String funFactsAndMasterClassScreenBinding = "FUN_FACTS_AND_MASTER_CLASS_SCREEN_BINDING";
@@ -29,5 +31,6 @@ class BindingConst {
   static const String helpAndContactRetailScreenBinding = "HELP_AND_CONTACT_RETAIL_SCREEN_BINDING";
   static const String trendingDetailScreenBinding = "TRENDING_DETAIL_SCREEN_BINDING";
   static const String commentScreenBinding = "COMMENT_SCREEN_BINDING";
+
 
 }

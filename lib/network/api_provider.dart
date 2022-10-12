@@ -29,6 +29,13 @@ import 'modal/profile/logout_request.dart';
 import 'modal/profile/logout_response.dart';
 import 'modal/profile/profile_response.dart';
 import 'modal/profile/update_profile_image_request.dart';
+import 'modal/retails_reels/retail_reels_categories_response.dart';
+import 'modal/retails_reels/retail_reels_comment_request.dart';
+import 'modal/retails_reels/retail_reels_comment_response.dart';
+import 'modal/retails_reels/retail_reels_delete_comment_request.dart';
+import 'modal/retails_reels/retail_reels_like_request.dart';
+import 'modal/retails_reels/retail_reels_list_request.dart';
+import 'modal/retails_reels/retail_reels_list_response.dart';
 import 'modal/trending/delete_trending_request.dart';
 import 'modal/trending/trending_comment_request.dart';
 import 'modal/trending/trending_comment_response.dart';
@@ -342,6 +349,74 @@ class ApiProvider {
     try {
       Response response = await _dio.post(
         ApiConstants.knowledgeContentDeleteCommentApi,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchRetailsReelsCategories({required String userId}) async {
+    try {
+      Response response = await _dio.get(
+        ApiConstants.fetchRetailReelsCategories(userId: userId),
+      );
+      return RetailReelsCategoriesResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchRetailsReelsList(
+      {required RetailReelsListRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.fetchRetailReelsList,
+        data: request.toJson(),
+      );
+      return RetailReelsListResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchRetailsReelsLike(
+      {required RetailReelsLikeRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.retailReelsLike,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchRetailsReelsComment(
+      {required RetailReelsCommentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.retailReelsComments,
+        data: request.toJson(),
+      );
+      return RetailReelsCommentResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchRetailsReelsDeleteComment(
+      {required RetailReelsDeleteCommentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.retailReelsDeleteComments,
         data: request.toJson(),
       );
       return BaseResponse.fromJson(response.data);

@@ -20,9 +20,8 @@ class ItemQuizMaster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.r),
-          color: color),
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.circular(5.r), color: color),
       margin: EdgeInsets.only(bottom: 10.h),
       child: Material(
         color: Colors.transparent,
@@ -42,8 +41,11 @@ class ItemQuizMaster extends StatelessWidget {
                   width: 10.w,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color:
-                          item.hasViewed ? Colors.transparent : AppColor.red),
+                      color: item.hasViewed
+                          ? item.hasAttempted
+                              ? Colors.transparent
+                              : Colors.white
+                          : AppColor.red),
                 ),
                 SizedBox(
                   width: 8.w,

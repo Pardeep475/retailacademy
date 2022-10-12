@@ -5,41 +5,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:retail_academy/app/comment/widgets/item_retail_reels_comment.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
-import '../../../network/modal/trending/trending_comment_response.dart';
-import '../controller/trending_comment_controller.dart';
-import '../widgets/item_comment.dart';
+import '../../../network/modal/retails_reels/retail_reels_comment_response.dart';
+import '../controller/retail_reels_comment_controller.dart';
 import '../widgets/item_no_comment_found.dart';
 import '../widgets/item_sent_comment.dart';
 import 'full_screen_image_and_video_screen.dart';
 
-class TrendingCommentScreen extends StatefulWidget {
+class RetailReelsCommentScreen extends StatefulWidget {
   final String title;
   final bool hasLike;
   final String itemMediaUrl;
-  final int activityStreamId;
+  final int reelId;
 
-  const TrendingCommentScreen(
+  const RetailReelsCommentScreen(
       {required this.title,
       required this.hasLike,
       required this.itemMediaUrl,
-      required this.activityStreamId,
+      required this.reelId,
       Key? key})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _TrendingCommentScreenState();
+  State<StatefulWidget> createState() => _RetailReelsCommentScreenState();
 }
 
-class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
-  final TrendingCommentController _controller =
-      Get.isRegistered<TrendingCommentController>()
-          ? Get.find<TrendingCommentController>()
-          : Get.put(TrendingCommentController());
+class _RetailReelsCommentScreenState extends State<RetailReelsCommentScreen> {
+  final RetailReelsCommentController _controller =
+      Get.isRegistered<RetailReelsCommentController>()
+          ? Get.find<RetailReelsCommentController>()
+          : Get.put(RetailReelsCommentController());
 
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -47,12 +47,12 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
   @override
   void initState() {
     _controller.clearValues();
-    _controller.activityStreamId = widget.activityStreamId;
+    _controller.reelId = widget.reelId;
     _controller.hasLiked.value = widget.hasLike;
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _controller.fetchProfileImage();
-      await _controller.trendingCommentsApi();
+      await _controller.retailReelsCommentsApi();
       _scrollToBottom();
     });
   }
@@ -139,7 +139,7 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
                                     'HasLiked:---   ${_controller.hasLiked.value}');
                                 return IconButton(
                                   onPressed: () {
-                                    _controller.trendingLikeApi();
+                                    _controller.retailReelsLikeApi();
                                   },
                                   splashColor: Colors.white54,
                                   icon: SvgPicture.asset(
@@ -190,13 +190,13 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
                                   itemCount: _controller.dataList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    final CommentElement item =
+                                    final ReelCommentElement item =
                                         _controller.dataList[index];
-                                    return ItemComment(
+                                    return ItemRetailReelsComment(
                                       item: item,
                                       userId: int.parse(_controller.userId),
                                       onDeleteButtonPressed: () {
-                                        _controller.deleteTrendingApi(
+                                        _controller.deleteRetailReelsApi(
                                             index: index,
                                             commentId: item.commentId);
                                       },
@@ -252,7 +252,7 @@ class _TrendingCommentScreenState extends State<TrendingCommentScreen> {
       FocusScope.of(context).unfocus();
       var commentText = _textController.text;
       _textController.text = '';
-      await _controller.postCommentsApi(comment: commentText);
+      await _controller.retailReelsPostCommentsApi(comment: commentText);
       _scrollToBottom();
     }
   }
