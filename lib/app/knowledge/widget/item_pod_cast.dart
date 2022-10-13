@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:retail_academy/common/app_color.dart';
 
 import '../../../common/app_images.dart';
@@ -11,8 +11,15 @@ import '../../../network/modal/podcast/pod_cast_response.dart';
 class ItemPodCast extends StatelessWidget {
   final PodcastElement item;
   final VoidCallback onItemPressed;
+  final VoidCallback onLikePressed;
+  final VoidCallback onCommentPressed;
 
-  const ItemPodCast({required this.item, required this.onItemPressed, Key? key})
+  const ItemPodCast(
+      {required this.item,
+      required this.onItemPressed,
+      required this.onCommentPressed,
+      required this.onLikePressed,
+      Key? key})
       : super(key: key);
 
   @override
@@ -24,12 +31,16 @@ class ItemPodCast extends StatelessWidget {
         splashColor: Colors.white54,
         child: Column(
           children: [
-            SizedBox(height: 16.w,),
+            SizedBox(
+              height: 16.w,
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(width: 16.w,),
+                SizedBox(
+                  width: 16.w,
+                ),
                 Container(
                   height: 85.h,
                   width: 85.w,
@@ -37,9 +48,37 @@ class ItemPodCast extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: AppColor.grey,
                       borderRadius: BorderRadius.circular(5.r)),
-                  child: Icon(
-                    Icons.mic,
-                    size: 36.0.r,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  // child: Icon(
+                  //   Icons.mic,
+                  //   size: 36.0.r,
+                  // ),
+                  child: CachedNetworkImage(
+                    imageUrl: item.thumbnailPath,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) => Container(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                          height: 36.r,
+                          width: 36.r,
+                          child: const CircularProgressIndicator()),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        AppImages.imgNoImageFound,
+                        color: AppColor.black,
+                        height: 50.h,
+                        width: 50.h,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -87,7 +126,9 @@ class ItemPodCast extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 16.w,),
+                SizedBox(
+                  width: 16.w,
+                ),
               ],
             ),
             Row(
@@ -95,18 +136,15 @@ class ItemPodCast extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
-                  onPressed: () {
-                    // _controller.likeOrDislikeBlogApi(
-                    //     blogId: widget.item.blogId);
-                  },
+                  onPressed: onLikePressed,
                   icon: SvgPicture.asset(
                     AppImages.iconHeart,
-                    color:AppColor.black,
+                    color: item.hasLiked ? AppColor.red : AppColor.black,
                     height: 24.r,
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: onCommentPressed,
                   icon: SvgPicture.asset(
                     AppImages.iconChat,
                     color: AppColor.black,
@@ -115,12 +153,17 @@ class ItemPodCast extends StatelessWidget {
                 ),
                 const Expanded(child: SizedBox()),
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.play_circle,size: 28.r,),
+                  onPressed: onItemPressed,
+                  icon: Icon(
+                    Icons.play_circle,
+                    size: 28.r,
+                  ),
                 ),
               ],
             ),
-            Divider(height: 1.h,),
+            Divider(
+              height: 1.h,
+            ),
           ],
         ),
       ),

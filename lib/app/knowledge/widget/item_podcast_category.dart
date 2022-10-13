@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/common/app_color.dart';
 
+import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../network/modal/podcast/pod_cast_category_response.dart';
 
@@ -33,9 +35,37 @@ class ItemPodCastCategory extends StatelessWidget {
                     color: AppColor.grey,
                     borderRadius: BorderRadius.circular(5.r)),
                 margin: EdgeInsets.only(bottom: 10.h),
-                child: Icon(
-                  Icons.mic,
-                  size: 36.0.r,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                // child: Icon(
+                //   Icons.mic,
+                //   size: 36.0.r,
+                // ),
+                child: CachedNetworkImage(
+                  imageUrl: item.categoryThumbnailImage,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => Container(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                        height: 36.r,
+                        width: 36.r,
+                        child: const CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      AppImages.imgNoImageFound,
+                      color: AppColor.black,
+                      height: 50.h,
+                      width: 50.h,
+                    ),
+                  ),
                 ),
               ),
               Row(
@@ -50,7 +80,7 @@ class ItemPodCastCategory extends StatelessWidget {
                   ),
                   Expanded(
                     child: AppText(
-                      text: 'Continue Listening',
+                      text: item.podCastCategoryTitle,
                       textSize: 15.sp,
                       color: AppColor.black,
                       maxLines: 1,

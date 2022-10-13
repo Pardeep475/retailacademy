@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../common/app_color.dart';
@@ -10,6 +10,7 @@ import '../../../common/widget/app_text.dart';
 import '../../../common/widget/audio_player_widget.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../network/modal/podcast/pod_cast_response.dart';
+import '../../comment/page/pod_cast_comment_screen.dart';
 import '../controller/pod_cast_detail_controller.dart';
 
 class PodCastDetailScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
   @override
   void initState() {
     _controller.item = widget.item;
+
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -59,9 +61,37 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
                 decoration: BoxDecoration(
                     color: AppColor.grey,
                     borderRadius: BorderRadius.circular(5.r)),
-                child: Icon(
-                  Icons.mic,
-                  size: 36.0.r,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                // child: Icon(
+                //   Icons.mic,
+                //   size: 36.0.r,
+                // ),
+                child: CachedNetworkImage(
+                  imageUrl: widget.item.thumbnailPath,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => Container(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                        height: 36.r,
+                        width: 36.r,
+                        child: const CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      AppImages.imgNoImageFound,
+                      color: AppColor.black,
+                      height: 50.h,
+                      width: 50.h,
+                    ),
+                  ),
                 ),
               ),
               Container(
@@ -75,8 +105,8 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText(
-                      text: 'widget.item.podCastCategory',
-                      textSize: 15.sp,
+                      text: widget.item.podcastTitle,
+                      textSize: 18.sp,
                       color: AppColor.black,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -87,7 +117,7 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
                       height: 5.w,
                     ),
                     AppText(
-                      text: 'widget.item.podCastCategory',
+                      text: widget.item.podcastDescription,
                       textSize: 15.sp,
                       color: AppColor.black,
                       maxLines: 1,
@@ -96,72 +126,41 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
                       lineHeight: 1.3,
                       fontWeight: FontWeight.w500,
                     ),
-                    SizedBox(
-                      height: 5.w,
-                    ),
-                    AppText(
-                      text: 'widget.item.podCastCategory',
-                      textSize: 15.sp,
-                      color: AppColor.black,
-                      maxLines: 1,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
-                      lineHeight: 1.3,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    // SizedBox(
+                    //   height: 5.w,
+                    // ),
+                    // AppText(
+                    //   text: 'widget.item.podCastCategory',
+                    //   textSize: 15.sp,
+                    //   color: AppColor.black,
+                    //   maxLines: 1,
+                    //   textAlign: TextAlign.start,
+                    //   overflow: TextOverflow.ellipsis,
+                    //   lineHeight: 1.3,
+                    //   fontWeight: FontWeight.w500,
+                    // ),
                   ],
                 ),
               ),
-              const Expanded(
-                child: AudioPlayerWidget(
-                  url: 'https://luan.xyz/files/audio/nasa_on_a_mission.mp3',
-                ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 16.w,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      // _controller.likeOrDislikeBlogApi(
-                      //     blogId: widget.item.blogId);
+              Expanded(
+                child: Obx(() {
+                  debugPrint(
+                      'IS_LIKED:--  ${_controller.hasLiked.value}  ${widget.item.podcastFile}');
+                  return AudioPlayerWidget(
+                    // url: 'https://luan.xyz/files/audio/nasa_on_a_mission.mp3',
+                    url: widget.item.podcastFile,
+                    onLikePressed: () {
+                      _controller.likeOrDislikePodcastApi(
+                          podcastId: widget.item.podcastId);
                     },
-                    icon: SvgPicture.asset(
-                      AppImages.iconHeart,
-                      color: AppColor.black,
-                      height: 24.r,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(
-                      AppImages.iconChat,
-                      color: AppColor.black,
-                      height: 24.r,
-                    ),
-                  ),
-                  const Expanded(child: SizedBox()),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.volume_up,
-                      size: 28.r,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.settings,
-                      size: 28.r,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16.w,
-                  ),
-                ],
+                    onCommentPressed: () => _commentButtonPressed(),
+                    hasLiked: _controller.hasLiked.value,
+                    showLoader: (value) {
+                      _controller.showLoader.value = value;
+                    },
+                    // url: widget.item.podcastFile,
+                  );
+                }),
               ),
             ],
           ),
@@ -187,5 +186,18 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
         ],
       ),
     );
+  }
+
+  _commentButtonPressed() {
+    Get.to(() => PodCastCommentScreen(
+          title: widget.item.podcastTitle,
+          hasLike: _controller.hasLiked.value,
+          itemMediaUrl: widget.item.thumbnailPath,
+          podCastId: widget.item.podcastId,
+        ))?.then((value) {
+      if (value != null && value is bool) {
+        _controller.hasLiked.value = value;
+      }
+    });
   }
 }

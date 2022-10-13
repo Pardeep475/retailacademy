@@ -40,7 +40,7 @@ class ItemRecentPodCast extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     CachedNetworkImage(
-                      imageUrl: item.profileImage,
+                      imageUrl: item.thumbnailPath,
                       height: Get.height,
                       width: Get.width,
                       imageBuilder: (context, imageProvider) => Container(
@@ -70,10 +70,10 @@ class ItemRecentPodCast extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Icon(
-                      Icons.mic,
-                      size: 36.0.r,
-                    ),
+                    // Icon(
+                    //   Icons.mic,
+                    //   size: 36.0.r,
+                    // ),
                   ],
                 ),
               ),

@@ -26,11 +26,13 @@ class BindingConst {
   static const String podCastScreenBinding = "POD_CAST_SCREEN_BINDING";
   static const String podCastContentScreenBinding = "POD_CAST_CONTENT_SCREEN_BINDING";
   static const String podCastDetailScreenBinding = "POD_CAST_DETAIL_SCREEN_BINDING";
+  static const String podCastCommentScreenBinding = "POD_CAST_COMMENT_SCREEN_BINDING";
   static const String quizMasterScreenBinding = "QUIZ_MASTER_SCREEN_BINDING";
   static const String quizMasterDetailScreenBinding = "QUIZ_MASTER_DETAIL_SCREEN_BINDING";
   static const String helpAndContactRetailScreenBinding = "HELP_AND_CONTACT_RETAIL_SCREEN_BINDING";
   static const String trendingDetailScreenBinding = "TRENDING_DETAIL_SCREEN_BINDING";
   static const String commentScreenBinding = "COMMENT_SCREEN_BINDING";
+  static const String retailReelsCommentScreenBinding = "RETAIL_REELS_COMMENT_SCREEN_BINDING";
 
 
 }

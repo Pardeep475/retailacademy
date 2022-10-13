@@ -23,20 +23,23 @@ class PodCastCategoryResponse {
 class PodCastCategoryElement {
   PodCastCategoryElement({
     this.podCastCategoryId = -1,
-    this.podCastCategory = '',
+    this.podCastCategoryTitle = '',
+    this.podCastCategoryDescription = '',
     this.categoryThumbnailImage = '',
     this.hasViewed = false,
   });
 
   int podCastCategoryId;
-  String podCastCategory;
+  String podCastCategoryTitle;
+  String podCastCategoryDescription;
   String categoryThumbnailImage;
   bool hasViewed;
 
   factory PodCastCategoryElement.fromJson(Map<String, dynamic> json) =>
       PodCastCategoryElement(
         podCastCategoryId: json["podcastcategoryid"] ?? -1,
-        podCastCategory: json["podcastcategory"] ?? '',
+        podCastCategoryTitle: json["podcastcategory"] ?? '',
+        podCastCategoryDescription: json["podcastDescription"] ?? '',
         categoryThumbnailImage: json["categorythumbnelimage"] ?? '',
         hasViewed: json["hasviewed"] ?? false,
       );

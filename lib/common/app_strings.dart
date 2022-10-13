@@ -91,4 +91,5 @@ class AppStrings {
   static const String continueListening = "Continue Listening";
   static const String recent = "Recent";
   static const String category = "Category";
+  static const String audioPlayingError = "Not able to play this file.";
 }

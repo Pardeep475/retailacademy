@@ -1,10 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:retail_academy/app/comment/page/pod_cast_comment_screen.dart';
 import 'package:retail_academy/app/knowledge/controller/pod_cast_content_controller.dart';
+import 'package:retail_academy/app/knowledge/page/pod_cast_detail_screen.dart';
 import 'package:retail_academy/app/knowledge/widget/item_pod_cast.dart';
 
 import '../../../common/app_color.dart';
+import '../../../common/app_images.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
@@ -54,7 +58,9 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 16.w,),
+                  SizedBox(
+                    width: 16.w,
+                  ),
                   Container(
                     height: 130.h,
                     width: 130.w,
@@ -62,19 +68,49 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                     decoration: BoxDecoration(
                         color: AppColor.grey,
                         borderRadius: BorderRadius.circular(5.r)),
-                    child: Icon(
-                      Icons.mic,
-                      size: 36.0.r,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    // child: Icon(
+                    //   Icons.mic,
+                    //   size: 36.0.r,
+                    // ),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.item.categoryThumbnailImage,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) => Container(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                            height: 36.r,
+                            width: 36.r,
+                            child: const CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          AppImages.imgNoImageFound,
+                          color: AppColor.black,
+                          height: 50.h,
+                          width: 50.h,
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(width: 10.w,),
+                  SizedBox(
+                    width: 10.w,
+                  ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         AppText(
-                          text: widget.item.podCastCategory,
+                          text: widget.item.podCastCategoryTitle,
                           textSize: 15.sp,
                           color: AppColor.black,
                           maxLines: 1,
@@ -83,22 +119,28 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                           fontWeight: FontWeight.w500,
                         ),
                         SizedBox(
-                          height: 5.w,
+                          height: widget.item.podCastCategoryDescription.isEmpty
+                              ? 0
+                              : 5.w,
                         ),
-                        AppText(
-                          text: widget.item.podCastCategory,
-                          textSize: 15.sp,
-                          color: AppColor.black,
-                          maxLines: 1,
-                          textAlign: TextAlign.start,
-                          overflow: TextOverflow.ellipsis,
-                          lineHeight: 1.3,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        widget.item.podCastCategoryDescription.isEmpty
+                            ? const SizedBox()
+                            : AppText(
+                                text: widget.item.podCastCategoryDescription,
+                                textSize: 15.sp,
+                                color: AppColor.black,
+                                maxLines: 1,
+                                textAlign: TextAlign.start,
+                                overflow: TextOverflow.ellipsis,
+                                lineHeight: 1.3,
+                                fontWeight: FontWeight.w500,
+                              ),
                       ],
                     ),
                   ),
-                  SizedBox(width: 16.w,),
+                  SizedBox(
+                    width: 16.w,
+                  ),
                 ],
               ),
               Expanded(
@@ -122,7 +164,15 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                           PodcastElement item = _controller.dataList[index];
                           return ItemPodCast(
                             item: item,
-                            onItemPressed: () {},
+                            onItemPressed: () {
+                              Get.to(PodCastDetailScreen(item: item));
+                            },
+                            onCommentPressed: () =>
+                                _commentButtonPressed(index: index),
+                            onLikePressed: () {
+                              _controller.likeOrDislikePodcastApi(
+                                  index: index, podcastId: item.podcastId);
+                            },
                           );
                         }),
                   );
@@ -152,5 +202,18 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
         ],
       ),
     );
+  }
+
+  _commentButtonPressed({required int index}) {
+    Get.to(() => PodCastCommentScreen(
+          title: _controller.dataList[index].podcastTitle,
+          hasLike: _controller.dataList[index].hasLiked,
+          itemMediaUrl: _controller.dataList[index].thumbnailPath,
+          podCastId: _controller.dataList[index].podcastId,
+        ))?.then((value) {
+      if (value != null && value is bool) {
+        _controller.updateLikePodCast(index: index, value: value);
+      }
+    });
   }
 }

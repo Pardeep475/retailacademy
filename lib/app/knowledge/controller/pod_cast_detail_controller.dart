@@ -1,14 +1,18 @@
 import 'package:get/get.dart';
 
 import '../../../common/app_strings.dart';
+import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
+import '../../../network/modal/base/base_response.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
+import '../../../network/modal/podcast/pod_cast_like_request.dart';
 import '../../../network/modal/podcast/pod_cast_response.dart';
 
 class PodCastDetailController extends GetxController {
   var showLoader = false.obs;
   PodcastElement? item;
+  var hasLiked = false.obs;
   final RxList<BlogCategoryElement> dataList = RxList();
 
   @override
@@ -29,31 +33,56 @@ class PodCastDetailController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  Future getQuizMasterApi({bool isLoader = true}) async {
+  // Future getQuizMasterApi({bool isLoader = true}) async {
+  //   bool value = await Utils.checkConnectivity();
+  //   if (value) {
+  //     try {
+  //       if (isLoader) {
+  //         showLoader.value = true;
+  //       }
+  //       var response = await ApiProvider.apiProvider.fetchWhatsHotBlog();
+  //       if (response != null) {
+  //         WhatsHotBlogResponse whatsHotBlogResponse =
+  //             (response as WhatsHotBlogResponse);
+  //         if (whatsHotBlogResponse.status) {
+  //           dataList.clear();
+  //           dataList.addAll(whatsHotBlogResponse.blogCategoryList ?? []);
+  //           dataList.refresh();
+  //         } else {
+  //           Utils.errorSnackBar(AppStrings.error, whatsHotBlogResponse.message);
+  //         }
+  //       }
+  //     } catch (e) {
+  //       Utils.errorSnackBar(AppStrings.error, e.toString());
+  //     } finally {
+  //       if (isLoader) {
+  //         showLoader.value = false;
+  //       }
+  //     }
+  //   }
+  //   return null;
+  // }
+
+  Future likeOrDislikePodcastApi({required int podcastId}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
       try {
-        if (isLoader) {
-          showLoader.value = true;
-        }
-        var response = await ApiProvider.apiProvider.fetchWhatsHotBlog();
+        showLoader.value = true;
+        String userId = await SessionManager.getUserId();
+        var response = await ApiProvider.apiProvider.podcastLikeApi(
+          request: PodCastLikeRequest(
+            podcastId: podcastId,
+            userId: userId,
+          ),
+        );
         if (response != null) {
-          WhatsHotBlogResponse whatsHotBlogResponse =
-              (response as WhatsHotBlogResponse);
-          if (whatsHotBlogResponse.status) {
-            dataList.clear();
-            dataList.addAll(whatsHotBlogResponse.blogCategoryList ?? []);
-            dataList.refresh();
-          } else {
-            Utils.errorSnackBar(AppStrings.error, whatsHotBlogResponse.message);
-          }
+          BaseResponse baseResponse = (response as BaseResponse);
+          hasLiked.value = baseResponse.status;
         }
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());
       } finally {
-        if (isLoader) {
-          showLoader.value = false;
-        }
+        showLoader.value = false;
       }
     }
     return null;
