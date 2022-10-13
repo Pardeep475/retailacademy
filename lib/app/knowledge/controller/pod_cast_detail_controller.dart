@@ -4,9 +4,11 @@ import '../../../common/app_strings.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
+import '../../../network/modal/podcast/pod_cast_response.dart';
 
 class PodCastDetailController extends GetxController {
   var showLoader = false.obs;
+  PodcastElement? item;
   final RxList<BlogCategoryElement> dataList = RxList();
 
   @override

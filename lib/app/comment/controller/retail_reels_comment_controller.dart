@@ -173,13 +173,14 @@ class RetailReelsCommentController extends GetxController {
         );
         if (response != null) {
           BaseResponse baseResponse = (response as BaseResponse);
-          if (baseResponse.status) {
-            hasLiked.value = !hasLiked.value;
-          } else {
-            if (baseResponse.message.isNotEmpty) {
-              Utils.errorSnackBar(AppStrings.error, baseResponse.message);
-            }
-          }
+          hasLiked.value = baseResponse.status;
+          // if (baseResponse.status) {
+          //   hasLiked.value = !hasLiked.value;
+          // } else {
+          //   if (baseResponse.message.isNotEmpty) {
+          //     Utils.errorSnackBar(AppStrings.error, baseResponse.message);
+          //   }
+          // }
         }
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());

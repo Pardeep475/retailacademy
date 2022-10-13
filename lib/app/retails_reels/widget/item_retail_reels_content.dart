@@ -22,7 +22,7 @@ class ItemRetailReelsContent extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           CachedNetworkImage(
-            imageUrl: item.profileImage,
+            imageUrl: item.thumbnailPath,
             height: Get.height * 0.4,
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(

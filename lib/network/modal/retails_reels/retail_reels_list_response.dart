@@ -31,6 +31,7 @@ class ReelElement {
     this.endDate = '',
     this.reelTag = '',
     this.userName = '',
+    this.thumbnailPath = '',
     this.profileImage = '',
     this.likeCount = 0,
     this.commentCount = 0,
@@ -52,6 +53,7 @@ class ReelElement {
   int commentCount;
   bool hasLiked;
   bool hasViewed;
+  String thumbnailPath;
 
   factory ReelElement.fromJson(Map<String, dynamic> json) => ReelElement(
         reelId: json["reelid"] ?? -1,
@@ -64,6 +66,7 @@ class ReelElement {
         reelTag: json["ReelTag"] ?? '',
         userName: json["UserName"] ?? '',
         profileImage: json["profileImage"] ?? '',
+        thumbnailPath: json["ThumbnailPath"] ?? '',
         likeCount: json["likecount"] ?? 0,
         commentCount: json["commnetcount"] ?? 0,
         hasLiked: json["hasliked"] ?? false,

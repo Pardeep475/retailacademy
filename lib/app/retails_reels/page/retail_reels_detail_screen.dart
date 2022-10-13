@@ -67,14 +67,14 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
                     return const SizedBox();
                   }
 
-                  return AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: BetterPlayer.network(_controller.videoUrl.value,
-                        betterPlayerConfiguration:
-                            const BetterPlayerConfiguration(
-                          autoPlay: true,
-                          looping: true,
-                        )),
+                  return BetterPlayer.network(
+                    _controller.videoUrl.value,
+                    betterPlayerConfiguration:
+                        const BetterPlayerConfiguration(
+                            autoPlay: true,
+                            looping: true,
+                            aspectRatio: 9 / 16,
+                            fit: BoxFit.cover),
                   );
 
                   /*return BetterPlayer.network(

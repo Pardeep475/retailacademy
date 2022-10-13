@@ -84,11 +84,12 @@ class RetailReelsDetailController extends GetxController {
         );
         if (response != null) {
           BaseResponse baseResponse = (response as BaseResponse);
-          if (baseResponse.status) {
-            hasLiked.value = !hasLiked.value;
-          } else {
-            Utils.errorSnackBar(AppStrings.error, baseResponse.message);
-          }
+          // if (baseResponse.status) {
+            // hasLiked.value = !hasLiked.value;
+            hasLiked.value = baseResponse.status;
+          // } else {
+          //   Utils.errorSnackBar(AppStrings.error, baseResponse.message);
+          // }
         }
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());
