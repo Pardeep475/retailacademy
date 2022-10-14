@@ -17,6 +17,7 @@ class AudioPlayerWidget extends StatefulWidget {
   final VoidCallback? onLikePressed;
   final VoidCallback? onCommentPressed;
   final Function(bool value)? showLoader;
+  final Function(String position) positionOnPressed;
   final bool hasLiked;
 
   const AudioPlayerWidget({
@@ -24,6 +25,7 @@ class AudioPlayerWidget extends StatefulWidget {
     required this.url,
     this.onLikePressed,
     this.onCommentPressed,
+    required this.positionOnPressed,
     this.showLoader,
     this.hasLiked = false,
     this.mode = PlayerMode.mediaPlayer,
@@ -51,7 +53,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   String get _durationText => _duration?.toString().split('.').first ?? '';
 
-  String get _positionText => _position?.toString().split('.').first ?? '';
+  String get positionText => _position?.toString().split('.').first ?? '';
 
   bool isAudioMute = false;
 
@@ -86,7 +88,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             children: [
               AppText(
                 text: _position != null
-                    ? '$_positionText / $_durationText'
+                    ? '$positionText / $_durationText'
                     : _duration != null
                         ? _durationText
                         : '00:00:00 / 00:00:00',
@@ -237,7 +239,10 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     });
 
     _positionSubscription = _audioPlayer.onPositionChanged.listen(
-      (p) => setState(() => _position = p),
+      (p) {
+        setState(() => _position = p);
+        widget.positionOnPressed(positionText);
+      },
     );
 
     _playerCompleteSubscription = _audioPlayer.onPlayerComplete.listen((event) {
@@ -279,7 +284,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     if (widget.showLoader != null) {
       widget.showLoader!(false);
     }
-    setState(() => _playerState = PlayerState.playing);
+    if(_audioPlayer.state == PlayerState.playing){
+      setState(() => _playerState = PlayerState.playing);
+    }
   }
 
   _pause() async {

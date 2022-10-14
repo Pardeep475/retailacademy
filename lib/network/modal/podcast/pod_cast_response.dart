@@ -37,6 +37,7 @@ class PodcastElement {
     this.podcastFile = '',
     this.podcastFileName = '',
     this.thumbnailPath = '',
+    this.timeSpentOnPodcast = '00:00',
   });
 
   int podcastId;
@@ -54,6 +55,7 @@ class PodcastElement {
   String podcastFile;
   String podcastFileName;
   String thumbnailPath;
+  String timeSpentOnPodcast;
 
   factory PodcastElement.fromJson(Map<String, dynamic> json) => PodcastElement(
         podcastId: json["podcastId"] ?? -1,
@@ -71,5 +73,6 @@ class PodcastElement {
         podcastFile: json["podcastFile"] ?? '',
         podcastFileName: json["podcastFileName"] ?? '',
         thumbnailPath: json["ThumbnailPath"] ?? '',
+        timeSpentOnPodcast: json["timeSepentOnPodcast"] ?? '00:00',
       );
 }

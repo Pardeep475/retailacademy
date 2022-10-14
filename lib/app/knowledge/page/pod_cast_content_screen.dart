@@ -66,7 +66,7 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                     width: 130.w,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: AppColor.grey,
+                        color: widget.item.color,
                         borderRadius: BorderRadius.circular(5.r)),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     // child: Icon(
@@ -165,7 +165,13 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                           return ItemPodCast(
                             item: item,
                             onItemPressed: () {
-                              Get.to(PodCastDetailScreen(item: item));
+                              Get.to(PodCastDetailScreen(
+                                item: item,
+                              ))?.then((value) {
+                                if(value != null && value is bool){
+                                 _controller.updateLikePodCast(index: index, value: value);
+                                }
+                              });
                             },
                             onCommentPressed: () =>
                                 _commentButtonPressed(index: index),

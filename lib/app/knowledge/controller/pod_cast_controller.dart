@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../common/app_strings.dart';
@@ -90,6 +91,15 @@ class PodCastController extends GetxController {
             if (responses[i].status) {
               categoryDataList.clear();
               categoryDataList.addAll(responses[i].podCastCategoryList ?? []);
+              int value = 0;
+              for (int i = 0; i < categoryDataList.length; i++) {
+                categoryDataList[i].color = colorList[value];
+                if (value == 8) {
+                  value = 0;
+                } else {
+                  value = ++value;
+                }
+              }
             } else {
               Utils.errorSnackBar(AppStrings.error, responses[i].message);
             }
@@ -104,3 +114,15 @@ class PodCastController extends GetxController {
     categoryDataList.refresh();
   }
 }
+
+const colorList = [
+  Color(0xffFCED22),
+  Color(0xff83E7F7),
+  Color(0xffF76D6D),
+  Color(0xffF8A5AD),
+  Color(0xffE3A541),
+  Color(0xffC1FF5C),
+  Color(0xff74F7C5),
+  Color(0xffA66CFF),
+  Color(0xffFFBC85),
+];

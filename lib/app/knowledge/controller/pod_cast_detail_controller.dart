@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../common/app_strings.dart';
@@ -8,12 +9,14 @@ import '../../../network/modal/base/base_response.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
 import '../../../network/modal/podcast/pod_cast_like_request.dart';
 import '../../../network/modal/podcast/pod_cast_response.dart';
+import '../../../network/modal/podcast/pod_cast_viewed_by_user_request.dart';
 
 class PodCastDetailController extends GetxController {
   var showLoader = false.obs;
   PodcastElement? item;
   var hasLiked = false.obs;
   final RxList<BlogCategoryElement> dataList = RxList();
+  var timeSpentOnPodcast = '00:00';
 
   @override
   void onInit() {
@@ -83,6 +86,33 @@ class PodCastDetailController extends GetxController {
         Utils.errorSnackBar(AppStrings.error, e.toString());
       } finally {
         showLoader.value = false;
+      }
+    }
+    return null;
+  }
+
+  Future podcastViewedByUserApi(
+      {required int podcastId,
+      bool isBackPressed = false}) async {
+    debugPrint('TIME_SPENT:-  $timeSpentOnPodcast');
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+        showLoader.value = true;
+        String userId = await SessionManager.getUserId();
+        await ApiProvider.apiProvider.podcastViewedByUserApi(
+          request: PodcastViewedByUserRequest(
+              podcastId: podcastId.toString(),
+              userid: userId,
+              userSpentOnPodcast: timeSpentOnPodcast),
+        );
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+        showLoader.value = false;
+        if (isBackPressed) {
+          Get.back(result: hasLiked.value);
+        }
       }
     }
     return null;

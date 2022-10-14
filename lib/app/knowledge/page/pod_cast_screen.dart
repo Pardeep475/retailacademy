@@ -108,7 +108,13 @@ class _PodCastScreenState extends State<PodCastScreen> {
                                   PodcastElement item = _controller
                                       .continueListeningDataList[index];
                                   return ItemRecentPodCast(
-                                      item: item, onPressed: () {});
+                                      item: item,
+                                      onPressed: () {
+                                        Get.to(PodCastDetailScreen(item: item))
+                                            ?.then((value) {
+                                          _controller.getPodCastApi();
+                                        });
+                                      });
                                 }),
                           ),
                           _controller.recentDataList.isNotEmpty
@@ -142,7 +148,13 @@ class _PodCastScreenState extends State<PodCastScreen> {
                                   PodcastElement item =
                                       _controller.recentDataList[index];
                                   return ItemRecentPodCast(
-                                      item: item, onPressed: () => Get.to(PodCastDetailScreen(item: item)));
+                                      item: item,
+                                      onPressed: () {
+                                        Get.to(PodCastDetailScreen(item: item))
+                                            ?.then((value) {
+                                          _controller.getPodCastApi();
+                                        });
+                                      });
                                 }),
                           ),
                           _controller.categoryDataList.isNotEmpty
@@ -177,7 +189,12 @@ class _PodCastScreenState extends State<PodCastScreen> {
                                       _controller.categoryDataList[index];
                                   return ItemPodCastCategory(
                                     item: item,
-                                    onPressed: () => Get.to(PodCastContentScreen(item: item)),
+                                    onPressed: () {
+                                      Get.to(PodCastContentScreen(item: item))
+                                          ?.then((value) {
+                                        _controller.getPodCastApi();
+                                      });
+                                    },
                                   );
                                 }),
                           ),

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class PodCastCategoryResponse {
   PodCastCategoryResponse({
     this.podCastCategoryList,
@@ -27,6 +29,7 @@ class PodCastCategoryElement {
     this.podCastCategoryDescription = '',
     this.categoryThumbnailImage = '',
     this.hasViewed = false,
+    this.color = const Color(0xffFCED22),
   });
 
   int podCastCategoryId;
@@ -34,6 +37,7 @@ class PodCastCategoryElement {
   String podCastCategoryDescription;
   String categoryThumbnailImage;
   bool hasViewed;
+  Color color;
 
   factory PodCastCategoryElement.fromJson(Map<String, dynamic> json) =>
       PodCastCategoryElement(

@@ -72,11 +72,9 @@ class ItemPodCast extends StatelessWidget {
                     ),
                     errorWidget: (context, url, error) => Container(
                       alignment: Alignment.center,
-                      child: Image.asset(
-                        AppImages.imgNoImageFound,
-                        color: AppColor.black,
-                        height: 50.h,
-                        width: 50.h,
+                      child: Icon(
+                        Icons.mic,
+                        size: 36.r,
                       ),
                     ),
                   ),

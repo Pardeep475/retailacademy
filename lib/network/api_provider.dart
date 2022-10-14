@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:retail_academy/common/local_storage/session_manager.dart';
 import 'package:retail_academy/network/modal/knowledge/like_or_dislike_content_knowledge_section_request.dart';
 import 'package:retail_academy/network/modal/knowledge/whats_hot_blog_content_response.dart';
 import 'package:retail_academy/network/modal/login/login_request.dart';
@@ -25,12 +26,14 @@ import 'modal/knowledge/quiz_category_response.dart';
 import 'modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
 import 'modal/knowledge/whats_hot_blog_content_request.dart';
 import 'modal/knowledge/whats_hot_blog_response.dart';
+import 'modal/maintainance_message/maintainance_message_response.dart';
 import 'modal/podcast/pod_cast_category_response.dart';
 import 'modal/podcast/pod_cast_comment_request.dart';
 import 'modal/podcast/pod_cast_comment_response.dart';
 import 'modal/podcast/pod_cast_delete_comment_request.dart';
 import 'modal/podcast/pod_cast_like_request.dart';
 import 'modal/podcast/pod_cast_response.dart';
+import 'modal/podcast/pod_cast_viewed_by_user_request.dart';
 import 'modal/points/point_request.dart';
 import 'modal/profile/logout_request.dart';
 import 'modal/profile/logout_response.dart';
@@ -447,8 +450,7 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> getPodcastCategoryListApi(
-      {required String userId}) async {
+  Future<dynamic> getPodcastCategoryListApi({required String userId}) async {
     try {
       Response response = await _dio.get(
         ApiConstants.podcastCategory(userId: userId),
@@ -460,9 +462,12 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> getPodcastContinueListeningListApi({required String userId}) async {
+  Future<dynamic> getPodcastContinueListeningListApi(
+      {required String userId}) async {
     try {
-      Response response = await _dio.get(ApiConstants.podcastContinueListeningList(userId: userId),);
+      Response response = await _dio.get(
+        ApiConstants.podcastContinueListeningList(userId: userId),
+      );
       return PodCastResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
@@ -483,8 +488,7 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> podcastLikeApi(
-      {required PodCastLikeRequest request}) async {
+  Future<dynamic> podcastLikeApi({required PodCastLikeRequest request}) async {
     try {
       Response response = await _dio.post(
         ApiConstants.podcastLike,
@@ -525,4 +529,27 @@ class ApiProvider {
     }
   }
 
+  Future<dynamic> podcastViewedByUserApi(
+      {required PodcastViewedByUserRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.podcastViewedByUser,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> maintenanceMessageApi() async {
+    try {
+      Response response = await _dio.get(ApiConstants.maintenanceMessage,);
+      return MaintenanceMessageResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
 }

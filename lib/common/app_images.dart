@@ -26,5 +26,10 @@ class AppImages {
   static const String imgKnowledgePodcast = "assets/images/img_knowledge_podcast.png";
   static const String imgKnowledgeWhatHotBlog = "assets/images/img_knowledge_what_hot_blog.png";
   static const String imgNoDataFound = "assets/images/no_data_found.jpg";
+  static const String iconHome = "assets/images/icon_home.svg";
+  static const String iconInfo = "assets/images/icon_info.svg";
+  static const String iconKnowledge = "assets/images/icon_knowledge.svg";
+  static const String iconProfile = "assets/images/icon_profile.svg";
+  static const String iconReels = "assets/images/icon_reels.svg";
 
 }

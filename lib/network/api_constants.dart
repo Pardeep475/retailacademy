@@ -66,4 +66,6 @@ class ApiConstants {
   static String podcastLike = 'PodcastLikes';
   static String podcastDeleteComment = 'PodcastDeleteComment';
   static String podcastCommentList = 'PodcastCommentList';
+  static String podcastViewedByUser = 'PodcastViewedByUser';
+  static String maintenanceMessage = 'MaintenanceMessage';
 }

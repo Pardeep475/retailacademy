@@ -32,14 +32,10 @@ class ItemPodCastCategory extends StatelessWidget {
                 height: 100.h,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    color: AppColor.grey,
+                    color: item.color,
                     borderRadius: BorderRadius.circular(5.r)),
                 margin: EdgeInsets.only(bottom: 10.h),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                // child: Icon(
-                //   Icons.mic,
-                //   size: 36.0.r,
-                // ),
                 child: CachedNetworkImage(
                   imageUrl: item.categoryThumbnailImage,
                   imageBuilder: (context, imageProvider) => Container(
@@ -59,11 +55,9 @@ class ItemPodCastCategory extends StatelessWidget {
                   ),
                   errorWidget: (context, url, error) => Container(
                     alignment: Alignment.center,
-                    child: Image.asset(
-                      AppImages.imgNoImageFound,
-                      color: AppColor.black,
-                      height: 50.h,
-                      width: 50.h,
+                    child: Icon(
+                      Icons.mic,
+                      size: 36.0.r,
                     ),
                   ),
                 ),
