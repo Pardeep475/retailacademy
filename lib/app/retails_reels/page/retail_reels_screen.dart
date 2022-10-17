@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
+import '../../../common/dummy.dart';
 import '../../../common/routes/route_strings.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../common/widget/no_data_available.dart';
@@ -47,13 +48,14 @@ class _RetailReelsScreenState extends State<RetailReelsScreen> {
                   if (!_controller.showLoader.value &&
                       _controller.dataList.isEmpty) {
                     return NoDataAvailable(
-                      onPressed: () => _controller.fetchRetailsReelsCategoriesApi(),
+                      onPressed: () =>
+                          _controller.fetchRetailsReelsCategoriesApi(),
                     );
                   }
 
                   return RefreshIndicator(
-                    onRefresh: () =>
-                        _controller.fetchRetailsReelsCategoriesApi(isLoader: false),
+                    onRefresh: () => _controller.fetchRetailsReelsCategoriesApi(
+                        isLoader: false),
                     child: GridView.builder(
                       itemCount: _controller.dataList.length,
                       physics: const BouncingScrollPhysics(
@@ -67,10 +69,12 @@ class _RetailReelsScreenState extends State<RetailReelsScreen> {
                               childAspectRatio: 1,
                               mainAxisSpacing: 3.0),
                       itemBuilder: (BuildContext context, int index) {
-                        RetailReelsCategoryElement item = _controller.dataList[index];
+                        RetailReelsCategoryElement item =
+                            _controller.dataList[index];
                         return ItemRetailReelsCategory(
                           item: item,
                           onItemClick: () {
+                            // Get.to(DummyVideoScreen());
                             var arguments = <String, dynamic>{
                               "title": item.reelCategory,
                               "categoryId": item.categoryId,

@@ -8,12 +8,10 @@ import 'package:photo_view/photo_view.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/utils.dart';
-import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../common/widget/read_more_text.dart';
 import '../../../network/modal/trending/trending_response.dart';
 import '../../comment/page/trending_comment_screen.dart';
-import '../../knowledge/widget/video_items.dart';
 import '../controller/trending_detail_controller.dart';
 
 class TrendingDetailScreen extends StatefulWidget {
@@ -34,7 +32,7 @@ class _TrendingDetailScreenState extends State<TrendingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.hasLike.value = widget.item.hasLiked;
     });
   }

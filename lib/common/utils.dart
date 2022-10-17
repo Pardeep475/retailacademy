@@ -171,14 +171,14 @@ class Utils {
   }
 
   static bool isVideo(String path) {
-    if (path.contains('MP4') ||
-        path.contains('MOV') ||
-        path.contains('WMV') ||
-        path.contains('AVI') ||
-        path.contains('MKV') ||
-        path.contains('MPEG-2') ||
-        path.contains('WEBM') ||
-        path.contains('AVCHD')) {
+    if (path.toUpperCase().contains('MP4') ||
+        path.toUpperCase().contains('MOV') ||
+        path.toUpperCase().contains('WMV') ||
+        path.toUpperCase().contains('AVI') ||
+        path.toUpperCase().contains('MKV') ||
+        path.toUpperCase().contains('MPEG-2') ||
+        path.toUpperCase().contains('WEBM') ||
+        path.toUpperCase().contains('AVCHD')) {
       return true;
     }
     return false;

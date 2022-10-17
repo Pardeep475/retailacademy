@@ -26,5 +26,5 @@ class AppColor {
   static const lightNavyBlue = Color(0xFF004566);
   static const commentBlack = Color(0xFF333333);
   static const commentTextFieldBackgroundColor = Color(0xFFCBCBCB);
-
+  static const black001 = Color(0xFF000100);
 }

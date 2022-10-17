@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:better_player/better_player.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/portrait_video_player.dart';
 import '../../../network/modal/retails_reels/retail_reels_list_response.dart';
 import '../../comment/page/retail_reels_comment_screen.dart';
 import '../controller/retail_reels_detail_controller.dart';
-// import '../widget/video_items.dart';
 
 class RetailReelsDetailScreen extends StatefulWidget {
   final ReelElement item;
@@ -62,88 +61,20 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
               ),
               Expanded(
                 child: Obx(() {
-                  debugPrint('value:-   ${_controller.videoUrl.value}');
+                  debugPrint(
+                      'value:-   ${_controller.videoUrl.value}  ${_controller.refreshDuration.value}');
                   if (_controller.videoUrl.isEmpty) {
                     return const SizedBox();
                   }
-
-                  return BetterPlayer.network(
-                    _controller.videoUrl.value,
-                    betterPlayerConfiguration:
-                        const BetterPlayerConfiguration(
-                            autoPlay: true,
-                            looping: true,
-                            aspectRatio: 9 / 16,
-                            fit: BoxFit.cover),
-                  );
-
-                  /*return BetterPlayer.network(
-                    _controller.videoUrl.value,
-                    betterPlayerConfiguration: const BetterPlayerConfiguration(
-                      autoPlay: true,
-                      looping: true,
-                      deviceOrientationsAfterFullScreen: [
-                        DeviceOrientation.portraitUp,
-                        DeviceOrientation.portraitDown,
-                      ],
-                      // deviceOrientationsAfterFullScreen :  [
-                      //   DeviceOrientation.portraitUp,
-                      //   DeviceOrientation.portraitDown,
-                      // ]
-                    ),
-                  );*/
-                  /*videoPlayerController = VideoPlayerController.network(
-                    _controller.videoUrl.value,
-                  );
-                  _chewieController = ChewieController(
-                    videoPlayerController: videoPlayerController!,
-                    aspectRatio: videoPlayerController!.value.aspectRatio,
-                    autoInitialize: true,
-                    autoPlay: true,
-                    looping: true,
-                    showControls: true,
-                    showOptions: false,
-                    showControlsOnInitialize: false,
-                    allowFullScreen: true,
-                    allowMuting: true,
-                    materialProgressColors: ChewieProgressColors(
-                      playedColor: Colors.red.shade500,
-                      bufferedColor: Colors.red,
-                      handleColor: Colors.red,
-                      backgroundColor: Colors.red.shade100,
-                    ),
-                    placeholder: Container(
-                      color: Colors.transparent,
-                      width: Get.width,
-                      height: Get.height,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColor.loaderColor),
-                        ),
-                      ),
-                    ),
-                    errorBuilder: (context, errorMessage) {
-                      return Center(
-                        child: Text(
-                          errorMessage,
-                          style: TextStyle(color: Colors.red, fontSize: 20.sp),
-                        ),
-                      );
+                  return PortraitVideoPlayer(
+                    url:
+                        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                    aspectRatio: 2 / 3,
+                    duration: _controller.refreshDuration.value,
+                    onDurationChanged: (value) {
+                      _controller.position = value;
                     },
                   );
-                  return Chewie(
-                    controller: _chewieController!,
-                  );*/
-                  // return VideoItems(
-                  //   videoPlayerController: videoPlayerController ??
-                  //       VideoPlayerController.network(
-                  //         _controller.videoUrl.value,
-                  //       ),
-                  //   key: UniqueKey(),
-                  //   showOptions: false,
-                  //   padding: EdgeInsets.zero,
-                  // );
                 }),
               ),
               SizedBox(height: 12.h),
@@ -219,11 +150,19 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
     Get.to(() => RetailReelsCommentScreen(
           title: widget.item.userName,
           hasLike: _controller.hasLiked.value,
-          itemMediaUrl: _controller.videoUrl.value,
+          // itemMediaUrl: _controller.videoUrl.value,
+          itemMediaUrl:
+              'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
           reelId: widget.item.reelId,
+          position: _controller.position,
         ))?.then((value) {
-      if (value != null && value is bool) {
-        _controller.hasLiked.value = value;
+      if (value != null) {
+        if (value['LIKE'] != null) {
+          _controller.hasLiked.value = value as bool;
+        }
+        debugPrint('PROGRESS_VALUE:--  ${value['POSITION'] as Duration}');
+        _controller.position = value['POSITION'] as Duration;
+        _controller.refreshDuration.value = value['POSITION'] as Duration;
       }
     });
   }

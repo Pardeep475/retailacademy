@@ -19,6 +19,7 @@ class RetailReelsCommentController extends GetxController {
   var hasLiked = false.obs;
   var isCommentShown = true.obs;
   var userId = '';
+  var position = const Duration();
 
   @override
   void onInit() {

@@ -43,7 +43,7 @@ class ItemSentComment extends StatelessWidget {
                   color: AppColor.commentBlack,
                   image: DecorationImage(
                     image: imageProvider,
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),

@@ -15,6 +15,8 @@ class RetailReelsDetailController extends GetxController {
   var hasLiked = false.obs;
   var reelDescription = ''.obs;
   var videoUrl = ''.obs;
+  var position = const Duration();
+  var refreshDuration = const Duration().obs;
 
   @override
   void onInit() {
@@ -85,8 +87,8 @@ class RetailReelsDetailController extends GetxController {
         if (response != null) {
           BaseResponse baseResponse = (response as BaseResponse);
           // if (baseResponse.status) {
-            // hasLiked.value = !hasLiked.value;
-            hasLiked.value = baseResponse.status;
+          // hasLiked.value = !hasLiked.value;
+          hasLiked.value = baseResponse.status;
           // } else {
           //   Utils.errorSnackBar(AppStrings.error, baseResponse.message);
           // }

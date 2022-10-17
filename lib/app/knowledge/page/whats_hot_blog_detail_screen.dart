@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:better_player/better_player.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
@@ -38,7 +37,7 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
     _controller.hasLiked.value = widget.item.hasLiked;
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.fetchWhatsHotContentApi(
           categoryId: widget.categoryId, blogId: widget.item.blogId);
     });
@@ -63,38 +62,38 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
               Expanded(
                 child: Obx(() {
                   debugPrint('value:-   ${_controller.videoUrl.value}');
-                  if (_controller.videoUrl.isEmpty) {
+                  // if (_controller.videoUrl.isEmpty) {
                     return const SizedBox();
-                  }
-
-                  return AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: BetterPlayer.network(
-                      _controller.videoUrl.value,
-                      betterPlayerConfiguration:
-                          const BetterPlayerConfiguration(
-                              autoPlay: true,
-                              looping: true,
-                              aspectRatio: 9 / 16,
-                              fit: BoxFit.cover),
-                    ),
-                  );
-
-                  return BetterPlayer.network(
-                    _controller.videoUrl.value,
-                    betterPlayerConfiguration: const BetterPlayerConfiguration(
-                      autoPlay: true,
-                      looping: true,
-                      deviceOrientationsAfterFullScreen: [
-                        DeviceOrientation.portraitUp,
-                        DeviceOrientation.portraitDown,
-                      ],
-                      // deviceOrientationsAfterFullScreen :  [
-                      //   DeviceOrientation.portraitUp,
-                      //   DeviceOrientation.portraitDown,
-                      // ]
-                    ),
-                  );
+                  // }
+                  //
+                  // return Hero(
+                  //   tag: widget.item.blogId,
+                  //   child: BetterPlayer.network(
+                  //     _controller.videoUrl.value,
+                  //     betterPlayerConfiguration:
+                  //         const BetterPlayerConfiguration(
+                  //             autoPlay: true,
+                  //             looping: true,
+                  //             aspectRatio: 9 / 16,
+                  //             fit: BoxFit.cover),
+                  //   ),
+                  // );
+                  //
+                  // return BetterPlayer.network(
+                  //   _controller.videoUrl.value,
+                  //   betterPlayerConfiguration: const BetterPlayerConfiguration(
+                  //     autoPlay: true,
+                  //     looping: true,
+                  //     deviceOrientationsAfterFullScreen: [
+                  //       DeviceOrientation.portraitUp,
+                  //       DeviceOrientation.portraitDown,
+                  //     ],
+                  //     // deviceOrientationsAfterFullScreen :  [
+                  //     //   DeviceOrientation.portraitUp,
+                  //     //   DeviceOrientation.portraitDown,
+                  //     // ]
+                  //   ),
+                  // );
                   /*videoPlayerController = VideoPlayerController.network(
                     _controller.videoUrl.value,
                   );

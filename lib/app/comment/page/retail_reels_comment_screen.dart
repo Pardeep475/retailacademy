@@ -11,6 +11,7 @@ import '../../../common/app_images.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/portrait_video_player.dart';
 import '../../../network/modal/retails_reels/retail_reels_comment_response.dart';
 import '../controller/retail_reels_comment_controller.dart';
 import '../widgets/item_no_comment_found.dart';
@@ -22,12 +23,14 @@ class RetailReelsCommentScreen extends StatefulWidget {
   final bool hasLike;
   final String itemMediaUrl;
   final int reelId;
+  final Duration? position;
 
   const RetailReelsCommentScreen(
       {required this.title,
       required this.hasLike,
       required this.itemMediaUrl,
       required this.reelId,
+      this.position,
       Key? key})
       : super(key: key);
 
@@ -49,6 +52,7 @@ class _RetailReelsCommentScreenState extends State<RetailReelsCommentScreen> {
     _controller.clearValues();
     _controller.reelId = widget.reelId;
     _controller.hasLiked.value = widget.hasLike;
+    _controller.position = widget.position ?? const Duration();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _controller.fetchProfileImage();
@@ -65,7 +69,10 @@ class _RetailReelsCommentScreenState extends State<RetailReelsCommentScreen> {
     }
     return WillPopScope(
       onWillPop: () {
-        Get.back(result: _controller.hasLiked.value);
+        Get.back(result: {
+          'LIKE': _controller.hasLiked.value,
+          'POSITION': _controller.position
+        });
         return Future.value(true);
       },
       child: Scaffold(
@@ -82,46 +89,62 @@ class _RetailReelsCommentScreenState extends State<RetailReelsCommentScreen> {
                   isSearchButtonVisible: false,
                   isNotificationButtonVisible: true,
                   onBackPressed: () {
-                    Get.back(result: _controller.hasLiked.value);
+                    Get.back(result: {
+                      'LIKE': _controller.hasLiked.value,
+                      'POSITION': _controller.position
+                    });
                   },
                 ),
-                GestureDetector(
-                  onTap: () {
-                    if (widget.itemMediaUrl.isNotEmpty) {
-                      Get.to(() => FullScreenImageAndVideoScreen(
-                            url: widget.itemMediaUrl,
-                        title: widget.title,
-                          ));
-                    }
-                  },
-                  child: CachedNetworkImage(
-                    imageUrl: widget.itemMediaUrl,
-                    height: Get.height * 0.25,
-                    imageBuilder: (context, imageProvider) => Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.black,
-                        image: DecorationImage(
-                            image: imageProvider, fit: BoxFit.contain),
+                Utils.isVideo(widget.itemMediaUrl)
+                    ? SizedBox(
+                        height: Get.height * 0.25,
+                        child: PortraitVideoPlayer(
+                          url: widget.itemMediaUrl,
+                          aspectRatio: 16 / 9,
+                          duration: _controller.position,
+                          onDurationChanged: (value) {
+                            _controller.position = value;
+                          },
+                        ),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          if (widget.itemMediaUrl.isNotEmpty) {
+                            Get.to(() => FullScreenImageAndVideoScreen(
+                                  url: widget.itemMediaUrl,
+                                  title: widget.title,
+                                ));
+                          }
+                        },
+                        child: CachedNetworkImage(
+                          imageUrl: widget.itemMediaUrl,
+                          height: Get.height * 0.25,
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              color: AppColor.black,
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.contain),
+                            ),
+                          ),
+                          placeholder: (context, url) => Container(
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                                height: 36.r,
+                                width: 36.r,
+                                child: const CircularProgressIndicator()),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            alignment: Alignment.center,
+                            decoration:
+                                const BoxDecoration(color: AppColor.grey),
+                            child: Image.asset(
+                              AppImages.imgNoImageFound,
+                              height: Get.height * 0.15,
+                              color: AppColor.black,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    placeholder: (context, url) => Container(
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                          height: 36.r,
-                          width: 36.r,
-                          child: const CircularProgressIndicator()),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(color: AppColor.grey),
-                      child: Image.asset(
-                        AppImages.imgNoImageFound,
-                        height: Get.height * 0.15,
-                        color: AppColor.black,
-                      ),
-                    ),
-                  ),
-                ),
                 Expanded(
                   child: Container(
                     color: AppColor.commentBlack,

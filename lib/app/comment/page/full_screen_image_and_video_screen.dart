@@ -7,7 +7,6 @@ import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
-import '../../knowledge/widget/video_items.dart';
 
 class FullScreenImageAndVideoScreen extends StatefulWidget {
   final String url;
