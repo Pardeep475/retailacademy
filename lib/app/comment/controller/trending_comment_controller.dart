@@ -75,10 +75,10 @@ class TrendingCommentController extends GetxController {
             dataList.addAll(trendingCommentResponse.commentElementList ?? []);
             dataList.refresh();
           } else {
-            if (trendingCommentResponse.message.isNotEmpty) {
-              Utils.errorSnackBar(
-                  AppStrings.error, trendingCommentResponse.message);
-            }
+            // if (trendingCommentResponse.message.isNotEmpty) {
+            //   Utils.errorSnackBar(
+            //       AppStrings.error, trendingCommentResponse.message);
+            // }
           }
         }
       } catch (e) {

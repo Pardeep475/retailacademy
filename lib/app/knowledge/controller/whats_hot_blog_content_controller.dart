@@ -8,7 +8,7 @@ import '../../../network/modal/knowledge/whats_hot_blog_content_request.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_content_response.dart';
 
 class WhatsHotBlogContentController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   final RxList<BlogContentElement> dataList = RxList();
   var categoryId = -1;
 

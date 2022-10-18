@@ -18,6 +18,7 @@ class QuizModalAdapter extends TypeAdapter<QuizModal> {
     };
     return QuizModal(
       categoryId: fields[0] == null ? 0 : fields[0] as int,
+      userId: fields[3] == null ? -1 : fields[3] as int,
       quizResponse: (fields[1] as List?)?.cast<QuizElementModal>(),
       lastAnswered: fields[2] == null ? -1 : fields[2] as int,
     );
@@ -26,13 +27,15 @@ class QuizModalAdapter extends TypeAdapter<QuizModal> {
   @override
   void write(BinaryWriter writer, QuizModal obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.categoryId)
       ..writeByte(1)
       ..write(obj.quizResponse)
       ..writeByte(2)
-      ..write(obj.lastAnswered);
+      ..write(obj.lastAnswered)
+      ..writeByte(3)
+      ..write(obj.userId);
   }
 
   @override

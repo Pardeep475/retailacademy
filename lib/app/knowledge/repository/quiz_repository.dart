@@ -10,16 +10,19 @@ class QuizRepository {
   final int categoryId;
   final List<QuizResponseElement> quizResponse;
   final Box<QuizModal> localRepository;
+  final int userId;
 
   QuizRepository(
       {required this.categoryId,
       required this.quizResponse,
+      required this.userId,
       required this.localRepository});
 
   saveDataToLocal() {
     localRepository.add(QuizModal(
         categoryId: categoryId,
         lastAnswered: -1,
+        userId: userId,
         quizResponse: _convertToQuizElementModal()));
   }
 

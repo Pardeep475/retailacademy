@@ -8,7 +8,7 @@ import '../../../network/modal/retails_reels/retail_reels_list_request.dart';
 import '../../../network/modal/retails_reels/retail_reels_list_response.dart';
 
 class RetailReelsContentController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   final RxList<ReelElement> dataList = RxList();
   var categoryId = -1;
 

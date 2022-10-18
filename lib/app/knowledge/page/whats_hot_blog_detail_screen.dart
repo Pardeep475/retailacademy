@@ -7,6 +7,7 @@ import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/portrait_video_player.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_content_response.dart';
 import '../controller/whats_hot_blog_detail_controller.dart';
 // import '../widget/video_items.dart';
@@ -49,148 +50,134 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomAppBar(
-                title: widget.item.blogTitle,
-                isBackButtonVisible: true,
-                isSearchButtonVisible: false,
-                isNotificationButtonVisible: true,
-              ),
-              Expanded(
-                child: Obx(() {
-                  debugPrint('value:-   ${_controller.videoUrl.value}');
-                  // if (_controller.videoUrl.isEmpty) {
-                    return const SizedBox();
-                  // }
-                  //
-                  // return Hero(
-                  //   tag: widget.item.blogId,
-                  //   child: BetterPlayer.network(
-                  //     _controller.videoUrl.value,
-                  //     betterPlayerConfiguration:
-                  //         const BetterPlayerConfiguration(
-                  //             autoPlay: true,
-                  //             looping: true,
-                  //             aspectRatio: 9 / 16,
-                  //             fit: BoxFit.cover),
-                  //   ),
-                  // );
-                  //
-                  // return BetterPlayer.network(
-                  //   _controller.videoUrl.value,
-                  //   betterPlayerConfiguration: const BetterPlayerConfiguration(
-                  //     autoPlay: true,
-                  //     looping: true,
-                  //     deviceOrientationsAfterFullScreen: [
-                  //       DeviceOrientation.portraitUp,
-                  //       DeviceOrientation.portraitDown,
-                  //     ],
-                  //     // deviceOrientationsAfterFullScreen :  [
-                  //     //   DeviceOrientation.portraitUp,
-                  //     //   DeviceOrientation.portraitDown,
-                  //     // ]
-                  //   ),
-                  // );
-                  /*videoPlayerController = VideoPlayerController.network(
-                    _controller.videoUrl.value,
-                  );
-                  _chewieController = ChewieController(
-                    videoPlayerController: videoPlayerController!,
-                    aspectRatio: videoPlayerController!.value.aspectRatio,
-                    autoInitialize: true,
-                    autoPlay: true,
-                    looping: true,
-                    showControls: true,
-                    showOptions: false,
-                    showControlsOnInitialize: false,
-                    allowFullScreen: true,
-                    allowMuting: true,
-                    materialProgressColors: ChewieProgressColors(
-                      playedColor: Colors.red.shade500,
-                      bufferedColor: Colors.red,
-                      handleColor: Colors.red,
-                      backgroundColor: Colors.red.shade100,
-                    ),
-                    placeholder: Container(
-                      color: Colors.transparent,
-                      width: Get.width,
-                      height: Get.height,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColor.loaderColor),
-                        ),
-                      ),
-                    ),
-                    errorBuilder: (context, errorMessage) {
-                      return Center(
-                        child: Text(
-                          errorMessage,
-                          style: TextStyle(color: Colors.red, fontSize: 20.sp),
-                        ),
-                      );
-                    },
-                  );
-                  return Chewie(
-                    controller: _chewieController!,
-                  );*/
-                  // return VideoItems(
-                  //   videoPlayerController: videoPlayerController ??
-                  //       VideoPlayerController.network(
-                  //         _controller.videoUrl.value,
-                  //       ),
-                  //   key: UniqueKey(),
-                  //   showOptions: false,
-                  //   padding: EdgeInsets.zero,
-                  // );
-                }),
-              ),
-              SizedBox(height: 12.h),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      _controller.likeOrDislikeBlogApi(
-                          blogId: widget.item.blogId);
-                    },
-                    icon: Obx(() {
-                      return SvgPicture.asset(
-                        AppImages.iconHeart,
-                        color: _controller.hasLiked.value
-                            ? AppColor.red
-                            : AppColor.black,
-                        height: 24.r,
-                      );
-                    }),
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: Obx(() {
+              debugPrint('value:-   ${_controller.videoUrl.value} ');
+              if (_controller.videoUrl.isEmpty) {
+                return const SizedBox();
+              }
+              return PortraitVideoPlayer(
+                url: _controller.videoUrl.value,
+                aspectRatio: 2 / 3,
+                commentIcon: IconButton(
+                  onPressed: () => _showCommentsBottomSheet(),
+                  icon: SvgPicture.asset(
+                    AppImages.iconChat,
+                    color: AppColor.white,
+                    width: 28,
+                    height: 28,
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(
-                      AppImages.iconChat,
-                      color: AppColor.black,
-                      height: 24.r,
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
-                child: Obx(() {
-                  return AppText(
-                    text: _controller.blogDescription.value,
+                ),
+                likeIcon: IconButton(
+                  onPressed: () {
+                    _controller.likeOrDislikeBlogApi(
+                        blogId: widget.item.blogId);
+                  },
+                  icon: Obx(() {
+                    return SvgPicture.asset(
+                      AppImages.iconHeart,
+                      color: _controller.hasLiked.value
+                          ? AppColor.red
+                          : AppColor.white,
+                      width: 28,
+                      height: 28,
+                    );
+                  }),
+                ),
+                descriptionWidget: Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 5.h),
+                  child: Obx(() {
+                    return AppText(
+                      text: _controller.blogDescription.value,
+                      textSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      maxLines: 5,
+                      lineHeight: 1.2,
+                      color: Colors.white,
+                      textAlign: TextAlign.start,
+                    );
+                  }),
+                ),
+                titleWidget: Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 0),
+                  child: AppText(
+                    text: widget.item.blogTitle,
                     textSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     maxLines: 5,
                     lineHeight: 1.2,
+                    color: Colors.white,
                     textAlign: TextAlign.start,
-                  );
-                }),
+                  ),
+                ),
+                onDurationChanged: (value) {},
+              );
+            }),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              CustomAppBar(
+                title: '',
+                isBackButtonVisible: true,
+                isSearchButtonVisible: false,
+                isNotificationButtonVisible: true,
+                isVideoComponent: true,
               ),
+              // Expanded(
+              //   child: Obx(() {
+              //     debugPrint('value:-   ${_controller.videoUrl.value}');
+              //     return const SizedBox();
+              //   }),
+              // ),
+              // SizedBox(height: 12.h),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     IconButton(
+              //       onPressed: () {
+              //         _controller.likeOrDislikeBlogApi(
+              //             blogId: widget.item.blogId);
+              //       },
+              //       icon: Obx(() {
+              //         return SvgPicture.asset(
+              //           AppImages.iconHeart,
+              //           color: _controller.hasLiked.value
+              //               ? AppColor.red
+              //               : AppColor.black,
+              //           height: 24.r,
+              //         );
+              //       }),
+              //     ),
+              //     IconButton(
+              //       onPressed: () {},
+              //       icon: SvgPicture.asset(
+              //         AppImages.iconChat,
+              //         color: AppColor.black,
+              //         height: 24.r,
+              //       ),
+              //     )
+              //   ],
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
+              //   child: Obx(() {
+              //     return AppText(
+              //       text: _controller.blogDescription.value,
+              //       textSize: 16.sp,
+              //       fontWeight: FontWeight.w500,
+              //       maxLines: 5,
+              //       lineHeight: 1.2,
+              //       textAlign: TextAlign.start,
+              //     );
+              //   }),
+              // ),
             ],
           ),
           Obx(
@@ -219,12 +206,56 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
 
   @override
   void dispose() {
-    // if (videoPlayerController != null) {
-    //   videoPlayerController!.dispose();
-    // }
-    // if (_chewieController != null) {
-    //   _chewieController!.dispose();
-    // }
     super.dispose();
+  }
+
+  void _showCommentsBottomSheet() {
+    /*showModalBottomSheet<void>(
+      // context and builder are
+      // required properties in this widget
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.w), topRight: Radius.circular(30.w))),
+
+      builder: (BuildContext context) {
+        // we set up a container inside which
+        // we create center column and display text
+
+        // Returning SizedBox instead of a Container
+        return Container(
+          height: Get.height * 0.8,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50.w),
+                  topRight: Radius.circular(50.w))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                      onPressed: () => Get.back(),
+                      icon: const Icon(Icons.close)),
+                ],
+              ),
+              Expanded(
+                child: RetailReelsCommentScreen(
+                  title: widget.item.userName,
+                  hasLike: _controller.hasLiked.value,
+                  // itemMediaUrl: _controller.videoUrl.value,
+                  itemMediaUrl:
+                  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                  reelId: widget.item.reelId,
+                  position: _controller.position,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );*/
   }
 }

@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:retail_academy/common/local_storage/session_manager.dart';
 import 'package:retail_academy/network/modal/base/base_response.dart';
 import 'package:retail_academy/network/modal/profile/update_profile_image_request.dart';
 import '../../../common/app_strings.dart';
+import '../../../common/local_storage/hive/quiz_modal.dart';
 import '../../../common/routes/route_strings.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
@@ -53,7 +55,7 @@ class ProfileController extends GetxController {
     if (image != null) {
       updateProfileImage(imgUrl: image.path);
     } else {
-      Utils.errorSnackBar(AppStrings.error.tr, AppStrings.imageCancelByUser);
+      // Utils.errorSnackBar(AppStrings.error.tr, AppStrings.imageCancelByUser);
     }
   }
 
@@ -62,7 +64,7 @@ class ProfileController extends GetxController {
     if (image != null) {
       updateProfileImage(imgUrl: image.path);
     } else {
-      Utils.errorSnackBar(AppStrings.error.tr, AppStrings.imageCancelByUser);
+      // Utils.errorSnackBar(AppStrings.error.tr, AppStrings.imageCancelByUser);
     }
   }
 
@@ -158,10 +160,10 @@ class ProfileController extends GetxController {
         if (response != null) {
           LogoutResponse value = (response as LogoutResponse);
           if (value.status) {
-            Utils.errorSnackBar(AppStrings.success, value.message,
-                isSuccess: true);
             await SessionManager.clearAllData();
             Get.offAndToNamed(RouteString.loginScreen);
+            Utils.errorSnackBar(AppStrings.success, value.message,
+                isSuccess: true);
           } else {
             Utils.errorSnackBar(AppStrings.error, value.message);
           }

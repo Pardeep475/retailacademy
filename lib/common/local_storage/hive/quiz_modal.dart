@@ -11,9 +11,12 @@ class QuizModal {
   List<QuizElementModal>? quizResponse;
   @HiveField(2, defaultValue: -1)
   int lastAnswered;
+  @HiveField(3, defaultValue: -1)
+  int userId;
 
   QuizModal(
       {required this.categoryId,
+      required this.userId,
       required this.quizResponse,
       required this.lastAnswered});
 }

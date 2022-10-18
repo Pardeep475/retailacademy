@@ -72,11 +72,12 @@ class QuizMasterDetailController extends GetxController {
           if (consolidatedQuizQuestionsResponse.quizResponse != null) {
             QuizRepository _quizRepository = QuizRepository(
                 categoryId: categoryId,
+                userId: int.parse(userId),
                 quizResponse:
                     consolidatedQuizQuestionsResponse.quizResponse ?? [],
                 localRepository: quizModalLocalRepository);
             _quizRepository.saveDataToLocal();
-            _updateDataList(categoryId: categoryId);
+            _updateDataList(categoryId: categoryId, userId: int.parse(userId));
             // dataList
             //     .addAll(consolidatedQuizQuestionsResponse.quizResponse ?? []);
             // dataList.refresh();
@@ -101,18 +102,21 @@ class QuizMasterDetailController extends GetxController {
     if (modal == null) {
       return true;
     }
+    dataList.clear();
     currentPage = modal.lastAnswered + 1;
     dataList.addAll(modal.quizResponse ?? []);
     dataList.refresh();
     return false;
   }
 
-  _updateDataList({required int categoryId}) {
-    QuizModal? modal = quizModalLocalRepository.values
-        .firstWhereOrNull((element) => element.categoryId == categoryId);
+  _updateDataList({required int categoryId, required int userId}) {
+    QuizModal? modal = quizModalLocalRepository.values.firstWhereOrNull(
+        (element) =>
+            element.categoryId == categoryId && element.userId == userId);
     if (modal == null) {
       return;
     }
+    dataList.clear();
     dataList.addAll(modal.quizResponse ?? []);
     dataList.refresh();
   }
@@ -423,8 +427,9 @@ class QuizMasterDetailController extends GetxController {
 
   _deleteDataFromLocal() async {
     dynamic key;
-    int modal = quizModalLocalRepository.keys.firstWhereOrNull((element){
-      if(quizModalLocalRepository.getAt(element)?.categoryId == categoryValue){
+    int modal = quizModalLocalRepository.keys.firstWhereOrNull((element) {
+      if (quizModalLocalRepository.getAt(element)?.categoryId ==
+          categoryValue) {
         key = element;
         return true;
       } else {

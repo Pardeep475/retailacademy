@@ -76,10 +76,10 @@ class RetailReelsCommentController extends GetxController {
             dataList.addAll(reelsCommentResponse.reelComments ?? []);
             dataList.refresh();
           } else {
-            if (reelsCommentResponse.message.isNotEmpty) {
-              Utils.errorSnackBar(
-                  AppStrings.error, reelsCommentResponse.message);
-            }
+            // if (reelsCommentResponse.message.isNotEmpty) {
+            //   Utils.errorSnackBar(
+            //       AppStrings.error, reelsCommentResponse.message);
+            // }
           }
         }
       } catch (e) {

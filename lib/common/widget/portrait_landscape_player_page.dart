@@ -13,6 +13,10 @@ class PortraitLandscapePlayerPage extends StatefulWidget {
   final bool isAutoPlay;
   final double aspectRatio;
   final Duration? duration;
+  final Widget? commentIcon;
+  final Widget? likeIcon;
+  final Widget? titleWidget;
+  final Widget? descriptionWidget;
 
   const PortraitLandscapePlayerPage(
       {Key? key,
@@ -21,6 +25,10 @@ class PortraitLandscapePlayerPage extends StatefulWidget {
       this.filePath,
       this.isAutoPlay = true,
       this.aspectRatio = 9 / 16,
+      this.commentIcon,
+      this.likeIcon,
+      this.titleWidget,
+      this.descriptionWidget,
       this.duration})
       : super(key: key);
 
@@ -80,6 +88,10 @@ class _PortraitLandscapePlayerPageState
         body: VideoPlayerBothWidget(
           controller: controller,
           aspectRatio: widget.aspectRatio,
+          commentIcon: widget.commentIcon,
+          likeIcon: widget.likeIcon,
+          titleWidget: widget.titleWidget,
+          descriptionWidget: widget.descriptionWidget,
         ),
       );
 }

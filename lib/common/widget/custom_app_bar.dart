@@ -17,6 +17,7 @@ class CustomAppBar extends StatelessWidget {
   final Function(String)? onSearchChanged;
   final TextEditingController? searchController;
   final bool isIconsTitle;
+  final bool isVideoComponent;
 
   const CustomAppBar(
       {required this.title,
@@ -28,6 +29,7 @@ class CustomAppBar extends StatelessWidget {
       this.searchController,
       this.isSearchWidgetVisible = false,
       this.isIconsTitle = false,
+      this.isVideoComponent = false,
       this.onSearchChanged,
       Key? key})
       : super(key: key);
@@ -39,21 +41,22 @@ class CustomAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: kToolbarHeight *
-              (isBackButtonVisible ||
-                      isNotificationButtonVisible ||
-                      isSearchButtonVisible
-                  ? 0.7
-                  : 0.8),
+          height:  kToolbarHeight *
+                  (isBackButtonVisible ||
+                          isNotificationButtonVisible ||
+                          isSearchButtonVisible
+                      ? 0.7
+                      : 0.8),
         ),
         Row(
           children: [
             isBackButtonVisible
                 ? IconButton(
                     onPressed: onBackPressed ?? () => Get.back(),
-                    icon: const Icon(
+                    splashColor: Colors.white54,
+                    icon: Icon(
                       Icons.arrow_back_ios,
-                      color: AppColor.black,
+                      color: isVideoComponent ? AppColor.white : AppColor.black,
                     ),
                   )
                 : const SizedBox(),
@@ -71,6 +74,9 @@ class CustomAppBar extends StatelessWidget {
                           text:
                               "${AppStrings.pointConstant} ${AppStrings.points}",
                           textSize: 18.sp,
+                          color: isVideoComponent
+                              ? AppColor.white
+                              : AppColor.black,
                           fontWeight: FontWeight.w600,
                         ),
                   isNotificationButtonVisible
@@ -78,18 +84,24 @@ class CustomAppBar extends StatelessWidget {
                       : isSearchButtonVisible
                           ? IconButton(
                               onPressed: () {},
-                              icon: const Icon(
+                              splashColor: Colors.white54,
+                              icon: Icon(
                                 Icons.search_sharp,
-                                color: AppColor.black,
+                                color: isVideoComponent
+                                    ? AppColor.white
+                                    : AppColor.black,
                               ),
                             )
                           : const SizedBox(),
                   isNotificationButtonVisible
                       ? IconButton(
                           onPressed: () {},
-                          icon: const Icon(
+                          splashColor: Colors.white54,
+                          icon: Icon(
                             Icons.notifications_none_outlined,
-                            color: AppColor.black,
+                            color: isVideoComponent
+                                ? AppColor.white
+                                : AppColor.black,
                           ),
                         )
                       : const SizedBox(),
@@ -111,8 +123,9 @@ class CustomAppBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.mic,
+                    color: isVideoComponent ? AppColor.white : AppColor.black,
                   ),
                   SizedBox(
                     width: 5.w,
@@ -122,6 +135,7 @@ class CustomAppBar extends StatelessWidget {
                     textSize: 25.sp,
                     maxLines: 2,
                     textAlign: TextAlign.center,
+                    color: isVideoComponent ? AppColor.white : AppColor.black,
                     fontWeight: FontWeight.w600,
                   ),
                 ],
@@ -130,6 +144,7 @@ class CustomAppBar extends StatelessWidget {
                 text: title,
                 textSize: 25.sp,
                 maxLines: 2,
+                color: isVideoComponent ? AppColor.white : AppColor.black,
                 textAlign: TextAlign.center,
                 fontWeight: FontWeight.w600,
               ),

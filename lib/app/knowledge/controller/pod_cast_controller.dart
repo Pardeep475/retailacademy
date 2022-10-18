@@ -9,7 +9,7 @@ import '../../../network/modal/podcast/pod_cast_category_response.dart';
 import '../../../network/modal/podcast/pod_cast_response.dart';
 
 class PodCastController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
 
   final RxList<PodcastElement> recentDataList = RxList();
   final RxList<PodcastElement> continueListeningDataList = RxList();

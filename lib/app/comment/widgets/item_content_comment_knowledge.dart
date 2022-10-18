@@ -81,7 +81,7 @@ class ItemContentCommentKnowledge extends StatelessWidget {
                       text: item.userName,
                       textSize: 16.sp,
                       maxLines: 1,
-                      color: AppColor.white,
+                      color: AppColor.black,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w500,
                     ),
@@ -92,7 +92,7 @@ class ItemContentCommentKnowledge extends StatelessWidget {
                       text: item.comment,
                       textSize: 16.sp,
                       maxLines: 1,
-                      color: AppColor.white,
+                      color: AppColor.black,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w400,
                     ),
@@ -104,7 +104,7 @@ class ItemContentCommentKnowledge extends StatelessWidget {
                 onPressed: onDeleteButtonPressed,
                 icon: const Icon(
                   Icons.delete,
-                  color: AppColor.white,
+                  color: AppColor.black,
                 ),
               ):
               SizedBox(

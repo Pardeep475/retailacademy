@@ -76,10 +76,10 @@ class PodCastCommentController extends GetxController {
             dataList.addAll(podCastCommentResponse.podcastComments ?? []);
             dataList.refresh();
           } else {
-            if (podCastCommentResponse.message.isNotEmpty) {
-              Utils.errorSnackBar(
-                  AppStrings.error, podCastCommentResponse.message);
-            }
+            // if (podCastCommentResponse.message.isNotEmpty) {
+            //   Utils.errorSnackBar(
+            //       AppStrings.error, podCastCommentResponse.message);
+            // }
           }
         }
       } catch (e) {

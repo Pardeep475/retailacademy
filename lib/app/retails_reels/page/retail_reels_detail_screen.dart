@@ -47,79 +47,153 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
   Widget build(BuildContext context) {
     debugPrint("VideoUrl:-    ${widget.item.filePath}");
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomAppBar(
-                title: widget.item.reelName,
-                isBackButtonVisible: true,
-                isSearchButtonVisible: false,
-                isNotificationButtonVisible: true,
-              ),
-              Expanded(
-                child: Obx(() {
-                  debugPrint(
-                      'value:-   ${_controller.videoUrl.value}  ${_controller.refreshDuration.value}');
-                  if (_controller.videoUrl.isEmpty) {
-                    return const SizedBox();
-                  }
-                  return PortraitVideoPlayer(
-                    url:
-                        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                    aspectRatio: 2 / 3,
-                    duration: _controller.refreshDuration.value,
-                    onDurationChanged: (value) {
-                      _controller.position = value;
-                    },
-                  );
-                }),
-              ),
-              SizedBox(height: 12.h),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      _controller.likeOrDislikeRetailReelsApi(
-                          reelId: widget.item.reelId);
-                    },
-                    icon: Obx(() {
-                      return SvgPicture.asset(
-                        AppImages.iconHeart,
-                        color: _controller.hasLiked.value
-                            ? AppColor.red
-                            : AppColor.black,
-                        height: 24.r,
-                      );
-                    }),
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: Obx(() {
+              debugPrint(
+                  'value:-   ${_controller.videoUrl.value}  ${_controller.refreshDuration.value}');
+              if (_controller.videoUrl.isEmpty) {
+                return const SizedBox();
+              }
+              return PortraitVideoPlayer(
+                url: _controller.videoUrl.value,
+                aspectRatio: 2 / 3,
+                duration: _controller.refreshDuration.value,
+                commentIcon: IconButton(
+                  onPressed: () => _showCommentsBottomSheet(),
+                  icon: SvgPicture.asset(
+                    AppImages.iconChat,
+                    color: AppColor.white,
+                    width: 28,
+                    height: 28,
                   ),
-                  IconButton(
-                    onPressed: () => _commentButtonPressed(),
-                    icon: SvgPicture.asset(
-                      AppImages.iconChat,
-                      color: AppColor.black,
-                      height: 24.r,
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
-                child: Obx(() {
-                  return AppText(
-                    text: _controller.reelDescription.value,
+                ),
+                likeIcon: IconButton(
+                  onPressed: () {
+                    _controller.likeOrDislikeRetailReelsApi(
+                        reelId: widget.item.reelId);
+                  },
+                  icon: Obx(() {
+                    return SvgPicture.asset(
+                      AppImages.iconHeart,
+                      color: _controller.hasLiked.value
+                          ? AppColor.red
+                          : AppColor.white,
+                      width: 28,
+                      height: 28,
+                    );
+                  }),
+                ),
+                descriptionWidget: Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 5.h),
+                  child: Obx(() {
+                    return AppText(
+                      text: _controller.reelDescription.value,
+                      textSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      maxLines: 5,
+                      lineHeight: 1.2,
+                      color: Colors.white,
+                      textAlign: TextAlign.start,
+                    );
+                  }),
+                ),
+                titleWidget: Padding(
+                  padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 0),
+                  child: AppText(
+                    text: widget.item.reelName,
                     textSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     maxLines: 5,
                     lineHeight: 1.2,
+                    color: Colors.white,
                     textAlign: TextAlign.start,
-                  );
-                }),
+                  ),
+                ),
+                onDurationChanged: (value) {
+                  _controller.position = value;
+                },
+              );
+            }),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              CustomAppBar(
+                title: '',
+                isBackButtonVisible: true,
+                isSearchButtonVisible: false,
+                isVideoComponent: true,
+                isNotificationButtonVisible: true,
               ),
+              // Expanded(
+              //   child: Obx(() {
+              //     debugPrint(
+              //         'value:-   ${_controller.videoUrl.value}  ${_controller.refreshDuration.value}');
+              //     if (_controller.videoUrl.isEmpty) {
+              //       return const SizedBox();
+              //     }
+              //     return PortraitVideoPlayer(
+              //       url:
+              //           'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+              //       aspectRatio: 2 / 3,
+              //       duration: _controller.refreshDuration.value,
+              //       onDurationChanged: (value) {
+              //         _controller.position = value;
+              //       },
+              //     );
+              //   }),
+              // ),
+              // SizedBox(height: 12.h),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     IconButton(
+              //       onPressed: () {
+              //         _controller.likeOrDislikeRetailReelsApi(
+              //             reelId: widget.item.reelId);
+              //       },
+              //       icon: Obx(() {
+              //         return SvgPicture.asset(
+              //           AppImages.iconHeart,
+              //           color: _controller.hasLiked.value
+              //               ? AppColor.red
+              //               : AppColor.black,
+              //           height: 24.r,
+              //         );
+              //       }),
+              //     ),
+              //     IconButton(
+              //       onPressed: () => _commentButtonPressed(),
+              //       icon: SvgPicture.asset(
+              //         AppImages.iconChat,
+              //         color: AppColor.black,
+              //         height: 24.r,
+              //       ),
+              //     )
+              //   ],
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
+              //   child: Obx(() {
+              //     return AppText(
+              //       text: _controller.reelDescription.value,
+              //       textSize: 16.sp,
+              //       fontWeight: FontWeight.w500,
+              //       maxLines: 5,
+              //       lineHeight: 1.2,
+              //       textAlign: TextAlign.start,
+              //     );
+              //   }),
+              // ),
             ],
           ),
           Obx(
@@ -146,35 +220,79 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
     );
   }
 
-  _commentButtonPressed() {
-    Get.to(() => RetailReelsCommentScreen(
-          title: widget.item.userName,
-          hasLike: _controller.hasLiked.value,
-          // itemMediaUrl: _controller.videoUrl.value,
-          itemMediaUrl:
-              'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-          reelId: widget.item.reelId,
-          position: _controller.position,
-        ))?.then((value) {
-      if (value != null) {
-        if (value['LIKE'] != null) {
-          _controller.hasLiked.value = value as bool;
-        }
-        debugPrint('PROGRESS_VALUE:--  ${value['POSITION'] as Duration}');
-        _controller.position = value['POSITION'] as Duration;
-        _controller.refreshDuration.value = value['POSITION'] as Duration;
-      }
-    });
-  }
+  // _commentButtonPressed() {
+  //   Get.to(() => RetailReelsCommentScreen(
+  //         title: widget.item.userName,
+  //         hasLike: _controller.hasLiked.value,
+  //         // itemMediaUrl: _controller.videoUrl.value,
+  //         itemMediaUrl:
+  //             'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  //         reelId: widget.item.reelId,
+  //         position: _controller.position,
+  //       ))?.then((value) {
+  //     if (value != null) {
+  //       if (value['LIKE'] != null) {
+  //         _controller.hasLiked.value = value as bool;
+  //       }
+  //       debugPrint('PROGRESS_VALUE:--  ${value['POSITION'] as Duration}');
+  //       _controller.position = value['POSITION'] as Duration;
+  //       _controller.refreshDuration.value = value['POSITION'] as Duration;
+  //     }
+  //   });
+  // }
 
   @override
   void dispose() {
-    // if (videoPlayerController != null) {
-    //   videoPlayerController!.dispose();
-    // }
-    // if (_chewieController != null) {
-    //   _chewieController!.dispose();
-    // }
     super.dispose();
+  }
+
+  void _showCommentsBottomSheet() {
+    showModalBottomSheet<void>(
+      // context and builder are
+      // required properties in this widget
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.w), topRight: Radius.circular(30.w))),
+
+      builder: (BuildContext context) {
+        // we set up a container inside which
+        // we create center column and display text
+
+        // Returning SizedBox instead of a Container
+        return Container(
+          height: Get.height * 0.8,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50.w),
+                  topRight: Radius.circular(50.w))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                      onPressed: () => Get.back(),
+                      icon: const Icon(Icons.close)),
+                ],
+              ),
+              Expanded(
+                child: RetailReelsCommentScreen(
+                  title: widget.item.userName,
+                  hasLike: _controller.hasLiked.value,
+                  // itemMediaUrl: _controller.videoUrl.value,
+                  itemMediaUrl:
+                      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                  reelId: widget.item.reelId,
+                  position: _controller.position,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

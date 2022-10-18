@@ -12,11 +12,19 @@ import 'advanced_overlay_widget.dart';
 class VideoPlayerBothWidget extends StatefulWidget {
   final VideoPlayerController? controller;
   final double aspectRatio;
+  final Widget? commentIcon;
+  final Widget? likeIcon;
+  final Widget? titleWidget;
+  final Widget? descriptionWidget;
 
   const VideoPlayerBothWidget({
     Key? key,
     required this.controller,
     required this.aspectRatio,
+    this.commentIcon,
+    this.likeIcon,
+    this.titleWidget,
+    this.descriptionWidget,
   }) : super(key: key);
 
   @override
@@ -103,6 +111,11 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
               Positioned.fill(
                 child: AdvancedOverlayWidget(
                     controller: widget.controller,
+                    commentIcon: widget.commentIcon,
+                    likeIcon: widget.likeIcon,
+                    titleWidget: widget.titleWidget,
+                    descriptionWidget: widget.descriptionWidget,
+                    isCrossIconShown: true,
                     onClickedFullScreen: () {
                       target = isPortrait
                           ? Orientation.landscape
@@ -119,6 +132,8 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
                         DeviceOrientation.portraitUp,
                       ]);
                       Duration? position = await widget.controller?.position;
+
+                      Get.back(result: position);
                       Get.back(result: position);
                     },
                     isPortrait: isPortrait),
@@ -129,12 +144,22 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
       );
 
   Widget buildVideoPlayer(bool isPortrait) {
-    final video = AspectRatio(
-      aspectRatio: isPortrait
-          ? widget.aspectRatio
-          : widget.controller!.value.aspectRatio,
-      child: VideoPlayer(widget.controller!),
+    final video = SizedBox.expand(
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: widget.controller!.value.size.width,
+          height: widget.controller!.value.size.height,
+          child: VideoPlayer(widget.controller!),
+        ),
+      ),
     );
+    // final video = AspectRatio(
+    //   aspectRatio: isPortrait
+    //       ? widget.aspectRatio
+    //       : widget.controller!.value.aspectRatio,
+    //   child: VideoPlayer(widget.controller!),
+    // );
 
     return buildFullScreen(child: video);
   }

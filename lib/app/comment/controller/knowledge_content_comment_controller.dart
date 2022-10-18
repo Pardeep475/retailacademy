@@ -78,10 +78,10 @@ class KnowledgeContentCommentController extends GetxController {
             dataList.addAll(contentCommentResponse.commentElementList ?? []);
             dataList.refresh();
           } else {
-            if (contentCommentResponse.message.isNotEmpty) {
-              Utils.errorSnackBar(
-                  AppStrings.error, contentCommentResponse.message);
-            }
+            // if (contentCommentResponse.message.isNotEmpty) {
+            //   Utils.errorSnackBar(
+            //       AppStrings.error, contentCommentResponse.message);
+            // }
           }
         }
       } catch (e) {

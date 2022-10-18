@@ -200,15 +200,61 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
   }
 
   _commentButtonPressed() {
-    Get.to(() => PodCastCommentScreen(
-          title: widget.item.podcastTitle,
-          hasLike: _controller.hasLiked.value,
-          itemMediaUrl: widget.item.thumbnailPath,
-          podCastId: widget.item.podcastId,
-        ))?.then((value) {
-      if (value != null && value is bool) {
-        _controller.hasLiked.value = value;
-      }
-    });
+
+    showModalBottomSheet<void>(
+      // context and builder are
+      // required properties in this widget
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.w), topRight: Radius.circular(30.w))),
+
+      builder: (BuildContext context) {
+        // we set up a container inside which
+        // we create center column and display text
+
+        // Returning SizedBox instead of a Container
+        return Container(
+          height: Get.height * 0.8,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50.w),
+                  topRight: Radius.circular(50.w))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                      onPressed: () => Get.back(),
+                      icon: const Icon(Icons.close)),
+                ],
+              ),
+              Expanded(
+                child: PodCastCommentScreen(
+                  title: widget.item.podcastTitle,
+                  hasLike: _controller.hasLiked.value,
+                  itemMediaUrl: widget.item.thumbnailPath,
+                  podCastId: widget.item.podcastId,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    // Get.to(() => PodCastCommentScreen(
+    //       title: widget.item.podcastTitle,
+    //       hasLike: _controller.hasLiked.value,
+    //       itemMediaUrl: widget.item.thumbnailPath,
+    //       podCastId: widget.item.podcastId,
+    //     ))?.then((value) {
+    //   if (value != null && value is bool) {
+    //     _controller.hasLiked.value = value;
+    //   }
+    // });
   }
 }

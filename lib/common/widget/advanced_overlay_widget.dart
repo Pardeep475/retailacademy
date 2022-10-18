@@ -12,12 +12,22 @@ class AdvancedOverlayWidget extends StatefulWidget {
   final VoidCallback? onClickedFullScreen;
   final VoidCallback? onBackPressed;
   final bool isPortrait;
+  final Widget? commentIcon;
+  final Widget? likeIcon;
+  final Widget? titleWidget;
+  final Widget? descriptionWidget;
+  final bool isCrossIconShown;
 
   const AdvancedOverlayWidget(
       {Key? key,
       required this.controller,
       this.onClickedFullScreen,
       this.onBackPressed,
+      this.commentIcon,
+      this.likeIcon,
+      this.titleWidget,
+      this.descriptionWidget,
+      this.isCrossIconShown = false,
       required this.isPortrait})
       : super(key: key);
 
@@ -65,47 +75,48 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
               buildPlay(),
               Positioned(
                   top: 0.0,
-                  right: 0.0,
+                  left: 0.0,
                   child: Row(
                     children: [
-                      buildSpeed(),
-                      widget.isPortrait
-                          ? const SizedBox()
-                          : SafeArea(
+                      // buildSpeed(),
+                      widget.isCrossIconShown
+                          ? SafeArea(
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
                                 child: IconButton(
                                   onPressed: widget.onBackPressed,
                                   icon: const Icon(
-                                    Icons.close,
+                                    Icons.arrow_back_ios,
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
-                            ),
+                            )
+                          : const SizedBox(),
                     ],
                   )),
+              // Positioned(
+              //   left: 8,
+              //   bottom: 18,
+              //   child: Text(
+              //     _position != null
+              //         ? '${getPosition()} / ${getDuration()}'
+              //         : _duration != null
+              //             ? getDuration()
+              //             : '00:00:00 / 00:00:00',
+              //     style: TextStyle(
+              //         fontSize: 20.sp,
+              //         fontFamily: AppStrings.robotoFont,
+              //         fontWeight: FontWeight.w600,
+              //         color: AppColor.black),
+              //   ),
+              // ),
               Positioned(
-                left: 8,
-                bottom: 18,
-                child: Text(
-                  _position != null
-                      ? '${getPosition()} / ${getDuration()}'
-                      : _duration != null
-                          ? getDuration()
-                          : '00:00:00 / 00:00:00',
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontFamily: AppStrings.robotoFont,
-                      fontWeight: FontWeight.w600,
-                      color: AppColor.black),
-                ),
-              ),
-              Positioned(
-                  bottom: 0,
+                  bottom: 20.h,
                   left: 0,
                   right: 0,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(child: buildIndicator(context)),
                       const SizedBox(width: 12),
@@ -116,6 +127,25 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
                           size: 28,
                         ),
                         onTap: widget.onClickedFullScreen,
+                      ),
+                      const SizedBox(width: 8),
+                      Column(
+                        children: [
+                          widget.likeIcon == null
+                              ? const SizedBox()
+                              : widget.likeIcon!,
+                          widget.commentIcon == null
+                              ? const SizedBox()
+                              : widget.commentIcon!,
+                          GestureDetector(
+                            child: Icon(
+                              getMuteOrUnMuteIcons(),
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                            onTap: _muteAndUnMute,
+                          ),
+                        ],
                       ),
                       const SizedBox(width: 8),
                     ],
@@ -140,40 +170,49 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
     ${_position!.inMilliseconds / _duration!.inMilliseconds}
     ''');
 
-    return Container(
-      margin: const EdgeInsets.all(8).copyWith(right: 0),
-      height: 8,
-      child: SliderTheme(
-        data: SliderTheme.of(context).copyWith(
-          trackShape: CustomTrackShape(),
-          thumbColor: AppColor.red,
-          activeTickMarkColor: AppColor.red,
-          activeTrackColor: AppColor.red,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        widget.descriptionWidget == null
+            ? const SizedBox()
+            : widget.descriptionWidget!,
+        widget.titleWidget == null ? const SizedBox() : widget.titleWidget!,
+        SizedBox(
+          height: 16.h,
         ),
-        child: Slider(
-          onChanged: (v) {
-            final duration = widget.controller?.value.duration;
-            if (duration == null) {
-              return;
-            }
-            final position = v * duration.inMilliseconds;
+        Container(
+          margin: const EdgeInsets.all(8).copyWith(right: 0),
+          padding: EdgeInsets.only(left: 10.w),
+          height: 8,
+          child: SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              trackShape: CustomTrackShape(),
+              thumbColor: AppColor.red,
+              activeTickMarkColor: AppColor.red,
+              activeTrackColor: AppColor.red,
+            ),
+            child: Slider(
+              onChanged: (v) {
+                final duration = widget.controller?.value.duration;
+                if (duration == null) {
+                  return;
+                }
+                final position = v * duration.inMilliseconds;
 
-            widget.controller?.seekTo(Duration(milliseconds: position.round()));
-          },
-          value: (widget.controller != null &&
-                  widget.controller!.value.position.inMilliseconds > 0 &&
-                  widget.controller!.value.position.inMilliseconds <
-                      widget.controller!.value.duration.inMilliseconds)
-              ? widget.controller!.value.position.inMilliseconds /
-                  widget.controller!.value.duration.inMilliseconds
-              : 0.0,
-        ),
-      ),
-      // child: VideoProgressIndicator(
-      //   controller!,
-      //   colors: const VideoProgressColors(playedColor: AppColor.red),
-      //   allowScrubbing: true,
-      // ),
+                widget.controller
+                    ?.seekTo(Duration(milliseconds: position.round()));
+              },
+              value: (widget.controller != null &&
+                      widget.controller!.value.position.inMilliseconds > 0 &&
+                      widget.controller!.value.position.inMilliseconds <
+                          widget.controller!.value.duration.inMilliseconds)
+                  ? widget.controller!.value.position.inMilliseconds /
+                      widget.controller!.value.duration.inMilliseconds
+                  : 0.0,
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -208,4 +247,22 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
             size: 70,
           ),
         );
+
+  _muteAndUnMute() {
+    setState(() {
+      if (widget.controller!.value.volume == 0) {
+        widget.controller!.setVolume(1);
+      } else {
+        widget.controller!.setVolume(0);
+      }
+    });
+  }
+
+  IconData getMuteOrUnMuteIcons() {
+    if (widget.controller!.value.volume == 0) {
+      return Icons.volume_off;
+    } else {
+      return Icons.volume_up;
+    }
+  }
 }

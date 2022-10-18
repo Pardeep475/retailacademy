@@ -5,23 +5,29 @@ import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/widget/app_text.dart';
 
-class ItemNoCommentFound extends StatelessWidget{
+class ItemNoCommentFound extends StatelessWidget {
+  final String title;
 
-  const ItemNoCommentFound({Key? key}) : super(key: key);
+  final Color color;
+
+  const ItemNoCommentFound(
+      {Key? key,
+      this.title = AppStrings.noCommentFound,
+      this.color = AppColor.white})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
       child: AppText(
-        text: AppStrings.noCommentFound,
+        text: title,
         textSize: 20.sp,
         maxLines: 1,
-        color: AppColor.white,
+        color: color,
         overflow: TextOverflow.ellipsis,
         fontWeight: FontWeight.w500,
       ),
     );
   }
-
 }

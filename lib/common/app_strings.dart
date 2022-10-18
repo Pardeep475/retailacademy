@@ -23,7 +23,7 @@ class AppStrings {
   static const String success = "Success";
   static const String userName = "User name";
   static const String password = "Password";
-  static const String login = "Login";
+  static const String login = "LOGIN";
   static const String forgotPassword = "Forgot password?";
   static const String help = "Help";
   static const String usernameIsRequired = "Username is required";
@@ -47,7 +47,7 @@ class AppStrings {
   static const String typeHere = "Type here...";
   static const String needToEditProfile = "Need to edit profile?";
   static const String contactRetailTeam = " Contact retail team.";
-  static const String logout = "Log out";
+  static const String logout = "Logout";
   static const String notification = "Notification";
   static const String nextSession = "Next Session:";
 
@@ -77,14 +77,14 @@ class AppStrings {
   static const String pdfError = "File not in PDF format or corrupted.";
   static const String tapToReload = "Tap to reload";
   static const String commentMustNotBeEmpty = "Comment must not be empty";
-  static const String noCommentFound = "No comments found";
+  static const String noCommentFound = "No comments available";
   static const String moreReadText = "more";
   static const String lessReadText = "less";
   static const String pleaseSelectYourAnswer = "Please select your answer.";
   static const String yourAnswerIsCorrect =
-      "[Staff App] your answer is correct.";
+      "[Staff App] Your answer is correct.";
   static const String incorrectAnswer =
-      "[Staff App] your answer is incorrect. The correct answer is: ";
+      "[Staff App] Your answer is incorrect. The correct answer is: ";
   static const String finalScore = "Your final score is :- ";
   static const String thanksForAttemptThisQuiz =
       " [Staff App] Thanks for attempting this Quiz.";
@@ -92,4 +92,8 @@ class AppStrings {
   static const String recent = "Recent";
   static const String category = "Category";
   static const String audioPlayingError = "Not able to play this file.";
+  static const String trendingCommentError = "No Trending comments are available at this moment.";
+  static const String podCommentError = "No Pods comments are available at this moment.";
+  static const String reelsCommentError = "No Reels comments are available at this moment.";
+
 }

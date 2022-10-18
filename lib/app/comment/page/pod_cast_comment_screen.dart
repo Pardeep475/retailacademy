@@ -60,15 +60,89 @@ class _PodCastCommentScreenState extends State<PodCastCommentScreen> {
   @override
   Widget build(BuildContext context) {
     debugPrint('KeyboardVisibility update. Builder Is visible: null');
-    if (MediaQuery.of(context).viewInsets.bottom != 0) {
-      _scrollToBottom();
-    }
-    return WillPopScope(
+    // if (MediaQuery.of(context).viewInsets.bottom != 0) {
+    //   _scrollToBottom();
+    // }
+
+    return Stack(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Obx(() {
+              debugPrint(
+                  'length:----   ${_controller.dataList.length}  ${_controller.isCommentShown.value}');
+              if (!_controller.showLoader.value &&
+                  _controller.dataList.isEmpty) {
+                return const Expanded(
+                  child: ItemNoCommentFound(
+                    color: Colors.black,
+                    title: AppStrings.podCommentError,
+                  ),);
+              }
+
+              return Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(
+                      top: 10.h,
+                    ),
+                    controller: _scrollController,
+                    itemCount: _controller.dataList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final PodcastCommentElement item =
+                          _controller.dataList[index];
+                      return ItemPodCastComment(
+                        item: item,
+                        userId: int.parse(_controller.userId),
+                        onDeleteButtonPressed: () {
+                          _controller.deletePodCastApi(
+                              index: index, commentId: item.commentId);
+                        },
+                      );
+                    }),
+              );
+            }),
+            Obx(() {
+              debugPrint(
+                  'UserProfileImage:---   ${_controller.userProfileImage.value}');
+              return ItemSentComment(
+                userProfileImage: _controller.userProfileImage.value,
+                textController: _textController,
+                onPressed: () => _sendCommentOnPressed(),
+              );
+            }),
+          ],
+        ),
+        Obx(
+          () => Positioned.fill(
+            child: _controller.showLoader.value
+                ? Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.center,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColor.loaderColor),
+                      ),
+                    ),
+                  )
+                : Container(
+                    width: 0,
+                  ),
+          ),
+        ),
+      ],
+    );
+
+    /* return WillPopScope(
       onWillPop: () {
         Get.back(result: _controller.hasLiked.value);
         return Future.value(true);
       },
-      child: Scaffold(
+      child:  Scaffold(
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
@@ -241,12 +315,13 @@ class _PodCastCommentScreenState extends State<PodCastCommentScreen> {
             ),
           ],
         ),
-      ),
-    );
+      )
+    ,
+    );*/
   }
 
   _sendCommentOnPressed() async {
-    if (_textController.text.isEmpty) {
+    if (_textController.text.trim().isEmpty) {
       Utils.errorSnackBar(AppStrings.error, AppStrings.commentMustNotBeEmpty);
     } else {
       FocusScope.of(context).unfocus();

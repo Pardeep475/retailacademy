@@ -17,6 +17,10 @@ class PortraitVideoPlayer extends StatefulWidget {
   final double aspectRatio;
   final Duration? duration;
   final Function(Duration value)? onDurationChanged;
+  final Widget? commentIcon;
+  final Widget? likeIcon;
+  final Widget? titleWidget;
+  final Widget? descriptionWidget;
 
   const PortraitVideoPlayer(
       {Key? key,
@@ -26,6 +30,10 @@ class PortraitVideoPlayer extends StatefulWidget {
       this.isAutoPlay = true,
       this.duration,
       this.onDurationChanged,
+      this.commentIcon,
+      this.likeIcon,
+      this.titleWidget,
+      this.descriptionWidget,
       this.aspectRatio = 9 / 16})
       : super(key: key);
 
@@ -50,8 +58,9 @@ class _PortraitVideoPlayerState extends State<PortraitVideoPlayer> {
             controller?.play();
           }
           controller?.addListener(() {
-            if(widget.onDurationChanged != null){
-              widget.onDurationChanged!(controller?.value.position ?? const Duration());
+            if (widget.onDurationChanged != null) {
+              widget.onDurationChanged!(
+                  controller?.value.position ?? const Duration());
             }
             debugPrint(
                 'CUSTOM_LISTENER:---- --  ${controller?.value.position}');
@@ -73,8 +82,9 @@ class _PortraitVideoPlayerState extends State<PortraitVideoPlayer> {
           }
 
           controller?.addListener(() {
-            if(widget.onDurationChanged != null){
-              widget.onDurationChanged!(controller?.value.position ?? const Duration());
+            if (widget.onDurationChanged != null) {
+              widget.onDurationChanged!(
+                  controller?.value.position ?? const Duration());
             }
             debugPrint(
                 'CUSTOM_LISTENER:---- --  ${controller?.value.position}');
@@ -97,6 +107,10 @@ class _PortraitVideoPlayerState extends State<PortraitVideoPlayer> {
       controller: controller,
       url: widget.url,
       aspectRatio: widget.aspectRatio,
+      commentIcon: widget.commentIcon,
+      likeIcon: widget.likeIcon,
+      titleWidget: widget.titleWidget,
+      descriptionWidget: widget.descriptionWidget,
     );
   }
 }
@@ -105,12 +119,20 @@ class VideoPlayerPortraitWidget extends StatefulWidget {
   final VideoPlayerController? controller;
   final double aspectRatio;
   final String url;
+  final Widget? commentIcon;
+  final Widget? likeIcon;
+  final Widget? titleWidget;
+  final Widget? descriptionWidget;
 
   const VideoPlayerPortraitWidget({
     Key? key,
     required this.controller,
     required this.aspectRatio,
     required this.url,
+    this.commentIcon,
+    this.likeIcon,
+    this.titleWidget,
+    this.descriptionWidget,
   }) : super(key: key);
 
   @override
@@ -155,12 +177,20 @@ class _VideoPlayerPortraitWidgetState extends State<VideoPlayerPortraitWidget> {
           Positioned.fill(
             child: AdvancedOverlayWidget(
                 controller: widget.controller,
+                commentIcon: widget.commentIcon,
+                likeIcon: widget.likeIcon,
+                titleWidget: widget.titleWidget,
+                descriptionWidget: widget.descriptionWidget,
                 onClickedFullScreen: () async {
                   Duration? position = await widget.controller?.position;
                   Get.to(
                     PortraitLandscapePlayerPage(
                       url: widget.url,
                       duration: position,
+                      commentIcon: widget.commentIcon,
+                      likeIcon: widget.likeIcon,
+                      titleWidget: widget.titleWidget,
+                      descriptionWidget: widget.descriptionWidget,
                     ),
                   )?.then((value) {
                     if (value != null) {
@@ -175,12 +205,24 @@ class _VideoPlayerPortraitWidgetState extends State<VideoPlayerPortraitWidget> {
       );
 
   Widget buildVideoPlayer(bool isPortrait) {
-    final video = AspectRatio(
-      aspectRatio: isPortrait
-          ? widget.aspectRatio
-          : widget.controller!.value.aspectRatio,
-      child: VideoPlayer(widget.controller!),
+
+    final video = SizedBox.expand(
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: widget.controller!.value.size.width ?? 0,
+          height: widget.controller!.value.size.height ?? 0,
+          child: VideoPlayer(widget.controller!),
+        ),
+      ),
     );
+
+    // final video = AspectRatio(
+    //   aspectRatio: isPortrait
+    //       ? widget.aspectRatio
+    //       : widget.controller!.value.aspectRatio,
+    //   child: VideoPlayer(widget.controller!),
+    // );
 
     return buildFullScreen(child: video);
   }

@@ -7,7 +7,7 @@ import '../../../network/api_provider.dart';
 import '../../../network/modal/knowledge/quiz_category_response.dart';
 
 class QuizMasterController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   final RxList<QuizCategoryElement> dataList = RxList();
 
   @override

@@ -7,7 +7,7 @@ import '../../../network/api_provider.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
 
 class WhatsHotBlogController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   final RxList<BlogCategoryElement> dataList = RxList();
 
   @override

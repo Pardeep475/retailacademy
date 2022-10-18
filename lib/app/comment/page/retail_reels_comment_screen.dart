@@ -63,213 +63,478 @@ class _RetailReelsCommentScreenState extends State<RetailReelsCommentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('KeyboardVisibility update. Builder Is visible: null');
-    if (MediaQuery.of(context).viewInsets.bottom != 0) {
-      _scrollToBottom();
-    }
-    return WillPopScope(
-      onWillPop: () {
-        Get.back(result: {
-          'LIKE': _controller.hasLiked.value,
-          'POSITION': _controller.position
-        });
-        return Future.value(true);
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Stack(
+    return Stack(
+      children: [
+        Column(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomAppBar(
-                  title: widget.title,
-                  isBackButtonVisible: true,
-                  isSearchButtonVisible: false,
-                  isNotificationButtonVisible: true,
-                  onBackPressed: () {
-                    Get.back(result: {
-                      'LIKE': _controller.hasLiked.value,
-                      'POSITION': _controller.position
-                    });
-                  },
-                ),
-                Utils.isVideo(widget.itemMediaUrl)
-                    ? SizedBox(
-                        height: Get.height * 0.25,
-                        child: PortraitVideoPlayer(
-                          url: widget.itemMediaUrl,
-                          aspectRatio: 16 / 9,
-                          duration: _controller.position,
-                          onDurationChanged: (value) {
-                            _controller.position = value;
-                          },
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          if (widget.itemMediaUrl.isNotEmpty) {
-                            Get.to(() => FullScreenImageAndVideoScreen(
-                                  url: widget.itemMediaUrl,
-                                  title: widget.title,
-                                ));
-                          }
-                        },
-                        child: CachedNetworkImage(
-                          imageUrl: widget.itemMediaUrl,
-                          height: Get.height * 0.25,
-                          imageBuilder: (context, imageProvider) => Container(
-                            decoration: BoxDecoration(
-                              color: AppColor.black,
-                              image: DecorationImage(
-                                  image: imageProvider, fit: BoxFit.contain),
-                            ),
-                          ),
-                          placeholder: (context, url) => Container(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                                height: 36.r,
-                                width: 36.r,
-                                child: const CircularProgressIndicator()),
-                          ),
-                          errorWidget: (context, url, error) => Container(
-                            alignment: Alignment.center,
-                            decoration:
-                                const BoxDecoration(color: AppColor.grey),
-                            child: Image.asset(
-                              AppImages.imgNoImageFound,
-                              height: Get.height * 0.15,
-                              color: AppColor.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                Expanded(
-                  child: Container(
-                    color: AppColor.commentBlack,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Material(
-                              type: MaterialType.transparency,
-                              child: Obx(() {
-                                debugPrint(
-                                    'HasLiked:---   ${_controller.hasLiked.value}');
-                                return IconButton(
-                                  onPressed: () {
-                                    _controller.retailReelsLikeApi();
-                                  },
-                                  splashColor: Colors.white54,
-                                  icon: SvgPicture.asset(
-                                    AppImages.iconHeart,
-                                    color: _controller.hasLiked.value
-                                        ? AppColor.red
-                                        : AppColor.white,
-                                    height: 24.r,
-                                  ),
-                                );
-                              }),
-                            ),
-                            Material(
-                              type: MaterialType.transparency,
-                              child: IconButton(
-                                onPressed: () {
-                                  _controller.updateCommentShown();
-                                },
-                                splashColor: Colors.white54,
-                                icon: SvgPicture.asset(
-                                  AppImages.iconChat,
-                                  color: AppColor.white,
-                                  height: 24.r,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Expanded(
-                          child: Obx(() {
-                            debugPrint(
-                                'length:----   ${_controller.dataList.length}  ${_controller.isCommentShown.value}');
-                            if (!_controller.showLoader.value &&
-                                _controller.dataList.isEmpty) {
-                              return const ItemNoCommentFound();
-                            }
-
-                            return Visibility(
-                              visible: _controller.isCommentShown.value,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  padding: EdgeInsets.only(
-                                    top: 10.h,
-                                  ),
-                                  controller: _scrollController,
-                                  itemCount: _controller.dataList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final ReelCommentElement item =
-                                        _controller.dataList[index];
-                                    return ItemRetailReelsComment(
-                                      item: item,
-                                      userId: int.parse(_controller.userId),
-                                      onDeleteButtonPressed: () {
-                                        _controller.deleteRetailReelsApi(
-                                            index: index,
-                                            commentId: item.commentId);
-                                      },
-                                    );
-                                  }),
-                            );
-                          }),
-                        ),
-                      ],
-                    ),
+            Obx(() {
+              debugPrint(
+                  'length:----   ${_controller.dataList.length}  ${_controller.isCommentShown.value}');
+              if (!_controller.showLoader.value &&
+                  _controller.dataList.isEmpty) {
+                return const Expanded(
+                  child: ItemNoCommentFound(
+                    color: Colors.black,
+                    title: AppStrings.reelsCommentError,
                   ),
-                ),
-                Obx(() {
-                  debugPrint(
-                      'UserProfileImage:---   ${_controller.userProfileImage.value}');
-                  return ItemSentComment(
-                    userProfileImage: _controller.userProfileImage.value,
-                    textController: _textController,
-                    onPressed: () => _sendCommentOnPressed(),
-                  );
-                }),
-              ],
-            ),
-            Obx(
-              () => Positioned.fill(
-                child: _controller.showLoader.value
-                    ? Container(
-                        color: Colors.transparent,
-                        width: Get.width,
-                        height: Get.height,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                AppColor.loaderColor),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        width: 0,
-                      ),
-              ),
-            ),
+                );
+              }
+
+              return Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(
+                      top: 10.h,
+                    ),
+                    controller: _scrollController,
+                    itemCount: _controller.dataList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final ReelCommentElement item =
+                          _controller.dataList[index];
+                      return ItemRetailReelsComment(
+                        item: item,
+                        userId: int.parse(_controller.userId),
+                        onDeleteButtonPressed: () {
+                          _controller.deleteRetailReelsApi(
+                              index: index, commentId: item.commentId);
+                        },
+                      );
+                    }),
+              );
+            }),
+            Obx(() {
+              debugPrint(
+                  'UserProfileImage:---   ${_controller.userProfileImage.value}');
+              return ItemSentComment(
+                userProfileImage: _controller.userProfileImage.value,
+                textController: _textController,
+                onPressed: () => _sendCommentOnPressed(),
+              );
+            }),
           ],
         ),
-      ),
+        // Column(
+        //   mainAxisAlignment: MainAxisAlignment.start,
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     CustomAppBar(
+        //       title: widget.title,
+        //       isBackButtonVisible: true,
+        //       isSearchButtonVisible: false,
+        //       isNotificationButtonVisible: true,
+        //       onBackPressed: () {
+        //         Get.back(result: {
+        //           'LIKE': _controller.hasLiked.value,
+        //           'POSITION': _controller.position
+        //         });
+        //       },
+        //     ),
+        //     Utils.isVideo(widget.itemMediaUrl)
+        //         ? SizedBox(
+        //             height: Get.height * 0.25,
+        //             child: PortraitVideoPlayer(
+        //               url: widget.itemMediaUrl,
+        //               aspectRatio: 16 / 9,
+        //               duration: _controller.position,
+        //               onDurationChanged: (value) {
+        //                 _controller.position = value;
+        //               },
+        //             ),
+        //           )
+        //         : GestureDetector(
+        //             onTap: () {
+        //               if (widget.itemMediaUrl.isNotEmpty) {
+        //                 Get.to(() => FullScreenImageAndVideoScreen(
+        //                       url: widget.itemMediaUrl,
+        //                       title: widget.title,
+        //                     ));
+        //               }
+        //             },
+        //             child: CachedNetworkImage(
+        //               imageUrl: widget.itemMediaUrl,
+        //               height: Get.height * 0.25,
+        //               imageBuilder: (context, imageProvider) => Container(
+        //                 decoration: BoxDecoration(
+        //                   color: AppColor.black,
+        //                   image: DecorationImage(
+        //                       image: imageProvider, fit: BoxFit.contain),
+        //                 ),
+        //               ),
+        //               placeholder: (context, url) => Container(
+        //                 alignment: Alignment.center,
+        //                 child: SizedBox(
+        //                     height: 36.r,
+        //                     width: 36.r,
+        //                     child: const CircularProgressIndicator()),
+        //               ),
+        //               errorWidget: (context, url, error) => Container(
+        //                 alignment: Alignment.center,
+        //                 decoration:
+        //                     const BoxDecoration(color: AppColor.grey),
+        //                 child: Image.asset(
+        //                   AppImages.imgNoImageFound,
+        //                   height: Get.height * 0.15,
+        //                   color: AppColor.black,
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //     Expanded(
+        //       child: Container(
+        //         color: AppColor.commentBlack,
+        //         child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.end,
+        //           children: [
+        //             Row(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               mainAxisAlignment: MainAxisAlignment.end,
+        //               children: [
+        //                 Material(
+        //                   type: MaterialType.transparency,
+        //                   child: Obx(() {
+        //                     debugPrint(
+        //                         'HasLiked:---   ${_controller.hasLiked.value}');
+        //                     return IconButton(
+        //                       onPressed: () {
+        //                         _controller.retailReelsLikeApi();
+        //                       },
+        //                       splashColor: Colors.white54,
+        //                       icon: SvgPicture.asset(
+        //                         AppImages.iconHeart,
+        //                         color: _controller.hasLiked.value
+        //                             ? AppColor.red
+        //                             : AppColor.white,
+        //                         height: 24.r,
+        //                       ),
+        //                     );
+        //                   }),
+        //                 ),
+        //                 Material(
+        //                   type: MaterialType.transparency,
+        //                   child: IconButton(
+        //                     onPressed: () {
+        //                       _controller.updateCommentShown();
+        //                     },
+        //                     splashColor: Colors.white54,
+        //                     icon: SvgPicture.asset(
+        //                       AppImages.iconChat,
+        //                       color: AppColor.white,
+        //                       height: 24.r,
+        //                     ),
+        //                   ),
+        //                 )
+        //               ],
+        //             ),
+        //             Expanded(
+        //               child: Obx(() {
+        //                 debugPrint(
+        //                     'length:----   ${_controller.dataList.length}  ${_controller.isCommentShown.value}');
+        //                 if (!_controller.showLoader.value &&
+        //                     _controller.dataList.isEmpty) {
+        //                   return const ItemNoCommentFound();
+        //                 }
+        //
+        //                 return Visibility(
+        //                   visible: _controller.isCommentShown.value,
+        //                   child: ListView.builder(
+        //                       shrinkWrap: true,
+        //                       physics:
+        //                           const AlwaysScrollableScrollPhysics(),
+        //                       padding: EdgeInsets.only(
+        //                         top: 10.h,
+        //                       ),
+        //                       controller: _scrollController,
+        //                       itemCount: _controller.dataList.length,
+        //                       itemBuilder:
+        //                           (BuildContext context, int index) {
+        //                         final ReelCommentElement item =
+        //                             _controller.dataList[index];
+        //                         return ItemRetailReelsComment(
+        //                           item: item,
+        //                           userId: int.parse(_controller.userId),
+        //                           onDeleteButtonPressed: () {
+        //                             _controller.deleteRetailReelsApi(
+        //                                 index: index,
+        //                                 commentId: item.commentId);
+        //                           },
+        //                         );
+        //                       }),
+        //                 );
+        //               }),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //     Obx(() {
+        //       debugPrint(
+        //           'UserProfileImage:---   ${_controller.userProfileImage.value}');
+        //       return ItemSentComment(
+        //         userProfileImage: _controller.userProfileImage.value,
+        //         textController: _textController,
+        //         onPressed: () => _sendCommentOnPressed(),
+        //       );
+        //     }),
+        //   ],
+        // ),
+        Obx(
+          () => Positioned.fill(
+            child: _controller.showLoader.value
+                ? Container(
+                    color: Colors.transparent,
+                    width: Get.width,
+                    height: Get.height,
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColor.loaderColor),
+                      ),
+                    ),
+                  )
+                : Container(
+                    width: 0,
+                  ),
+          ),
+        ),
+      ],
     );
+
+    debugPrint('KeyboardVisibility update. Builder Is visible: null');
+    // if (MediaQuery.of(context).viewInsets.bottom != 0) {
+    //   _scrollToBottom();
+    // }
+    // return WillPopScope(
+    //   onWillPop: () {
+    //     Get.back(result: {
+    //       'LIKE': _controller.hasLiked.value,
+    //       'POSITION': _controller.position
+    //     });
+    //     return Future.value(true);
+    //   },
+    //   child: Scaffold(
+    //     resizeToAvoidBottomInset: false,
+    //     body: Stack(
+    //       children: [
+    //         Obx(() {
+    //           debugPrint(
+    //               'length:----   ${_controller.dataList.length}  ${_controller.isCommentShown.value}');
+    //           if (!_controller.showLoader.value &&
+    //               _controller.dataList.isEmpty) {
+    //             return const ItemNoCommentFound();
+    //           }
+    //
+    //           return ListView.builder(
+    //               shrinkWrap: true,
+    //               physics: const AlwaysScrollableScrollPhysics(),
+    //               padding: EdgeInsets.only(
+    //                 top: 10.h,
+    //               ),
+    //               controller: _scrollController,
+    //               itemCount: _controller.dataList.length,
+    //               itemBuilder: (BuildContext context, int index) {
+    //                 final ReelCommentElement item = _controller.dataList[index];
+    //                 return ItemRetailReelsComment(
+    //                   item: item,
+    //                   userId: int.parse(_controller.userId),
+    //                   onDeleteButtonPressed: () {
+    //                     _controller.deleteRetailReelsApi(
+    //                         index: index, commentId: item.commentId);
+    //                   },
+    //                 );
+    //               });
+    //         }),
+    //         // Column(
+    //         //   mainAxisAlignment: MainAxisAlignment.start,
+    //         //   crossAxisAlignment: CrossAxisAlignment.start,
+    //         //   children: [
+    //         //     CustomAppBar(
+    //         //       title: widget.title,
+    //         //       isBackButtonVisible: true,
+    //         //       isSearchButtonVisible: false,
+    //         //       isNotificationButtonVisible: true,
+    //         //       onBackPressed: () {
+    //         //         Get.back(result: {
+    //         //           'LIKE': _controller.hasLiked.value,
+    //         //           'POSITION': _controller.position
+    //         //         });
+    //         //       },
+    //         //     ),
+    //         //     Utils.isVideo(widget.itemMediaUrl)
+    //         //         ? SizedBox(
+    //         //             height: Get.height * 0.25,
+    //         //             child: PortraitVideoPlayer(
+    //         //               url: widget.itemMediaUrl,
+    //         //               aspectRatio: 16 / 9,
+    //         //               duration: _controller.position,
+    //         //               onDurationChanged: (value) {
+    //         //                 _controller.position = value;
+    //         //               },
+    //         //             ),
+    //         //           )
+    //         //         : GestureDetector(
+    //         //             onTap: () {
+    //         //               if (widget.itemMediaUrl.isNotEmpty) {
+    //         //                 Get.to(() => FullScreenImageAndVideoScreen(
+    //         //                       url: widget.itemMediaUrl,
+    //         //                       title: widget.title,
+    //         //                     ));
+    //         //               }
+    //         //             },
+    //         //             child: CachedNetworkImage(
+    //         //               imageUrl: widget.itemMediaUrl,
+    //         //               height: Get.height * 0.25,
+    //         //               imageBuilder: (context, imageProvider) => Container(
+    //         //                 decoration: BoxDecoration(
+    //         //                   color: AppColor.black,
+    //         //                   image: DecorationImage(
+    //         //                       image: imageProvider, fit: BoxFit.contain),
+    //         //                 ),
+    //         //               ),
+    //         //               placeholder: (context, url) => Container(
+    //         //                 alignment: Alignment.center,
+    //         //                 child: SizedBox(
+    //         //                     height: 36.r,
+    //         //                     width: 36.r,
+    //         //                     child: const CircularProgressIndicator()),
+    //         //               ),
+    //         //               errorWidget: (context, url, error) => Container(
+    //         //                 alignment: Alignment.center,
+    //         //                 decoration:
+    //         //                     const BoxDecoration(color: AppColor.grey),
+    //         //                 child: Image.asset(
+    //         //                   AppImages.imgNoImageFound,
+    //         //                   height: Get.height * 0.15,
+    //         //                   color: AppColor.black,
+    //         //                 ),
+    //         //               ),
+    //         //             ),
+    //         //           ),
+    //         //     Expanded(
+    //         //       child: Container(
+    //         //         color: AppColor.commentBlack,
+    //         //         child: Column(
+    //         //           mainAxisAlignment: MainAxisAlignment.end,
+    //         //           children: [
+    //         //             Row(
+    //         //               crossAxisAlignment: CrossAxisAlignment.start,
+    //         //               mainAxisAlignment: MainAxisAlignment.end,
+    //         //               children: [
+    //         //                 Material(
+    //         //                   type: MaterialType.transparency,
+    //         //                   child: Obx(() {
+    //         //                     debugPrint(
+    //         //                         'HasLiked:---   ${_controller.hasLiked.value}');
+    //         //                     return IconButton(
+    //         //                       onPressed: () {
+    //         //                         _controller.retailReelsLikeApi();
+    //         //                       },
+    //         //                       splashColor: Colors.white54,
+    //         //                       icon: SvgPicture.asset(
+    //         //                         AppImages.iconHeart,
+    //         //                         color: _controller.hasLiked.value
+    //         //                             ? AppColor.red
+    //         //                             : AppColor.white,
+    //         //                         height: 24.r,
+    //         //                       ),
+    //         //                     );
+    //         //                   }),
+    //         //                 ),
+    //         //                 Material(
+    //         //                   type: MaterialType.transparency,
+    //         //                   child: IconButton(
+    //         //                     onPressed: () {
+    //         //                       _controller.updateCommentShown();
+    //         //                     },
+    //         //                     splashColor: Colors.white54,
+    //         //                     icon: SvgPicture.asset(
+    //         //                       AppImages.iconChat,
+    //         //                       color: AppColor.white,
+    //         //                       height: 24.r,
+    //         //                     ),
+    //         //                   ),
+    //         //                 )
+    //         //               ],
+    //         //             ),
+    //         //             Expanded(
+    //         //               child: Obx(() {
+    //         //                 debugPrint(
+    //         //                     'length:----   ${_controller.dataList.length}  ${_controller.isCommentShown.value}');
+    //         //                 if (!_controller.showLoader.value &&
+    //         //                     _controller.dataList.isEmpty) {
+    //         //                   return const ItemNoCommentFound();
+    //         //                 }
+    //         //
+    //         //                 return Visibility(
+    //         //                   visible: _controller.isCommentShown.value,
+    //         //                   child: ListView.builder(
+    //         //                       shrinkWrap: true,
+    //         //                       physics:
+    //         //                           const AlwaysScrollableScrollPhysics(),
+    //         //                       padding: EdgeInsets.only(
+    //         //                         top: 10.h,
+    //         //                       ),
+    //         //                       controller: _scrollController,
+    //         //                       itemCount: _controller.dataList.length,
+    //         //                       itemBuilder:
+    //         //                           (BuildContext context, int index) {
+    //         //                         final ReelCommentElement item =
+    //         //                             _controller.dataList[index];
+    //         //                         return ItemRetailReelsComment(
+    //         //                           item: item,
+    //         //                           userId: int.parse(_controller.userId),
+    //         //                           onDeleteButtonPressed: () {
+    //         //                             _controller.deleteRetailReelsApi(
+    //         //                                 index: index,
+    //         //                                 commentId: item.commentId);
+    //         //                           },
+    //         //                         );
+    //         //                       }),
+    //         //                 );
+    //         //               }),
+    //         //             ),
+    //         //           ],
+    //         //         ),
+    //         //       ),
+    //         //     ),
+    //         //     Obx(() {
+    //         //       debugPrint(
+    //         //           'UserProfileImage:---   ${_controller.userProfileImage.value}');
+    //         //       return ItemSentComment(
+    //         //         userProfileImage: _controller.userProfileImage.value,
+    //         //         textController: _textController,
+    //         //         onPressed: () => _sendCommentOnPressed(),
+    //         //       );
+    //         //     }),
+    //         //   ],
+    //         // ),
+    //         Obx(
+    //           () => Positioned.fill(
+    //             child: _controller.showLoader.value
+    //                 ? Container(
+    //                     color: Colors.transparent,
+    //                     width: Get.width,
+    //                     height: Get.height,
+    //                     child: const Center(
+    //                       child: CircularProgressIndicator(
+    //                         valueColor: AlwaysStoppedAnimation<Color>(
+    //                             AppColor.loaderColor),
+    //                       ),
+    //                     ),
+    //                   )
+    //                 : Container(
+    //                     width: 0,
+    //                   ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 
   _sendCommentOnPressed() async {
-    if (_textController.text.isEmpty) {
+    if (_textController.text.trim().isEmpty) {
       Utils.errorSnackBar(AppStrings.error, AppStrings.commentMustNotBeEmpty);
     } else {
       FocusScope.of(context).unfocus();
