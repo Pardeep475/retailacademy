@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:retail_academy/common/local_storage/session_manager.dart';
 import 'package:retail_academy/network/modal/knowledge/like_or_dislike_content_knowledge_section_request.dart';
 import 'package:retail_academy/network/modal/knowledge/whats_hot_blog_content_response.dart';
@@ -16,6 +17,8 @@ import 'modal/base/base_response.dart';
 import 'modal/forgot_password/forgot_password_request.dart';
 import 'modal/knowledge/consolidated_quiz_questions_request.dart';
 import 'modal/knowledge/consolidated_quiz_questions_response.dart';
+import 'modal/knowledge/content_display_request.dart';
+import 'modal/knowledge/content_display_response.dart';
 import 'modal/knowledge/content_knowledge_request.dart';
 import 'modal/knowledge/content_knowledge_response.dart';
 import 'modal/knowledge/delete_knowledge_content_request.dart';
@@ -342,6 +345,7 @@ class ApiProvider {
 
   Future<dynamic> deleteTrendingCommentApi(
       {required DeleteTrendingRequest request}) async {
+    debugPrint('Request_COMMENT:-  ${request.toJson()}');
     try {
       Response response = await _dio.post(
         ApiConstants.trendingDeleteCommentApi,
@@ -531,6 +535,7 @@ class ApiProvider {
 
   Future<dynamic> podcastViewedByUserApi(
       {required PodcastViewedByUserRequest request}) async {
+    debugPrint('PODCAST_DURATION:-  ${request.toJson()}');
     try {
       Response response = await _dio.post(
         ApiConstants.podcastViewedByUser,
@@ -545,8 +550,25 @@ class ApiProvider {
 
   Future<dynamic> maintenanceMessageApi() async {
     try {
-      Response response = await _dio.get(ApiConstants.maintenanceMessage,);
+      Response response = await _dio.get(
+        ApiConstants.maintenanceMessage,
+      );
       return MaintenanceMessageResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> contentDisplayApi(
+      {required ContentDisplayRequest request}) async {
+    debugPrint('PODCAST_DURATION:-  ${request.toJson()}');
+    try {
+      Response response = await _dio.post(
+        ApiConstants.contentDisplayApi,
+        data: request.toJson(),
+      );
+      return ContentDisplayResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;

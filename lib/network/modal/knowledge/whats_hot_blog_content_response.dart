@@ -26,6 +26,7 @@ class BlogContentElement {
     this.blogTitle = '',
     this.blogDescription = '',
     this.imageUrl = '',
+    this.thumbnailImage = '',
     this.videoUrl = '',
     this.date = '',
     this.likeCount = 0,
@@ -38,6 +39,7 @@ class BlogContentElement {
   String blogTitle;
   String blogDescription;
   String imageUrl;
+  String thumbnailImage;
   String videoUrl;
   String date;
   int likeCount;
@@ -51,6 +53,7 @@ class BlogContentElement {
         blogTitle: json["blogtitle"] ?? '',
         blogDescription: json["blogdescription"] ?? '',
         imageUrl: json["imageurl"] ?? '',
+        thumbnailImage: json["thumnailImage"] ?? '',
         videoUrl: json["videourl"] ?? '',
         date: json["date"] ?? '',
         likeCount: json["likecount"] ?? 0,

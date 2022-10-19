@@ -12,6 +12,7 @@ import '../../../common/app_images.dart';
 import '../../../common/app_strings.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/custom_read_more_text.dart';
 import '../../../common/widget/no_data_available.dart';
 import '../../../network/modal/podcast/pod_cast_category_response.dart';
 import '../../../network/modal/podcast/pod_cast_response.dart';
@@ -55,7 +56,7 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                 isIconsTitle: true,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
@@ -125,15 +126,12 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                         ),
                         widget.item.podCastCategoryDescription.isEmpty
                             ? const SizedBox()
-                            : AppText(
-                                text: widget.item.podCastCategoryDescription,
-                                textSize: 15.sp,
-                                color: AppColor.black,
-                                maxLines: 1,
-                                textAlign: TextAlign.start,
-                                overflow: TextOverflow.ellipsis,
-                                lineHeight: 1.3,
-                                fontWeight: FontWeight.w500,
+                            : CustomReadMoreText(
+                                value: widget.item.podCastCategoryDescription
+                                    .trim(),
+                                padding: EdgeInsets.zero,
+                                moreTextColor: AppColor.lightNavyBlue,
+                                textColor: AppColor.black,
                               ),
                       ],
                     ),
@@ -168,8 +166,9 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
                               Get.to(PodCastDetailScreen(
                                 item: item,
                               ))?.then((value) {
-                                if(value != null && value is bool){
-                                 _controller.updateLikePodCast(index: index, value: value);
+                                if (value != null && value is bool) {
+                                  _controller.updateLikePodCast(
+                                      index: index, value: value);
                                 }
                               });
                             },

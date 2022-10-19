@@ -21,7 +21,7 @@ class ItemNoCommentFound extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: AppText(
-        text: title,
+        text: AppStrings.noCommentFound,
         textSize: 20.sp,
         maxLines: 1,
         color: color,

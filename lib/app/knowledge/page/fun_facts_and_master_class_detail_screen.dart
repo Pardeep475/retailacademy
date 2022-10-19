@@ -37,6 +37,9 @@ class _FunFactsAndMasterClassDetailScreenState
   void initState() {
     _controller.clearValue();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.contentDisplayApi(item: widget.item);
+    });
   }
 
   @override
@@ -100,11 +103,15 @@ class _FunFactsAndMasterClassDetailScreenState
                       _controller.likeOrDislikeContentKnowledgeSectionApi(
                           item: widget.item);
                     },
-                    icon: SvgPicture.asset(
-                      AppImages.iconHeart,
-                      color: AppColor.black,
-                      height: 24.r,
-                    ),
+                    icon: Obx(() {
+                      return SvgPicture.asset(
+                        AppImages.iconHeart,
+                        color: _controller.hasLiked.value
+                            ? AppColor.red
+                            : AppColor.black,
+                        height: 24.r,
+                      );
+                    }),
                   ),
                   IconButton(
                     onPressed: () => _commentButtonPressed(item: widget.item),

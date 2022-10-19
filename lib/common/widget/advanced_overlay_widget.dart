@@ -79,20 +79,20 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
                   child: Row(
                     children: [
                       // buildSpeed(),
-                      widget.isCrossIconShown
-                          ? SafeArea(
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                child: IconButton(
-                                  onPressed: widget.onBackPressed,
-                                  icon: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : const SizedBox(),
+                      // widget.isCrossIconShown
+                      //     ? SafeArea(
+                      //         child: AnimatedContainer(
+                      //           duration: const Duration(milliseconds: 300),
+                      //           child: IconButton(
+                      //             onPressed: widget.onBackPressed,
+                      //             icon: const Icon(
+                      //               Icons.arrow_back_ios,
+                      //               color: Colors.white,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       )
+                      //     : const SizedBox(),
                     ],
                   )),
               // Positioned(

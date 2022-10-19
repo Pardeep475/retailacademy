@@ -19,7 +19,7 @@ class DeleteTrendingRequest {
 
   Map<String, dynamic> toJson() => {
         "activityStreamId": activityStreamId,
-        "userId": commentId,
+        "userId": userId,
         "commentId": commentId,
       };
 }

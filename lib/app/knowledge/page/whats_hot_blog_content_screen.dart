@@ -36,7 +36,7 @@ class _WhatsHotBlogContentScreenState extends State<WhatsHotBlogContentScreen> {
     _controller.categoryId = value['categoryId'];
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.fetchWhatsHotContentApi();
     });
   }

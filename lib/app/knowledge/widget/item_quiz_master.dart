@@ -42,7 +42,7 @@ class ItemQuizMaster extends StatelessWidget {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: item.hasViewed
-                          ? item.hasAttempted
+                          ? item.isAttempted
                               ? Colors.transparent
                               : Colors.white
                           : AppColor.red),

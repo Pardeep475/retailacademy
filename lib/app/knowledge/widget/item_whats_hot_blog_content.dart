@@ -21,7 +21,7 @@ class ItemWhatsHotBlogContent extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           CachedNetworkImage(
-            imageUrl: item.imageUrl,
+            imageUrl: item.thumbnailImage,
             height: Get.height * 0.4,
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(

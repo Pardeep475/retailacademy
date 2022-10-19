@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,8 @@ import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/custom_read_more_text.dart';
+import '../../../common/widget/portrait_landscape_player_page.dart';
 import '../../../common/widget/portrait_video_player.dart';
 import '../../../network/modal/retails_reels/retail_reels_list_response.dart';
 import '../../comment/page/retail_reels_comment_screen.dart';
@@ -46,176 +49,172 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
   @override
   Widget build(BuildContext context) {
     debugPrint("VideoUrl:-    ${widget.item.filePath}");
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            right: 0,
-            left: 0,
-            bottom: 0,
-            child: Obx(() {
-              debugPrint(
-                  'value:-   ${_controller.videoUrl.value}  ${_controller.refreshDuration.value}');
-              if (_controller.videoUrl.isEmpty) {
-                return const SizedBox();
-              }
-              return PortraitVideoPlayer(
-                url: _controller.videoUrl.value,
-                aspectRatio: 2 / 3,
-                duration: _controller.refreshDuration.value,
-                commentIcon: IconButton(
-                  onPressed: () => _showCommentsBottomSheet(),
-                  icon: SvgPicture.asset(
-                    AppImages.iconChat,
-                    color: AppColor.white,
-                    width: 28,
-                    height: 28,
-                  ),
-                ),
-                likeIcon: IconButton(
-                  onPressed: () {
-                    _controller.likeOrDislikeRetailReelsApi(
-                        reelId: widget.item.reelId);
-                  },
-                  icon: Obx(() {
-                    return SvgPicture.asset(
-                      AppImages.iconHeart,
-                      color: _controller.hasLiked.value
-                          ? AppColor.red
-                          : AppColor.white,
+    return WillPopScope(
+      onWillPop: () async {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
+        // Get.back();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              right: 0,
+              left: 0,
+              bottom: 0,
+              child: Obx(() {
+                debugPrint(
+                    'value:-   ${_controller.videoUrl.value}  ${_controller.refreshDuration.value}');
+                if (_controller.videoUrl.isEmpty) {
+                  return const SizedBox();
+                }
+                return PortraitLandscapePlayerPage(
+                  url: _controller.videoUrl.value,
+                  aspectRatio: 2 / 3,
+                  duration: _controller.refreshDuration.value,
+                  commentIcon: IconButton(
+                    onPressed: () => _showCommentsBottomSheet(),
+                    icon: SvgPicture.asset(
+                      AppImages.iconChat,
+                      color: AppColor.white,
                       width: 28,
                       height: 28,
-                    );
-                  }),
-                ),
-                descriptionWidget: Padding(
-                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 5.h),
-                  child: Obx(() {
-                    return AppText(
-                      text: _controller.reelDescription.value,
-                      textSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      maxLines: 5,
-                      lineHeight: 1.2,
-                      color: Colors.white,
-                      textAlign: TextAlign.start,
-                    );
-                  }),
-                ),
-                titleWidget: Padding(
-                  padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 0),
-                  child: AppText(
-                    text: widget.item.reelName,
-                    textSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    maxLines: 5,
-                    lineHeight: 1.2,
-                    color: Colors.white,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                onDurationChanged: (value) {
-                  _controller.position = value;
-                },
-              );
-            }),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              CustomAppBar(
-                title: '',
-                isBackButtonVisible: true,
-                isSearchButtonVisible: false,
-                isVideoComponent: true,
-                isNotificationButtonVisible: true,
-              ),
-              // Expanded(
-              //   child: Obx(() {
-              //     debugPrint(
-              //         'value:-   ${_controller.videoUrl.value}  ${_controller.refreshDuration.value}');
-              //     if (_controller.videoUrl.isEmpty) {
-              //       return const SizedBox();
-              //     }
-              //     return PortraitVideoPlayer(
-              //       url:
-              //           'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-              //       aspectRatio: 2 / 3,
-              //       duration: _controller.refreshDuration.value,
-              //       onDurationChanged: (value) {
-              //         _controller.position = value;
-              //       },
-              //     );
-              //   }),
-              // ),
-              // SizedBox(height: 12.h),
-              // Row(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     IconButton(
-              //       onPressed: () {
-              //         _controller.likeOrDislikeRetailReelsApi(
-              //             reelId: widget.item.reelId);
-              //       },
-              //       icon: Obx(() {
-              //         return SvgPicture.asset(
-              //           AppImages.iconHeart,
-              //           color: _controller.hasLiked.value
-              //               ? AppColor.red
-              //               : AppColor.black,
-              //           height: 24.r,
-              //         );
-              //       }),
-              //     ),
-              //     IconButton(
-              //       onPressed: () => _commentButtonPressed(),
-              //       icon: SvgPicture.asset(
-              //         AppImages.iconChat,
-              //         color: AppColor.black,
-              //         height: 24.r,
-              //       ),
-              //     )
-              //   ],
-              // ),
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
-              //   child: Obx(() {
-              //     return AppText(
-              //       text: _controller.reelDescription.value,
-              //       textSize: 16.sp,
-              //       fontWeight: FontWeight.w500,
-              //       maxLines: 5,
-              //       lineHeight: 1.2,
-              //       textAlign: TextAlign.start,
-              //     );
-              //   }),
-              // ),
-            ],
-          ),
-          Obx(
-            () => Positioned.fill(
-              child: _controller.showLoader.value
-                  ? Container(
-                      color: Colors.transparent,
-                      width: Get.width,
-                      height: Get.height,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColor.loaderColor),
-                        ),
-                      ),
-                    )
-                  : Container(
-                      width: 0,
                     ),
+                  ),
+                  likeIcon: IconButton(
+                    onPressed: () {
+                      _controller.likeOrDislikeRetailReelsApi(
+                          reelId: widget.item.reelId);
+                    },
+                    icon: Obx(() {
+                      return SvgPicture.asset(
+                        AppImages.iconHeart,
+                        color: _controller.hasLiked.value
+                            ? AppColor.red
+                            : AppColor.white,
+                        width: 28,
+                        height: 28,
+                      );
+                    }),
+                  ),
+                  descriptionWidget: Obx(() {
+                    return CustomReadMoreText(
+                      value: _controller.reelDescription.value.trim(),
+                      padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 5.h),
+                    );
+                  }),
+                  titleWidget: CustomReadMoreText(
+                    value: widget.item.reelName.trim(),
+                    padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 0),
+                  ),
+                );
+              }),
             ),
-          ),
-        ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomAppBar(
+                  title: '',
+                  isBackButtonVisible: true,
+                  isSearchButtonVisible: false,
+                  isVideoComponent: true,
+                  isNotificationButtonVisible: true,
+                  onBackPressed: () {
+                    SystemChrome.setPreferredOrientations([
+                      DeviceOrientation.portraitUp,
+                    ]);
+                    Get.back();
+                  },
+                ),
+                // Expanded(
+                //   child: Obx(() {
+                //     debugPrint(
+                //         'value:-   ${_controller.videoUrl.value}  ${_controller.refreshDuration.value}');
+                //     if (_controller.videoUrl.isEmpty) {
+                //       return const SizedBox();
+                //     }
+                //     return PortraitVideoPlayer(
+                //       url:
+                //           'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                //       aspectRatio: 2 / 3,
+                //       duration: _controller.refreshDuration.value,
+                //       onDurationChanged: (value) {
+                //         _controller.position = value;
+                //       },
+                //     );
+                //   }),
+                // ),
+                // SizedBox(height: 12.h),
+                // Row(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     IconButton(
+                //       onPressed: () {
+                //         _controller.likeOrDislikeRetailReelsApi(
+                //             reelId: widget.item.reelId);
+                //       },
+                //       icon: Obx(() {
+                //         return SvgPicture.asset(
+                //           AppImages.iconHeart,
+                //           color: _controller.hasLiked.value
+                //               ? AppColor.red
+                //               : AppColor.black,
+                //           height: 24.r,
+                //         );
+                //       }),
+                //     ),
+                //     IconButton(
+                //       onPressed: () => _commentButtonPressed(),
+                //       icon: SvgPicture.asset(
+                //         AppImages.iconChat,
+                //         color: AppColor.black,
+                //         height: 24.r,
+                //       ),
+                //     )
+                //   ],
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.fromLTRB(20.w, 5.h, 20.w, 20.h),
+                //   child: Obx(() {
+                //     return AppText(
+                //       text: _controller.reelDescription.value,
+                //       textSize: 16.sp,
+                //       fontWeight: FontWeight.w500,
+                //       maxLines: 5,
+                //       lineHeight: 1.2,
+                //       textAlign: TextAlign.start,
+                //     );
+                //   }),
+                // ),
+              ],
+            ),
+            Obx(
+              () => Positioned.fill(
+                child: _controller.showLoader.value
+                    ? Container(
+                        color: Colors.transparent,
+                        width: Get.width,
+                        height: Get.height,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                AppColor.loaderColor),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        width: 0,
+                      ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

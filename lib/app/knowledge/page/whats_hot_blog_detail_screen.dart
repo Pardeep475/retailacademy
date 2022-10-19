@@ -7,10 +7,10 @@ import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
-import '../../../common/widget/portrait_video_player.dart';
+import '../../../common/widget/custom_read_more_text.dart';
+import '../../../common/widget/portrait_landscape_player_page.dart';
 import '../../../network/modal/knowledge/whats_hot_blog_content_response.dart';
 import '../controller/whats_hot_blog_detail_controller.dart';
-// import '../widget/video_items.dart';
 
 class WhatsHotBogDetailScreen extends StatefulWidget {
   final BlogContentElement item;
@@ -60,7 +60,7 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
               if (_controller.videoUrl.isEmpty) {
                 return const SizedBox();
               }
-              return PortraitVideoPlayer(
+              return PortraitLandscapePlayerPage(
                 url: _controller.videoUrl.value,
                 aspectRatio: 2 / 3,
                 commentIcon: IconButton(
@@ -88,33 +88,17 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
                     );
                   }),
                 ),
-                descriptionWidget: Padding(
-                  padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 5.h),
-                  child: Obx(() {
-                    return AppText(
-                      text: _controller.blogDescription.value,
-                      textSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      maxLines: 5,
-                      lineHeight: 1.2,
-                      color: Colors.white,
-                      textAlign: TextAlign.start,
-                    );
-                  }),
-                ),
-                titleWidget: Padding(
+                descriptionWidget: Obx(() {
+                  return CustomReadMoreText(
+                    value: _controller.blogDescription.value.trim(),
+                    padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 5.h),
+                  );
+                }),
+
+                titleWidget: CustomReadMoreText(
+                  value: widget.item.blogTitle.trim(),
                   padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 0),
-                  child: AppText(
-                    text: widget.item.blogTitle,
-                    textSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    maxLines: 5,
-                    lineHeight: 1.2,
-                    color: Colors.white,
-                    textAlign: TextAlign.start,
-                  ),
                 ),
-                onDurationChanged: (value) {},
               );
             }),
           ),

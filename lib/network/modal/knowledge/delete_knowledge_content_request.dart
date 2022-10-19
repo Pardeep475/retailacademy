@@ -14,7 +14,7 @@ class DeleteKnowledgeContentRequest {
 
   Map<String, dynamic> toJson() => {
         "fileid": fileId,
-        "userid": commentId,
+        "userid": userId,
         "commentid": commentId,
       };
 }

@@ -39,7 +39,7 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
     super.initState();
     //SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations([
-      // DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitUp,
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
@@ -89,13 +89,16 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
           Get.back(result: position);
           return true;
         },
-        child:
-            widget.controller != null && widget.controller!.value.isInitialized
-                ? Container(
-                    color: AppColor.black001,
-                    alignment: Alignment.center,
-                    child: buildVideo())
-                : const Center(child: CircularProgressIndicator()),
+        child: widget.controller != null &&
+                widget.controller!.value.isInitialized
+            ? Container(
+                color: AppColor.black001,
+                alignment: Alignment.center,
+                child: buildVideo())
+            : const Center(
+                child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppColor.loaderColor),
+              )),
       );
 
   Widget buildVideo() => OrientationBuilder(
@@ -131,10 +134,7 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
                       SystemChrome.setPreferredOrientations([
                         DeviceOrientation.portraitUp,
                       ]);
-                      Duration? position = await widget.controller?.position;
-
-                      Get.back(result: position);
-                      Get.back(result: position);
+                      Get.back();
                     },
                     isPortrait: isPortrait),
               ),

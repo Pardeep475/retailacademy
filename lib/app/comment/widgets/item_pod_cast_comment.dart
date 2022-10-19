@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
+import '../../../common/widget/custom_read_more_text.dart';
 import '../../../network/modal/podcast/pod_cast_comment_response.dart';
 import '../../../network/modal/retails_reels/retail_reels_comment_response.dart';
 
@@ -28,6 +29,7 @@ class ItemPodCastComment extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 width: 16.w,
@@ -90,14 +92,20 @@ class ItemPodCastComment extends StatelessWidget {
                     SizedBox(
                       height: 5.h,
                     ),
-                    AppText(
-                      text: item.comment,
-                      textSize: 16.sp,
-                      maxLines: 1,
-                      color: AppColor.black,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w400,
+                    CustomReadMoreText(
+                      value: item.comment.trim(),
+                      padding: EdgeInsets.zero,
+                      moreTextColor: AppColor.lightNavyBlue,
+                      textColor: AppColor.black,
                     ),
+                    // AppText(
+                    //   text: item.comment,
+                    //   textSize: 16.sp,
+                    //   maxLines: 1,
+                    //   color: AppColor.black,
+                    //   overflow: TextOverflow.ellipsis,
+                    //   fontWeight: FontWeight.w400,
+                    // ),
                   ],
                 ),
               ),

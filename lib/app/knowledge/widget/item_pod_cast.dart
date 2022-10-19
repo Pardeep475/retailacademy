@@ -6,6 +6,7 @@ import 'package:retail_academy/common/app_color.dart';
 
 import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
+import '../../../common/widget/custom_read_more_text.dart';
 import '../../../network/modal/podcast/pod_cast_response.dart';
 
 class ItemPodCast extends StatelessWidget {
@@ -85,7 +86,8 @@ class ItemPodCast extends StatelessWidget {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,16 +113,22 @@ class ItemPodCast extends StatelessWidget {
                       SizedBox(
                         height: 5.w,
                       ),
-                      AppText(
-                        text: item.podcastDescription,
-                        textSize: 15.sp,
-                        color: AppColor.black,
-                        maxLines: 1,
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.ellipsis,
-                        lineHeight: 1.3,
-                        fontWeight: FontWeight.w500,
+                      CustomReadMoreText(
+                        value: item.podcastDescription.trim(),
+                        padding: EdgeInsets.zero,
+                        moreTextColor: AppColor.lightNavyBlue,
+                        textColor: AppColor.black,
                       ),
+                      // AppText(
+                      //   text: item.podcastDescription,
+                      //   textSize: 15.sp,
+                      //   color: AppColor.black,
+                      //   maxLines: 1,
+                      //   textAlign: TextAlign.start,
+                      //   overflow: TextOverflow.ellipsis,
+                      //   lineHeight: 1.3,
+                      //   fontWeight: FontWeight.w500,
+                      // ),
                     ],
                   ),
                 ),
