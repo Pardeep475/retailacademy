@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:retail_academy/app/comment/page/whats_hot_blog_comment_screen.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
-import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../common/widget/custom_read_more_text.dart';
 import '../../../common/widget/portrait_landscape_player_page.dart';
@@ -193,8 +192,8 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
     super.dispose();
   }
 
-  void _showCommentsBottomSheet() {
-    /*showModalBottomSheet<void>(
+  _showCommentsBottomSheet() {
+    showModalBottomSheet<void>(
       // context and builder are
       // required properties in this widget
       context: context,
@@ -226,20 +225,27 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
                 ],
               ),
               Expanded(
-                child: RetailReelsCommentScreen(
-                  title: widget.item.userName,
+                child: WhatsHotBlogCommentScreen(
+                  title: widget.item.blogTitle,
                   hasLike: _controller.hasLiked.value,
-                  // itemMediaUrl: _controller.videoUrl.value,
-                  itemMediaUrl:
-                  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                  reelId: widget.item.reelId,
-                  position: _controller.position,
+                  itemMediaUrl: '',
+                  blogId: widget.item.blogId,
                 ),
               ),
             ],
           ),
         );
       },
-    );*/
+    );
+    /*Get.to(() => TrendingCommentScreen(
+          title: item.userName,
+          hasLike: item.hasLiked,
+          itemMediaUrl: item.activityImage,
+          activityStreamId: item.activityStreamId,
+        ))?.then((value) {
+      if (value != null && value is bool) {
+        _controller.updateLikeTrending(index: index, value: value);
+      }
+    });*/
   }
 }

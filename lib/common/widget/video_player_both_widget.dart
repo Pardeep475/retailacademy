@@ -131,10 +131,18 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
                       }
                     },
                     onBackPressed: () async {
-                      SystemChrome.setPreferredOrientations([
-                        DeviceOrientation.portraitUp,
-                      ]);
-                      Get.back();
+                      target = isPortrait
+                          ? Orientation.landscape
+                          : Orientation.portrait;
+
+                      if (isPortrait) {
+                        SystemChrome.setPreferredOrientations([
+                          DeviceOrientation.portraitUp,
+                        ]);
+                        Get.back();
+                      } else {
+                        AutoOrientation.portraitUpMode();
+                      }
                     },
                     isPortrait: isPortrait),
               ),

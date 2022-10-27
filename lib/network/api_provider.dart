@@ -26,8 +26,11 @@ import 'modal/knowledge/knowledge_api_response.dart';
 import 'modal/knowledge/knowledge_content_comment_request.dart';
 import 'modal/knowledge/knowledge_content_comment_response.dart';
 import 'modal/knowledge/quiz_category_response.dart';
+import 'modal/knowledge/whats_hot_blog_comment_request.dart';
+import 'modal/knowledge/whats_hot_blog_comment_response.dart';
 import 'modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
 import 'modal/knowledge/whats_hot_blog_content_request.dart';
+import 'modal/knowledge/whats_hot_blog_delete_comment_request.dart';
 import 'modal/knowledge/whats_hot_blog_response.dart';
 import 'modal/maintainance_message/maintainance_message_response.dart';
 import 'modal/podcast/pod_cast_category_response.dart';
@@ -569,6 +572,34 @@ class ApiProvider {
         data: request.toJson(),
       );
       return ContentDisplayResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> whatsHotBlogCommentsApi(
+      {required WhatsHotBlogCommentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.whatsHotBlogCommentApi,
+        data: request.toJson(),
+      );
+      return WhatsHotBlogCommentResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> whatsHotBlogDeleteCommentsApi(
+      {required WhatsHotBlogDeleteCommentRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.whatsHotBlogDeleteCommentApi,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;

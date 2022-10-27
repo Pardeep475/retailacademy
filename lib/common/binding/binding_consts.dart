@@ -33,6 +33,7 @@ class BindingConst {
   static const String trendingDetailScreenBinding = "TRENDING_DETAIL_SCREEN_BINDING";
   static const String commentScreenBinding = "COMMENT_SCREEN_BINDING";
   static const String retailReelsCommentScreenBinding = "RETAIL_REELS_COMMENT_SCREEN_BINDING";
+  static const String whatsHotBlogCommentScreenBinding = "WHATS_HOT_BLOG_COMMENT_SCREEN_BINDING";
 
 
 }

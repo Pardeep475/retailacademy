@@ -78,21 +78,18 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
                   left: 0.0,
                   child: Row(
                     children: [
-                      // buildSpeed(),
-                      // widget.isCrossIconShown
-                      //     ? SafeArea(
-                      //         child: AnimatedContainer(
-                      //           duration: const Duration(milliseconds: 300),
-                      //           child: IconButton(
-                      //             onPressed: widget.onBackPressed,
-                      //             icon: const Icon(
-                      //               Icons.arrow_back_ios,
-                      //               color: Colors.white,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       )
-                      //     : const SizedBox(),
+                      SafeArea(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          child: IconButton(
+                            onPressed: widget.onBackPressed,
+                            icon: const Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   )),
               // Positioned(
@@ -156,20 +153,6 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
       );
 
   Widget buildIndicator(BuildContext context) {
-    debugPrint('''
-    
-    (_position != null &&
-                    _duration != null &&
-                    _position!.inMilliseconds > 0 &&
-                    _position!.inMilliseconds < _duration!.inMilliseconds)
-                ? _position!.inMilliseconds / _duration!.inMilliseconds
-                : 0.0
-    
-    ${(_position != null && _duration != null && _position!.inMilliseconds > 0 && _position!.inMilliseconds < _duration!.inMilliseconds) ? _position!.inMilliseconds / _duration!.inMilliseconds : 0.0}
-        
-    ${_position!.inMilliseconds / _duration!.inMilliseconds}
-    ''');
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

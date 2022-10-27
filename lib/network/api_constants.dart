@@ -69,4 +69,6 @@ class ApiConstants {
   static String podcastViewedByUser = 'PodcastViewedByUser';
   static String maintenanceMessage = 'MaintenanceMessage';
   static String contentDisplayApi = 'ContentDisplay';
+  static String whatsHotBlogCommentApi = 'AddBlogPost';
+  static String whatsHotBlogDeleteCommentApi = 'BlogDeleteComment';
 }

@@ -68,7 +68,7 @@ class CustomAppBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  isNotificationButtonVisible
+                  isNotificationButtonVisible || isVideoComponent
                       ? const SizedBox()
                       : AppText(
                           text:

@@ -120,10 +120,7 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
               children: [
                 CustomAppBar(
                   title: '',
-                  isBackButtonVisible: true,
-                  isSearchButtonVisible: false,
                   isVideoComponent: true,
-                  isNotificationButtonVisible: true,
                   onBackPressed: () {
                     SystemChrome.setPreferredOrientations([
                       DeviceOrientation.portraitUp,

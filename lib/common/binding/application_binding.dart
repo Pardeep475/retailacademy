@@ -4,6 +4,7 @@ import 'package:retail_academy/app/auth/login/controller/help_and_contact_retail
 import 'package:retail_academy/app/comment/controller/pod_cast_comment_controller.dart';
 import 'package:retail_academy/app/comment/controller/retail_reels_comment_controller.dart';
 import 'package:retail_academy/app/comment/controller/trending_comment_controller.dart';
+import 'package:retail_academy/app/comment/controller/whats_hot_blog_comment_controller.dart';
 import 'package:retail_academy/app/home/controller/home_controller.dart';
 import 'package:retail_academy/app/home/controller/trending_detail_controller.dart';
 import 'package:retail_academy/app/info_sessions/controller/info_sessions_controller.dart';
@@ -80,5 +81,7 @@ class ApplicationBinding implements Bindings {
         tag: BindingConst.trendingDetailScreenBinding);
     Get.lazyPut(() => TrendingCommentController(),
         tag: BindingConst.commentScreenBinding);
+    Get.lazyPut(() => WhatsHotBlogCommentController(),
+        tag: BindingConst.whatsHotBlogCommentScreenBinding);
   }
 }
