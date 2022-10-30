@@ -60,7 +60,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    _initAudioPlayer();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _initAudioPlayer();
+    });
   }
 
   @override
@@ -259,6 +261,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     //     });
     //   }
     // });
+    _play();
   }
 
   _play() async {

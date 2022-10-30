@@ -96,15 +96,12 @@ class _TrendingDetailScreenState extends State<TrendingDetailScreen> {
                     children: [
                       CustomAppBar(
                         title: '',
-                        isBackButtonVisible: true,
-                        isSearchButtonVisible: false,
                         isVideoComponent: true,
-                        isNotificationButtonVisible: true,
                         onBackPressed: () {
                           SystemChrome.setPreferredOrientations([
                             DeviceOrientation.portraitUp,
                           ]);
-                          Get.back(result: _controller.hasLike.value);
+                          Get.back();
                         },
                       ),
                     ],

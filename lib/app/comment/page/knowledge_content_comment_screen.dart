@@ -55,6 +55,7 @@ class _KnowledgeContentScreenState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _controller.fetchProfileImage();
+      _controller.fetchUserId();
       await _controller.knowledgeContentCommentsApi();
       _scrollToBottom();
     });

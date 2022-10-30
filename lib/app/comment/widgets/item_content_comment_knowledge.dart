@@ -19,6 +19,7 @@ class ItemContentCommentKnowledge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('UserId:---  $userId');
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
@@ -81,11 +82,11 @@ class ItemContentCommentKnowledge extends StatelessWidget {
                   children: [
                     AppText(
                       text: item.userName,
-                      textSize: 16.sp,
+                      textSize: 18.sp,
                       maxLines: 1,
                       color: AppColor.black,
                       overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                     SizedBox(
                       height: 5.h,

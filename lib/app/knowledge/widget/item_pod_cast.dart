@@ -99,14 +99,16 @@ class ItemPodCast extends StatelessWidget {
                           SizedBox(
                             width: 5.w,
                           ),
-                          AppText(
-                            text: item.podcastTitle,
-                            textSize: 15.sp,
-                            color: AppColor.black,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            lineHeight: 1.3,
-                            fontWeight: FontWeight.w500,
+                          Expanded(
+                            child: AppText(
+                              text: item.podcastTitle,
+                              textSize: 15.sp,
+                              color: AppColor.black,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              lineHeight: 1.3,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),

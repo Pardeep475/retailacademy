@@ -35,6 +35,7 @@ class RetailReelsCommentController extends GetxController {
     userProfileImage.value = '';
     hasLiked.value = false;
     isCommentShown.value = true;
+    userId = '';
   }
 
   @override

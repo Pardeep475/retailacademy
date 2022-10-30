@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -93,7 +94,6 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
                     padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 5.h),
                   );
                 }),
-
                 titleWidget: CustomReadMoreText(
                   value: widget.item.blogTitle.trim(),
                   padding: EdgeInsets.fromLTRB(16.w, 5.h, 16.w, 0),
@@ -104,13 +104,16 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               CustomAppBar(
                 title: '',
-                isBackButtonVisible: true,
-                isSearchButtonVisible: false,
-                isNotificationButtonVisible: true,
                 isVideoComponent: true,
+                onBackPressed: () {
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                  ]);
+                  Get.back();
+                },
               ),
               // Expanded(
               //   child: Obx(() {

@@ -56,6 +56,7 @@ class _RetailReelsCommentScreenState extends State<RetailReelsCommentScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _controller.fetchProfileImage();
+      // _controller.fetchUserId();
       await _controller.retailReelsCommentsApi();
       _scrollToBottom();
     });
