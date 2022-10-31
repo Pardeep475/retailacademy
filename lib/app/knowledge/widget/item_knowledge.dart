@@ -47,6 +47,7 @@ class ItemKnowledge extends StatelessWidget {
                     AppText(
                       text: item.folderName,
                       textSize: 20.sp,
+                      maxLines: 2,
                       color: AppColor.white,
                       fontWeight: FontWeight.w600,
                     ),
@@ -56,6 +57,7 @@ class ItemKnowledge extends StatelessWidget {
                     AppText(
                       text: item.folderDescription,
                       textSize: 16.sp,
+                      maxLines: 4,
                       color: AppColor.white,
                       fontWeight: FontWeight.w400,
                     ),

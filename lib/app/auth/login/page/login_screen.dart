@@ -19,9 +19,13 @@ class LoginScreen extends StatelessWidget {
       : Get.put(LoginController());
 
   final TextEditingController _emailController =
-      TextEditingController(text: "4567");
+      TextEditingController(text: "15224");
   final TextEditingController _passwordController =
       TextEditingController(text: "feb12345");
+
+  // final TextEditingController _emailController = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
+
   final _formGlobalKey = GlobalKey<FormState>();
 
   @override
@@ -96,7 +100,8 @@ class LoginScreen extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             // help == 0, contact retail == 1
-                            Get.to(() => HelpAndContactRetailScreen(screenType: 0));
+                            Get.to(() =>
+                                HelpAndContactRetailScreen(screenType: 0));
                           },
                           child: Container(
                               padding: EdgeInsets.fromLTRB(20.w, 10.h, 0, 10.h),

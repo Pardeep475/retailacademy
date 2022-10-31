@@ -104,6 +104,18 @@ class QuizMasterDetailController extends GetxController {
     }
     dataList.clear();
     currentPage = modal.lastAnswered + 1;
+    for (int i = 0; i < modal.quizResponse!.length; i++) {
+      var element = modal.quizResponse![i];
+      if (i > modal.lastAnswered || modal.lastAnswered == -1) {
+        debugPrint(
+            'Checking Position:---   ${modal.lastAnswered > i}  i  ==> $i  lastAnswered:==>  ${modal.lastAnswered}');
+        element.groupValue = '';
+        for (var elementElement in element.answers!) {
+          elementElement.isSelected = false;
+        }
+      }
+    }
+
     dataList.addAll(modal.quizResponse ?? []);
     dataList.refresh();
     return false;

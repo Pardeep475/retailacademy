@@ -58,7 +58,7 @@ class LoginController extends GetxController {
         String platform = Platform.isAndroid ? "android" : "ios";
         var response = await ApiProvider.apiProvider.loginApi(
             request: LoginRequest.name(
-                'employeenumber', userName, 'deviceToken', platform, password));
+                'employeenumber', userName.trim(), 'deviceToken', platform, password.trim()));
         if (response != null) {
           LoginResponse loginResponse = (response as LoginResponse);
           if (loginResponse.status) {
@@ -100,9 +100,12 @@ class LoginController extends GetxController {
       } finally {
         showLoader.value = false;
         Utils.logger.e("token_is:-   ${loginResponse.jwtToken}");
+        Utils.logger.e("token_is:-   ${loginResponse.userid}");
         SessionManager.setToken(loginResponse.jwtToken);
         SessionManager.setUserName(userName);
         SessionManager.setUserId(loginResponse.userid);
+        var userId = await SessionManager.getUserId();
+        Utils.logger.e("token_is:-   $userId");
         SessionManager.setDeviceToken('deviceToken');
         SessionManager.setLogin(true);
         Get.offAndToNamed(

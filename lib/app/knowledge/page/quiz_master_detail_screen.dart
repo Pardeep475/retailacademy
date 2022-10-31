@@ -65,7 +65,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                   isBackButtonVisible: true,
                   isSearchButtonVisible: false,
                   isNotificationButtonVisible: false,
-                  onBackPressed: (){
+                  onBackPressed: () {
                     _openCancelAttemptedDialogBox();
                   },
                 ),
@@ -158,12 +158,14 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                               barrierDismissible: false,
                               onPressed: () {
                                 if (value == AppStrings.yourAnswerIsCorrect ||
-                                    value.contains(AppStrings.incorrectAnswer)) {
+                                    value
+                                        .contains(AppStrings.incorrectAnswer)) {
                                   _controller.updateValuesOnDataBase(
                                       index: _controller.currentPage);
                                   Get.back();
                                   _carouselController.nextPage(
-                                      duration: const Duration(milliseconds: 300),
+                                      duration:
+                                          const Duration(milliseconds: 300),
                                       curve: Curves.linear);
                                   debugPrint(
                                       '${_controller.currentPage}   ${_controller.dataList.length - 1}');
@@ -215,7 +217,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
   }
 
   _openCancelAttemptedDialogBox() {
-       AlertDialogBox(
+    AlertDialogBox(
       showCrossIcon: true,
       context: context,
       barrierDismissible: true,
