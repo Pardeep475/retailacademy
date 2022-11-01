@@ -46,6 +46,17 @@ class ProfileController extends GetxController {
     Utils.logger.e("on close");
   }
 
+  void clearAllData(){
+    showLoader.value = false;
+    notificationSwitchEnabled.value = false;
+    profileImage.value = '';
+    staffName.value = '';
+    storeName.value = '';
+    staffIdNumber.value = '';
+    emailAddress.value = '';
+  }
+
+
   updateNotificationSwitch(bool value) {
     notificationSwitchEnabled.value = value;
   }

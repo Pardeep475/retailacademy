@@ -29,6 +29,7 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
 
   @override
   void initState() {
+    _controller.clearAllData();
     _controller.item = widget.item;
     _controller.timeSpentOnPodcast = widget.item.timeSpentOnPodcast;
     _controller.hasLiked.value = widget.item.hasLiked;
@@ -46,7 +47,7 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
       onWillPop: () {
         _controller.podcastViewedByUserApi(
             podcastId: widget.item.podcastId, isBackPressed: true);
-        return Future.value(true);
+        return Future.value(false);
       },
       child: Scaffold(
         body: Stack(

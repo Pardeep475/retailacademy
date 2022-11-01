@@ -36,6 +36,7 @@ class RetailReelsCommentController extends GetxController {
     hasLiked.value = false;
     isCommentShown.value = true;
     userId = '';
+    position = const Duration();
   }
 
   @override

@@ -1,3 +1,4 @@
+
 import 'package:get/get.dart';
 
 import '../../../common/app_strings.dart';
@@ -31,6 +32,13 @@ class WhatsHotBlogDetailController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData(){
+    showLoader.value = false;
+    hasLiked.value = false;
+    blogDescription.value = '';
+    videoUrl.value = '';
   }
 
   Future fetchWhatsHotContentApi(

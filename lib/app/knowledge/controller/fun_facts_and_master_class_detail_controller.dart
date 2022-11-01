@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/network/modal/knowledge/like_or_dislike_content_knowledge_section_request.dart';
 import '../../../common/app_strings.dart';
@@ -8,13 +11,19 @@ import '../../../network/api_provider.dart';
 import '../../../network/modal/base/base_response.dart';
 import '../../../network/modal/knowledge/content_display_request.dart';
 import '../../../network/modal/knowledge/content_display_response.dart';
-import '../../../network/modal/knowledge/content_knowledge_response.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FunFactsAndMasterClassDetailController extends GetxController {
   var showLoader = false.obs;
 
   var isError = false.obs;
   var hasLiked = false.obs;
+
+  var filePath = ''.obs;
+  var fileName = ''.obs;
+  var description = ''.obs;
 
   @override
   void onInit() {
@@ -34,13 +43,16 @@ class FunFactsAndMasterClassDetailController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  clearValue() {
+  void clearAllData() {
     showLoader.value = false;
     hasLiked.value = false;
     isError.value = false;
+    filePath.value = '';
+    fileName.value = '';
+    description.value = '';
   }
 
-  Future contentDisplayApi({required FileElement item}) async {
+  Future contentDisplayApi({required int fileId}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
       try {
@@ -48,7 +60,7 @@ class FunFactsAndMasterClassDetailController extends GetxController {
         String userId = await SessionManager.getUserId();
         var response = await ApiProvider.apiProvider.contentDisplayApi(
           request: ContentDisplayRequest(
-            fileId: item.fileId,
+            fileId: fileId,
             userId: int.parse(userId),
           ),
         );
@@ -57,6 +69,9 @@ class FunFactsAndMasterClassDetailController extends GetxController {
               (response as ContentDisplayResponse);
           if (contentDisplayResponse.status) {
             hasLiked.value = contentDisplayResponse.likeByUser;
+            fileName.value = contentDisplayResponse.fileName;
+            description.value = ''/*contentDisplayResponse.message*/;
+            getFileFromUrl(contentDisplayResponse.filesUrl);
           } else {
             Utils.errorSnackBar(
                 AppStrings.error, contentDisplayResponse.message);
@@ -71,8 +86,7 @@ class FunFactsAndMasterClassDetailController extends GetxController {
     return null;
   }
 
-  Future likeOrDislikeContentKnowledgeSectionApi(
-      {required FileElement item}) async {
+  Future likeOrDislikeContentKnowledgeSectionApi({required int fileId}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
       try {
@@ -81,7 +95,7 @@ class FunFactsAndMasterClassDetailController extends GetxController {
         var response = await ApiProvider.apiProvider
             .likeOrDislikeContentKnowledgeSectionApi(
                 request: LikeOrDislikeContentKnowledgeSectionRequest(
-          fileId: item.fileId,
+          fileId: fileId,
           userId: int.parse(userId),
           check: hasLiked.value ? 0 : 1,
         ));
@@ -104,5 +118,59 @@ class FunFactsAndMasterClassDetailController extends GetxController {
 
   updateError(bool error) {
     isError.value = error;
+  }
+
+  // downloadfile
+  Future<String?> getFileFromUrl(String url, {name}) async {
+    bool value = await requestPermission();
+    if (!value) {
+      return null;
+    }
+    var fileName = 'pdfOnline';
+    if (name != null) {
+      fileName = name;
+    }
+    showLoader.value = true;
+    try {
+      debugPrint(url);
+      // var data = await http.get(Uri.parse("http://www.africau.edu/images/default/sample.pdf"));
+      var data = await http.get(Uri.parse(url));
+      var bytes = data.bodyBytes;
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/" + fileName + ".pdf");
+      debugPrint(file.path);
+      File urlFile = await file.writeAsBytes(bytes);
+      filePath.value = urlFile.path;
+    } catch (e) {
+      debugPrint("Error opening url file  $e");
+    } finally {
+      showLoader.value = false;
+    }
+  }
+
+  Future<bool> requestPermission() async {
+    var status = await Permission.storage.status;
+    if (status.isGranted) {
+      return true;
+    }
+    if (await Permission.storage.request().isGranted) {
+      return true;
+    }
+    var value = await Permission.storage.status;
+    if (value.isDenied) {
+      if (await Permission.storage.request().isGranted) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    if (value.isPermanentlyDenied) {
+      await openAppSettings();
+      return false;
+    }
+    if (value.isRestricted) {
+      return await requestPermission();
+    }
+    return false;
   }
 }

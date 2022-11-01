@@ -15,7 +15,7 @@ class PodCastDetailController extends GetxController {
   var showLoader = false.obs;
   PodcastElement? item;
   var hasLiked = false.obs;
-  final RxList<BlogCategoryElement> dataList = RxList();
+  RxList<BlogCategoryElement> dataList = RxList();
   var timeSpentOnPodcast = '00:00';
 
   @override
@@ -34,6 +34,14 @@ class PodCastDetailController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData() {
+    showLoader.value = false;
+    item = null;
+    hasLiked.value = false;
+    dataList = RxList();
+    timeSpentOnPodcast = '00:00';
   }
 
   // Future getQuizMasterApi({bool isLoader = true}) async {
@@ -92,8 +100,7 @@ class PodCastDetailController extends GetxController {
   }
 
   Future podcastViewedByUserApi(
-      {required int podcastId,
-      bool isBackPressed = false}) async {
+      {required int podcastId, bool isBackPressed = false}) async {
     debugPrint('TIME_SPENT:-  $timeSpentOnPodcast');
     bool value = await Utils.checkConnectivity();
     if (value) {

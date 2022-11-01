@@ -26,9 +26,11 @@ class _WhatsHotBlogScreenState extends State<WhatsHotBlogScreen> {
 
   @override
   void initState() {
+
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.clearAllData();
       _controller.fetchWhatsHotApi();
     });
   }

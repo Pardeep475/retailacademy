@@ -11,9 +11,9 @@ import '../../../network/modal/podcast/pod_cast_response.dart';
 class PodCastController extends GetxController {
   var showLoader = true.obs;
 
-  final RxList<PodcastElement> recentDataList = RxList();
-  final RxList<PodcastElement> continueListeningDataList = RxList();
-  final RxList<PodCastCategoryElement> categoryDataList = RxList();
+  RxList<PodcastElement> recentDataList = RxList();
+  RxList<PodcastElement> continueListeningDataList = RxList();
+  RxList<PodCastCategoryElement> categoryDataList = RxList();
 
   @override
   void onInit() {
@@ -31,6 +31,13 @@ class PodCastController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData() {
+    showLoader.value = false;
+    recentDataList = RxList();
+    continueListeningDataList = RxList();
+    categoryDataList = RxList();
   }
 
   Future getPodCastApi({bool isLoader = true}) async {
@@ -62,7 +69,7 @@ class PodCastController extends GetxController {
 
   _updateAllList(List<dynamic> responses) {
     for (int i = 0; i < responses.length; i++) {
-      if(responses[i] == null){
+      if (responses[i] == null) {
         continue;
       }
       switch (i) {
@@ -71,9 +78,9 @@ class PodCastController extends GetxController {
             if (responses[i].status) {
               continueListeningDataList.clear();
               continueListeningDataList.addAll(responses[i].podcasts ?? []);
-            } else {
+            } /*else {
               Utils.errorSnackBar(AppStrings.error, responses[i].message);
-            }
+            }*/
           }
           break;
         case 1:

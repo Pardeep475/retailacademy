@@ -36,6 +36,7 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
 
   @override
   void initState() {
+    _controller.clearAllData();
     _controller.categoryValue = widget.item.categoryId;
     _controller.currentPage = 0;
     super.initState();

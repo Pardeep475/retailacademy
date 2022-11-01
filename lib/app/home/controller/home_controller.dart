@@ -32,6 +32,12 @@ class HomeController extends GetxController {
     Utils.logger.e("on close");
   }
 
+  void clearAllData(){
+    showLoader.value = false;
+    dataList = RxList();
+    showPagination.value = false;
+  }
+
   Future getTrendingApi({bool isLoader = true}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {

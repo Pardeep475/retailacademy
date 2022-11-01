@@ -21,6 +21,7 @@ class ForgotPasswordController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    clearAllData();
     Utils.logger.e("on init");
   }
 
@@ -34,6 +35,10 @@ class ForgotPasswordController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData(){
+    showLoader.value = false;
   }
 
   Future forgotPasswordApi({

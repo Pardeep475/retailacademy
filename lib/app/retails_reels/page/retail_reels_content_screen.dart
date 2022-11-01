@@ -28,6 +28,7 @@ class _RetailReelsContentScreenState extends State<RetailReelsContentScreen> {
 
   @override
   void initState() {
+    _controller.clearAllData();
     Map<String, dynamic> value = Get.arguments;
     title = value['title'];
     _controller.categoryId = value['categoryId'];

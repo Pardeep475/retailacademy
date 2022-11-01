@@ -35,6 +35,7 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
 
   @override
   void initState() {
+    _controller.clearAllData();
     _controller.hasLiked.value = widget.item.hasLiked;
     super.initState();
 

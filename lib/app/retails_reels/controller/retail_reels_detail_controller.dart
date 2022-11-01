@@ -5,7 +5,6 @@ import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 import '../../../network/modal/base/base_response.dart';
-import '../../../network/modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
 import '../../../network/modal/retails_reels/retail_reels_like_request.dart';
 import '../../../network/modal/retails_reels/retail_reels_list_request.dart';
 import '../../../network/modal/retails_reels/retail_reels_list_response.dart';
@@ -34,6 +33,15 @@ class RetailReelsDetailController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData() {
+    showLoader.value = false;
+    hasLiked.value = false;
+    reelDescription.value = '';
+    videoUrl.value = '';
+    position = const Duration();
+    refreshDuration.value = const Duration();
   }
 
   Future fetchWhatsHotContentApi(

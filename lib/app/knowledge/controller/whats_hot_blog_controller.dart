@@ -8,7 +8,7 @@ import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
 
 class WhatsHotBlogController extends GetxController {
   var showLoader = true.obs;
-  final RxList<BlogCategoryElement> dataList = RxList();
+  RxList<BlogCategoryElement> dataList = RxList();
 
   @override
   void onInit() {
@@ -26,6 +26,11 @@ class WhatsHotBlogController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData(){
+    showLoader.value = false;
+    dataList = RxList();
   }
 
   Future fetchWhatsHotApi({bool isLoader = true}) async {

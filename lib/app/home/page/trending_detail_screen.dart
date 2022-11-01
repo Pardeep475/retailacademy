@@ -34,6 +34,7 @@ class _TrendingDetailScreenState extends State<TrendingDetailScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.clearAllData();
       _controller.hasLike.value = widget.item.hasLiked;
     });
   }

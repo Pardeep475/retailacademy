@@ -9,6 +9,7 @@ import '../../../common/app_images.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/read_more_text.dart';
 import '../../../network/modal/trending/trending_response.dart';
+import '../../knowledge/page/fun_facts_and_master_class_detail_screen.dart';
 import '../page/trending_detail_screen.dart';
 
 class ItemTrending extends StatelessWidget {
@@ -31,12 +32,23 @@ class ItemTrending extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        AppText(
-          text: item.userName,
-          textSize: 20.sp,
-          fontWeight: FontWeight.w500,
+        GestureDetector(
+          onTap: () {
+            Get.to(
+              () => FunFactsAndMasterClassDetailScreen(
+                fileId: item.contentFileId.toString(),
+              ),
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 10.h),
+            child: AppText(
+              text: item.contentFileName,
+              textSize: 20.sp,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
-        SizedBox(height: 10.h),
         GestureDetector(
           onTap: onItemPressed,
           child: CachedNetworkImage(

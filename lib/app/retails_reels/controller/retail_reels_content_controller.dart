@@ -9,7 +9,7 @@ import '../../../network/modal/retails_reels/retail_reels_list_response.dart';
 
 class RetailReelsContentController extends GetxController {
   var showLoader = true.obs;
-  final RxList<ReelElement> dataList = RxList();
+  RxList<ReelElement> dataList = RxList();
   var categoryId = -1;
 
   @override
@@ -28,6 +28,12 @@ class RetailReelsContentController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData(){
+    showLoader.value = false;
+    dataList= RxList();
+    categoryId = -1;
   }
 
   Future fetchRetailReelsContentApi({bool isLoader = true}) async {

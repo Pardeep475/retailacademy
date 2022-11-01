@@ -34,6 +34,7 @@ class _PodCastContentScreenState extends State<PodCastContentScreen> {
 
   @override
   void initState() {
+    _controller.clearAllData();
     _controller.item = widget.item;
     super.initState();
 

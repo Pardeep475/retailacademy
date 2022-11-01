@@ -30,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.clearAllData();
       _controller.fetchUserDetails();
     });
   }

@@ -16,6 +16,9 @@ class TrendingCommentRequest {
     this.userid = "",
     this.comment = "",
     this.afterDate = "",
+    this.file = "",
+    this.filename = "",
+    this.extension = "",
   });
 
   int activityStreamId;
@@ -23,6 +26,9 @@ class TrendingCommentRequest {
   String comment;
   String afterDate;
   int lastCommentId;
+  String file;
+  String filename;
+  String extension;
 
   Map<String, dynamic> toJson() => {
         "activityStreamId": activityStreamId,
@@ -30,5 +36,8 @@ class TrendingCommentRequest {
         "userid": userid,
         "comment": comment,
         "afterdate": afterDate,
+        "file": file,
+        "filename": filename,
+        "extension": extension,
       };
 }

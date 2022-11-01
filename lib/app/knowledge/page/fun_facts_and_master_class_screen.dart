@@ -27,6 +27,7 @@ class _FunFactsAndMasterClassScreenState
 
   @override
   void initState() {
+    _controller.clearAllData();
     Map<String, dynamic> value = Get.arguments;
     title = value['title'];
     color = value['color'];

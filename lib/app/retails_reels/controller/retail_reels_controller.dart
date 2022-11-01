@@ -9,7 +9,7 @@ import '../../../network/modal/retails_reels/retail_reels_categories_response.da
 
 class RetailReelsController extends GetxController {
   var showLoader = false.obs;
-  final RxList<RetailReelsCategoryElement> dataList = RxList();
+  RxList<RetailReelsCategoryElement> dataList = RxList();
 
   @override
   void onInit() {
@@ -27,6 +27,11 @@ class RetailReelsController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData() {
+    showLoader.value = false;
+    dataList = RxList();
   }
 
   Future fetchRetailsReelsCategoriesApi({bool isLoader = true}) async {

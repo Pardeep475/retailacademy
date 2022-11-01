@@ -29,6 +29,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.clearAllData();
       _controller.getKnowledgeApi();
     });
   }

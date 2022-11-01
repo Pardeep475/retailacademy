@@ -11,8 +11,7 @@ import '../modal/knowledge_entity.dart';
 
 class KnowledgeController extends GetxController {
   var showLoader = false.obs;
-  final RxList<KnowledgeElement> dataList = RxList();
-
+  RxList<KnowledgeElement> dataList = RxList();
 
   @override
   void onInit() {
@@ -32,6 +31,10 @@ class KnowledgeController extends GetxController {
     Utils.logger.e("on close");
   }
 
+  void clearAllData() {
+    showLoader.value = false;
+    dataList = RxList();
+  }
 
   Future getKnowledgeApi({bool isLoader = true}) async {
     bool value = await Utils.checkConnectivity();
@@ -46,7 +49,8 @@ class KnowledgeController extends GetxController {
           orgId: AppStrings.orgId,
         );
         if (response != null) {
-          KnowledgeApiResponse knowledgeResponse = (response as KnowledgeApiResponse);
+          KnowledgeApiResponse knowledgeResponse =
+              (response as KnowledgeApiResponse);
           if (knowledgeResponse.status) {
             dataList.clear();
             dataList.addAll(knowledgeResponse.knowledgeElement ?? []);
@@ -66,18 +70,18 @@ class KnowledgeController extends GetxController {
     return null;
   }
 
-  // getKnowledgeData() {
-  //   if (dataList.isNotEmpty) {
-  //     dataList.clear();
-  //   }
-  //
-  //   KnowledgeRepository _knowledgeRepository = KnowledgeRepository();
-  //   List<KnowledgeEntity> entityList =
-  //   _knowledgeRepository.getKnowledgeData();
-  //
-  //   dataList.addAll(entityList);
-  //   dataList.refresh();
-  // }
+// getKnowledgeData() {
+//   if (dataList.isNotEmpty) {
+//     dataList.clear();
+//   }
+//
+//   KnowledgeRepository _knowledgeRepository = KnowledgeRepository();
+//   List<KnowledgeEntity> entityList =
+//   _knowledgeRepository.getKnowledgeData();
+//
+//   dataList.addAll(entityList);
+//   dataList.refresh();
+// }
 
 }
 
@@ -85,26 +89,23 @@ class KnowledgeRepository {
   List<KnowledgeEntity> getKnowledgeData() {
     return [
       KnowledgeEntity(
-          title: AppStrings.funFacts,
-          description: AppStrings.funFactsDescription,
-          color: AppColor.yellowKnowledge,
-          icon: AppImages.imgKnowledgeFunFacts,
+        title: AppStrings.funFacts,
+        description: AppStrings.funFactsDescription,
+        color: AppColor.yellowKnowledge,
+        icon: AppImages.imgKnowledgeFunFacts,
       ),
-
       KnowledgeEntity(
-          title: AppStrings.masterClass,
-          description: AppStrings.masterClassDescription,
-          color: AppColor.redKnowledge,
-          icon: AppImages.imgKnowledgeMasterClass,
+        title: AppStrings.masterClass,
+        description: AppStrings.masterClassDescription,
+        color: AppColor.redKnowledge,
+        icon: AppImages.imgKnowledgeMasterClass,
       ),
-
       KnowledgeEntity(
         title: AppStrings.quizMaster,
         description: AppStrings.quizMasterDescription,
         color: AppColor.pinkKnowledge,
         icon: AppImages.imgKnowledgeQuizMaster,
       ),
-
       KnowledgeEntity(
         title: AppStrings.whatsHotBlog,
         description: AppStrings.whatsHotBlogDescription,

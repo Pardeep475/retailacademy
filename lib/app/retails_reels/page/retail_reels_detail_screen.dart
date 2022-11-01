@@ -37,6 +37,7 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
 
   @override
   void initState() {
+    _controller.clearAllData();
     _controller.hasLiked.value = widget.item.hasLiked;
     super.initState();
 

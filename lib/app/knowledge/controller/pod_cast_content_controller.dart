@@ -12,7 +12,7 @@ import '../../../network/modal/podcast/pod_cast_response.dart';
 
 class PodCastContentController extends GetxController {
   var showLoader = false.obs;
-  final RxList<PodcastElement> dataList = RxList();
+   RxList<PodcastElement> dataList = RxList();
   PodCastCategoryElement? item;
 
   @override
@@ -31,6 +31,12 @@ class PodCastContentController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData(){
+    showLoader.value = false;
+    dataList = RxList();
+    item = null;
   }
 
   Future getPodCastApi({bool isLoader = true}) async {

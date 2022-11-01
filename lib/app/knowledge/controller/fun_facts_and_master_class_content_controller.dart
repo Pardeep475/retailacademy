@@ -37,7 +37,7 @@ class FunFactsAndMasterClassContentController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  refreshData() {
+  void clearAllData() {
     showLoader.value = false;
     dataList = RxList();
     fileId = 0;

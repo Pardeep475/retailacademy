@@ -8,7 +8,7 @@ import '../../../network/modal/knowledge/quiz_category_response.dart';
 
 class QuizMasterController extends GetxController {
   var showLoader = true.obs;
-  final RxList<QuizCategoryElement> dataList = RxList();
+   RxList<QuizCategoryElement> dataList = RxList();
 
   @override
   void onInit() {
@@ -26,6 +26,11 @@ class QuizMasterController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData(){
+    showLoader.value = false;
+    dataList = RxList();
   }
 
   Future getQuizMasterApi({bool isLoader = true}) async {

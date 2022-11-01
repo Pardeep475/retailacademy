@@ -30,6 +30,7 @@ class _WhatsHotBlogContentScreenState extends State<WhatsHotBlogContentScreen> {
 
   @override
   void initState() {
+    _controller.clearAllData();
     Map<String, dynamic> value = Get.arguments;
     title = value['title'];
     description = value['description'];

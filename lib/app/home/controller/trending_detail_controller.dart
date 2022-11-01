@@ -31,6 +31,11 @@ class TrendingDetailController extends GetxController {
     Utils.logger.e("on close");
   }
 
+  void clearAllData(){
+    showLoader.value = false;
+    hasLike.value = false;
+  }
+
   Future trendingLikeApi(
       { required int activityStreamId}) async {
     bool value = await Utils.checkConnectivity();

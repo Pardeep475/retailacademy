@@ -31,6 +31,7 @@ class _PodCastScreenState extends State<PodCastScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.clearAllData();
       _controller.getPodCastApi();
     });
   }

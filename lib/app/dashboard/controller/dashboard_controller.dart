@@ -33,6 +33,11 @@ class DashboardController extends GetxController {
     Utils.logger.e("on close");
   }
 
+  void clearAllData(){
+   showLoader.value = false;
+   currentSelectedIndex.value = 0;
+  }
+
   updateCurrentIndex(int selectedIndex) {
     currentSelectedIndex.value = selectedIndex;
   }

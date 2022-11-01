@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/common/app_color.dart';
 
-import '../../../common/app_strings.dart';
-import '../../../common/utils.dart';
+// import '../../../common/app_strings.dart';
+// import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../common/widget/no_data_available.dart';
 import '../../../network/modal/knowledge/content_knowledge_response.dart';
@@ -32,12 +32,13 @@ class _FunFactsAndMasterClassContentScreenState
 
   @override
   void initState() {
+    _controller.clearAllData();
     Map<String, dynamic> value = Get.arguments;
     title = value['title'];
     _controller.fileId = value['fileId'];
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.getContentKnowledgeSection();
     });
   }
@@ -86,19 +87,25 @@ class _FunFactsAndMasterClassContentScreenState
                         return ItemContentKnowledge(
                           item: item,
                           onPressed: () async {
-                            String? filePath =
-                                await _controller.getFileFromUrl(item.filesUrl);
-                            if (filePath != null) {
-                              Get.to(
-                                () => FunFactsAndMasterClassDetailScreen(
-                                  item: item,
-                                  filePath: filePath,
-                                ),
-                              );
-                            } else {
-                              Utils.errorSnackBar(
-                                  AppStrings.error, 'Something went wrong');
-                            }
+                            Get.to(
+                                  () => FunFactsAndMasterClassDetailScreen(
+                                fileId: item.fileId.toString(),
+                              ),
+                            );
+
+
+                            // String? filePath =
+                            //     await _controller.getFileFromUrl(item.filesUrl);
+                            // if (filePath != null) {
+                            //   Get.to(
+                            //     () => FunFactsAndMasterClassDetailScreen(
+                            //       fileId: item.fileId.toString(),
+                            //     ),
+                            //   );
+                            // } else {
+                            //   Utils.errorSnackBar(
+                            //       AppStrings.error, 'Something went wrong');
+                            // }
                           },
                         );
                       },

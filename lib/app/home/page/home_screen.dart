@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     setUpScrollListener();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.clearAllData();
       _controller.getTrendingApi();
     });
   }

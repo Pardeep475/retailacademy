@@ -9,7 +9,7 @@ import '../../../network/modal/knowledge/whats_hot_blog_content_response.dart';
 
 class WhatsHotBlogContentController extends GetxController {
   var showLoader = true.obs;
-  final RxList<BlogContentElement> dataList = RxList();
+  RxList<BlogContentElement> dataList = RxList();
   var categoryId = -1;
 
   @override
@@ -28,6 +28,12 @@ class WhatsHotBlogContentController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  clearAllData(){
+    showLoader.value = false;
+    dataList = RxList();
+    categoryId = -1;
   }
 
   Future fetchWhatsHotContentApi({bool isLoader = true}) async {

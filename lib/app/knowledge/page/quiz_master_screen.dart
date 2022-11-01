@@ -29,6 +29,7 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
 
   @override
   void initState() {
+    _controller.clearAllData();
     Map<String, dynamic> value = Get.arguments;
     color = value['color'];
     super.initState();

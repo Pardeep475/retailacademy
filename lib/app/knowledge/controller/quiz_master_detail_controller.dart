@@ -21,7 +21,7 @@ import 'package:collection/collection.dart';
 
 class QuizMasterDetailController extends GetxController {
   var showLoader = false.obs;
-  final RxList<QuizElementModal> dataList = RxList();
+  RxList<QuizElementModal> dataList = RxList();
 
   Box<QuizModal> quizModalLocalRepository =
       Hive.box<QuizModal>(AppStrings.quizDataBaseName);
@@ -45,6 +45,14 @@ class QuizMasterDetailController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData() {
+    showLoader.value = false;
+    dataList = RxList();
+    categoryValue = -1;
+    currentPage = 0;
+    quizModalLocalRepository = Hive.box<QuizModal>(AppStrings.quizDataBaseName);
   }
 
   Future consolidatedQuizQuestionsApi({required int categoryId}) async {

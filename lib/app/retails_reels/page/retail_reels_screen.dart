@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
-import '../../../common/dummy.dart';
 import '../../../common/routes/route_strings.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../common/widget/no_data_available.dart';
@@ -27,8 +26,8 @@ class _RetailReelsScreenState extends State<RetailReelsScreen> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.clearAllData();
       _controller.fetchRetailsReelsCategoriesApi();
     });
   }
