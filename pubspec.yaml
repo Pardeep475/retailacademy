@@ -56,7 +56,8 @@ dependencies:
   auto_orientation: ^2.2.1
   native_device_orientation: ^1.1.4
   wakelock: ^0.6.2
-#  flutter_zoom_sdk: ^1.1.0+4
+  flutter_zoom_sdk: ^1.1.0+4
+  visibility_detector: ^0.3.3
 
 
 dev_dependencies:

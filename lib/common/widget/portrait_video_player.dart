@@ -7,7 +7,6 @@ import 'package:video_player/video_player.dart';
 
 import '../app_color.dart';
 import 'advanced_overlay_widget.dart';
-import 'portrait_landscape_player_page.dart';
 
 class PortraitVideoPlayer extends StatefulWidget {
   final String url;
@@ -15,25 +14,15 @@ class PortraitVideoPlayer extends StatefulWidget {
   final String? filePath;
   final bool isAutoPlay;
   final double aspectRatio;
-  final Duration? duration;
-  final Function(Duration value)? onDurationChanged;
-  final Widget? commentIcon;
-  final Widget? likeIcon;
-  final Widget? titleWidget;
-  final Widget? descriptionWidget;
+  final VoidCallback onFullScreen;
 
   const PortraitVideoPlayer(
       {Key? key,
       required this.url,
+      required this.onFullScreen,
       this.token,
       this.filePath,
       this.isAutoPlay = true,
-      this.duration,
-      this.onDurationChanged,
-      this.commentIcon,
-      this.likeIcon,
-      this.titleWidget,
-      this.descriptionWidget,
       this.aspectRatio = 9 / 16})
       : super(key: key);
 
@@ -47,21 +36,21 @@ class _PortraitVideoPlayerState extends State<PortraitVideoPlayer> {
   @override
   void initState() {
     super.initState();
+    debugPrint('URL_VIDEO:--   ${widget.url}');
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     if (widget.filePath != null) {
       controller = VideoPlayerController.file(File(widget.filePath!))
         ..addListener(() => setState(() {}))
         ..setLooping(false)
         ..initialize().then((_) {
-          controller?.seekTo(widget.duration ?? const Duration());
+          controller?.seekTo(const Duration());
           if (widget.isAutoPlay) {
             controller?.play();
+            controller?.setVolume(0);
+          } else {
+            controller?.pause();
           }
           controller?.addListener(() {
-            if (widget.onDurationChanged != null) {
-              widget.onDurationChanged!(
-                  controller?.value.position ?? const Duration());
-            }
             debugPrint(
                 'CUSTOM_LISTENER:---- --  ${controller?.value.position}');
           });
@@ -76,16 +65,15 @@ class _PortraitVideoPlayerState extends State<PortraitVideoPlayer> {
         ..addListener(() => setState(() {}))
         ..setLooping(false)
         ..initialize().then((_) {
-          controller?.seekTo(widget.duration ?? const Duration());
+          controller?.seekTo(const Duration());
           if (widget.isAutoPlay) {
             controller?.play();
+            controller?.setVolume(0);
+          } else {
+            controller?.pause();
           }
 
           controller?.addListener(() {
-            if (widget.onDurationChanged != null) {
-              widget.onDurationChanged!(
-                  controller?.value.position ?? const Duration());
-            }
             debugPrint(
                 'CUSTOM_LISTENER:---- --  ${controller?.value.position}');
           });
@@ -106,11 +94,8 @@ class _PortraitVideoPlayerState extends State<PortraitVideoPlayer> {
     return VideoPlayerPortraitWidget(
       controller: controller,
       url: widget.url,
+      onPressed: widget.onFullScreen,
       aspectRatio: widget.aspectRatio,
-      commentIcon: widget.commentIcon,
-      likeIcon: widget.likeIcon,
-      titleWidget: widget.titleWidget,
-      descriptionWidget: widget.descriptionWidget,
     );
   }
 }
@@ -123,6 +108,7 @@ class VideoPlayerPortraitWidget extends StatefulWidget {
   final Widget? likeIcon;
   final Widget? titleWidget;
   final Widget? descriptionWidget;
+  final VoidCallback onPressed;
 
   const VideoPlayerPortraitWidget({
     Key? key,
@@ -132,6 +118,7 @@ class VideoPlayerPortraitWidget extends StatefulWidget {
     this.commentIcon,
     this.likeIcon,
     this.titleWidget,
+    required this.onPressed,
     this.descriptionWidget,
   }) : super(key: key);
 
@@ -181,37 +168,20 @@ class _VideoPlayerPortraitWidgetState extends State<VideoPlayerPortraitWidget> {
                 likeIcon: widget.likeIcon,
                 titleWidget: widget.titleWidget,
                 descriptionWidget: widget.descriptionWidget,
-                onClickedFullScreen: () async {
-                  Duration? position = await widget.controller?.position;
-                  Get.to(
-                    PortraitLandscapePlayerPage(
-                      url: widget.url,
-                      duration: position,
-                      commentIcon: widget.commentIcon,
-                      likeIcon: widget.likeIcon,
-                      titleWidget: widget.titleWidget,
-                      descriptionWidget: widget.descriptionWidget,
-                    ),
-                  )?.then((value) {
-                    if (value != null) {
-                      widget.controller?.seekTo(value as Duration);
-                      widget.controller?.play();
-                    }
-                  });
-                },
+                isList: true,
+                onClickedFullScreen: widget.onPressed,
                 isPortrait: true),
           ),
         ],
       );
 
   Widget buildVideoPlayer(bool isPortrait) {
-
     final video = SizedBox.expand(
       child: FittedBox(
         fit: BoxFit.cover,
         child: SizedBox(
-          width: widget.controller!.value.size.width ?? 0,
-          height: widget.controller!.value.size.height ?? 0,
+          width: widget.controller!.value.size.width,
+          height: widget.controller!.value.size.height,
           child: VideoPlayer(widget.controller!),
         ),
       ),

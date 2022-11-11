@@ -12,11 +12,13 @@ class AdvancedOverlayWidget extends StatefulWidget {
   final VoidCallback? onClickedFullScreen;
   final VoidCallback? onBackPressed;
   final bool isPortrait;
+  final bool isList;
   final Widget? commentIcon;
   final Widget? likeIcon;
   final Widget? titleWidget;
   final Widget? descriptionWidget;
   final bool isCrossIconShown;
+  final bool isAudioOn;
 
   const AdvancedOverlayWidget(
       {Key? key,
@@ -25,6 +27,8 @@ class AdvancedOverlayWidget extends StatefulWidget {
       this.onBackPressed,
       this.commentIcon,
       this.likeIcon,
+      this.isList = false,
+        this.isAudioOn = true,
       this.titleWidget,
       this.descriptionWidget,
       this.isCrossIconShown = false,
@@ -76,7 +80,7 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
               Positioned(
                   top: 0.0,
                   left: 0.0,
-                  child: Row(
+                  child: widget.isList ? const SizedBox() : Row(
                     children: [
                       SafeArea(
                         child: AnimatedContainer(

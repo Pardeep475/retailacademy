@@ -35,9 +35,9 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 onTap: () {
                   _controller.joinMeeting(
                       context: context,
-                      userName: 'Mobisprint',
-                      meetingId: '285 282 5120',
-                      meetingPassword: 'XBt21M');
+                      userName: 'Mahindra',
+                      meetingId: '87616117274',
+                      meetingPassword: 'ADh8Pm');
                 },
                 child: Image.asset(AppImages.imgInfoSessionBackground)),
           ),

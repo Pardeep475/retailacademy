@@ -6,11 +6,12 @@ import 'package:get/get.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
+import '../../../common/utils.dart';
 import '../../../common/widget/app_text.dart';
+import '../../../common/widget/portrait_video_player.dart';
 import '../../../common/widget/read_more_text.dart';
 import '../../../network/modal/trending/trending_response.dart';
 import '../../knowledge/page/fun_facts_and_master_class_detail_screen.dart';
-import '../page/trending_detail_screen.dart';
 
 class ItemTrending extends StatelessWidget {
   final ActivityStream item;
@@ -18,13 +19,15 @@ class ItemTrending extends StatelessWidget {
   final VoidCallback onCommentButtonPressed;
   final VoidCallback onItemPressed;
 
-  const ItemTrending(
+   const ItemTrending(
       {required this.item,
       required this.onLikeButtonPressed,
       required this.onCommentButtonPressed,
       required this.onItemPressed,
       Key? key})
       : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,38 +52,47 @@ class ItemTrending extends StatelessWidget {
             ),
           ),
         ),
-        GestureDetector(
-          onTap: onItemPressed,
-          child: CachedNetworkImage(
-            imageUrl: item.activityImage,
-            height: Get.height * 0.4,
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                color: AppColor.commentBlack,
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.contain,
+        Utils.isVideo(item.activityImage)
+            ? SizedBox(
+                height: Get.height * 0.4,
+                child: PortraitVideoPlayer(
+                  url: item.activityImage,
+                  isAutoPlay: false,
+                  onFullScreen: onItemPressed,
+                ),
+              )
+            : GestureDetector(
+                onTap: onItemPressed,
+                child: CachedNetworkImage(
+                  imageUrl: item.activityImage,
+                  height: Get.height * 0.4,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.commentBlack,
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => Container(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                        height: 36.r,
+                        width: 36.r,
+                        child: const CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(color: AppColor.grey),
+                    child: Image.asset(
+                      AppImages.imgNoImageFound,
+                      height: Get.height * 0.15,
+                      color: AppColor.black,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            placeholder: (context, url) => Container(
-              alignment: Alignment.center,
-              child: SizedBox(
-                  height: 36.r,
-                  width: 36.r,
-                  child: const CircularProgressIndicator()),
-            ),
-            errorWidget: (context, url, error) => Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(color: AppColor.grey),
-              child: Image.asset(
-                AppImages.imgNoImageFound,
-                height: Get.height * 0.15,
-                color: AppColor.black,
-              ),
-            ),
-          ),
-        ),
         SizedBox(height: 5.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
