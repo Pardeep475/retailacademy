@@ -193,6 +193,7 @@ class _WhatsHotBogDetailScreenState extends State<WhatsHotBogDetailScreen> {
 
   @override
   void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 

@@ -240,6 +240,7 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
 
   @override
   void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 

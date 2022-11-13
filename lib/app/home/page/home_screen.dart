@@ -64,61 +64,81 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              const CustomAppBar(
-                title: AppStrings.trending,
-              ),
-              Expanded(
-                child: Obx(() {
-                  if (!_controller.showLoader.value &&
-                      _controller.dataList.isEmpty) {
-                    return NoDataAvailable(
-                      onPressed: () {
-                        _controller.getTrendingApi();
-                      },
+      body: SafeArea(
+        top: true,
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                const CustomAppBar(
+                  title: AppStrings.trending,
+                ),
+                Expanded(
+                  child: Obx(() {
+                    if (!_controller.showLoader.value &&
+                        _controller.dataList.isEmpty) {
+                      return NoDataAvailable(
+                        onPressed: () {
+                          _controller.getTrendingApi();
+                        },
+                      );
+                    }
+                    return RefreshIndicator(
+                      onRefresh: () =>
+                          _controller.getTrendingApi(isLoader: false),
+                      child: ListView.builder(
+                          physics: const BouncingScrollPhysics(
+                              parent: ClampingScrollPhysics()),
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          itemCount: _controller.dataList.length,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 20.h),
+                          itemBuilder: (BuildContext context, int index) {
+                            ActivityStream item = _controller.dataList[index];
+                            return ItemTrending(
+                              item: item,
+                              onCommentButtonPressed: () =>
+                                  _commentButtonPressed(index: index, item: item),
+                              onLikeButtonPressed: () {
+                                _controller.trendingLikeApi(
+                                    index: index,
+                                    activityStreamId: item.activityStreamId);
+                              },
+                              onItemPressed: () => _onItemDetailClickEvent(
+                                  index: index, item: item),
+                            );
+                          }),
                     );
-                  }
-                  return RefreshIndicator(
-                    onRefresh: () =>
-                        _controller.getTrendingApi(isLoader: false),
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(
-                            parent: ClampingScrollPhysics()),
-                        shrinkWrap: true,
-                        controller: _scrollController,
-                        itemCount: _controller.dataList.length,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 20.h),
-                        itemBuilder: (BuildContext context, int index) {
-                          ActivityStream item = _controller.dataList[index];
-                          return ItemTrending(
-                            item: item,
-                            onCommentButtonPressed: () =>
-                                _commentButtonPressed(index: index, item: item),
-                            onLikeButtonPressed: () {
-                              _controller.trendingLikeApi(
-                                  index: index,
-                                  activityStreamId: item.activityStreamId);
-                            },
-                            onItemPressed: () => _onItemDetailClickEvent(
-                                index: index, item: item),
-                          );
-                        }),
-                  );
-                }),
-              ),
-              Obx(() {
-                debugPrint(
-                    "PAGINATION_TESTING:-     ${_controller.showPagination.value}");
+                  }),
+                ),
+                Obx(() {
+                  debugPrint(
+                      "PAGINATION_TESTING:-     ${_controller.showPagination.value}");
 
-                return _controller.showPagination.value
+                  return _controller.showPagination.value
+                      ? Container(
+                          height: 100.h,
+                          alignment: Alignment.bottomCenter,
+                          color: Colors.transparent,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppColor.loaderColor),
+                            ),
+                          ),
+                        )
+                      : const SizedBox();
+                }),
+              ],
+            ),
+            Obx(
+              () => Positioned.fill(
+                child: _controller.showLoader.value
                     ? Container(
-                        height: 100.h,
-                        alignment: Alignment.bottomCenter,
                         color: Colors.transparent,
+                        width: Get.width,
+                        height: Get.height,
                         child: const Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
@@ -126,30 +146,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       )
-                    : const SizedBox();
-              }),
-            ],
-          ),
-          Obx(
-            () => Positioned.fill(
-              child: _controller.showLoader.value
-                  ? Container(
-                      color: Colors.transparent,
-                      width: Get.width,
-                      height: Get.height,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColor.loaderColor),
-                        ),
+                    : Container(
+                        width: 0,
                       ),
-                    )
-                  : Container(
-                      width: 0,
-                    ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
