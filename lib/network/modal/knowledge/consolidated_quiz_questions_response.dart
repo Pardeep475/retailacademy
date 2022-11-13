@@ -32,6 +32,7 @@ class QuizResponseElement {
       this.quizEnd = false,
       this.quizScore = -1,
       this.correctAnswersList,
+      this.hasUserAttemptedQuestion = false,
       this.groupValue = ''});
 
   int questionId;
@@ -47,6 +48,7 @@ class QuizResponseElement {
   int quizScore;
   List<CorrectAnswersElement>? correctAnswersList;
   String groupValue;
+  bool hasUserAttemptedQuestion;
 
   void setGroupValue(String value) {
     groupValue = value;
@@ -69,6 +71,7 @@ class QuizResponseElement {
         feedback: json["feedback"] ?? '',
         mediaUrl: json["mediaurl"] ?? '',
         quizEnd: json["quizend"] ?? false,
+        hasUserAttemptedQuestion: json["hasUserAttemptedQuestion"] ?? false,
         quizScore: json["quizscore"] ?? -1,
         correctAnswersList: json["CorrectAnswersList"] == null
             ? null

@@ -33,6 +33,8 @@ class QuizElementModal {
   List<CorrectAnswerElementModal>? correctAnswersList;
   @HiveField(12)
   String groupValue;
+  @HiveField(13)
+  bool hasUserAttemptedQuestion;
 
   QuizElementModal(
       {this.questionId = -1,
@@ -44,6 +46,7 @@ class QuizElementModal {
       this.feedback = '',
       this.mediaUrl = '',
       this.quizEnd = false,
+      this.hasUserAttemptedQuestion = false,
       this.quizScore,
       this.groupValue = '',
       this.answers,

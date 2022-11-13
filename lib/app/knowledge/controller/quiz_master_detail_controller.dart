@@ -111,9 +111,12 @@ class QuizMasterDetailController extends GetxController {
       return true;
     }
     dataList.clear();
-    currentPage = modal.lastAnswered + 1;
+    // currentPage = modal.lastAnswered + 1;
     for (int i = 0; i < modal.quizResponse!.length; i++) {
       var element = modal.quizResponse![i];
+      if (element.hasUserAttemptedQuestion) {
+        currentPage = i + 1;
+      }
       if (i > modal.lastAnswered || modal.lastAnswered == -1) {
         debugPrint(
             'Checking Position:---   ${modal.lastAnswered > i}  i  ==> $i  lastAnswered:==>  ${modal.lastAnswered}');
@@ -136,6 +139,12 @@ class QuizMasterDetailController extends GetxController {
     if (modal == null) {
       return;
     }
+    for (int i = 0; i < modal.quizResponse!.length; i++) {
+      var element = modal.quizResponse![i];
+      if (element.hasUserAttemptedQuestion) {
+        currentPage = i + 1;
+      }
+    }
     dataList.clear();
     dataList.addAll(modal.quizResponse ?? []);
     dataList.refresh();
@@ -151,6 +160,7 @@ class QuizMasterDetailController extends GetxController {
       } else {
         dataList[baseIndex].answers![itemIndex].isSelected = value;
       }
+      dataList[baseIndex].hasUserAttemptedQuestion = true;
     }
     dataList.refresh();
   }
@@ -163,6 +173,7 @@ class QuizMasterDetailController extends GetxController {
       QuizModal _quizModal = quizModalLocalRepository.getAt(modal)!;
       _quizModal.lastAnswered = index;
       _quizModal.quizResponse![index] = dataList[index];
+      _quizModal.quizResponse![index].hasUserAttemptedQuestion = true;
       quizModalLocalRepository.put(modal, _quizModal);
     }
   }
@@ -241,7 +252,8 @@ class QuizMasterDetailController extends GetxController {
     }
   }
 
-  Future consolidatedQuizSubmitApi({required BuildContext context}) async {
+  Future consolidatedQuizSubmitApi(
+      {required BuildContext context, required int index}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
       try {
@@ -252,24 +264,29 @@ class QuizMasterDetailController extends GetxController {
               categoryId: categoryValue,
               userId: int.parse(userId),
               isSubmitAnswers: true,
-              submitAnswers: _listSubmitAns()),
+              submitAnswers: _singletSubmitAns(index: index)),
         );
         if (response != null) {
-          int statusCode = (response as int);
+          int statusCode = (response.statusCode);
           if (statusCode == 200) {
-            _commonDialog(
-                title: AppStrings.finalScore +
-                    _checkScore() +
-                    AppStrings.thanksForAttemptThisQuiz,
-                context: context,
-                onPressed: () async {
-                  // await _deleteDataFromLocal();
-                  Get.back(result: "DELETE");
-                  Get.back(result: "DELETE");
-                },
-                barrierDismissible: false);
+            //quizscore
+            var value = response.data['quizResponse'].last['quizscore'] ?? "0%";
+            if (index == dataList.length - 1) {
+              _commonDialog(
+                  title: AppStrings.finalScore +
+                      /*_checkScore()*/ value +
+                      AppStrings.thanksForAttemptThisQuiz,
+                  context: context,
+                  onPressed: () async {
+                    // await _deleteDataFromLocal();
+                    Get.back(result: "DELETE");
+                    Get.back(result: "DELETE");
+                  },
+                  barrierDismissible: false);
+            }
           }
         }
+        return null;
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());
       } finally {
@@ -277,6 +294,43 @@ class QuizMasterDetailController extends GetxController {
       }
     }
     return null;
+  }
+
+  List<SubmitAnswerElement> _singletSubmitAns({required int index}) {
+    List<SubmitAnswerElement> _list = [];
+
+    var element = dataList[index];
+
+    if (element.questionType == 'Multiple Choice - Single Answer') {
+      _list.add(SubmitAnswerElement(
+          questionId: element.questionId.toString(),
+          answerSubmitted: element.groupValue,
+          attemptedQuestions: element.questionId.toString()));
+    } else {
+      _list.add(SubmitAnswerElement(
+        questionId: element.questionId.toString(),
+        answerSubmitted:
+            _makeCommaSeparatedMultipleQuestion(list: element.answers ?? []),
+        attemptedQuestions: element.questionId.toString(),
+      ));
+    }
+
+    /*for (var element in dataList) {
+      if (element.questionType == 'Multiple Choice - Single Answer') {
+        _list.add(SubmitAnswerElement(
+            questionId: element.questionId.toString(),
+            answerSubmitted: element.groupValue,
+            attemptedQuestions: element.questionId.toString()));
+      } else {
+        _list.add(SubmitAnswerElement(
+          questionId: element.questionId.toString(),
+          answerSubmitted:
+          _makeCommaSeparatedMultipleQuestion(list: element.answers ?? []),
+          attemptedQuestions: element.questionId.toString(),
+        ));
+      }
+    }*/
+    return _list;
   }
 
   List<SubmitAnswerElement> _listSubmitAns() {

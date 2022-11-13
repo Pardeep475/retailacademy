@@ -151,30 +151,32 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                     Expanded(
                       child: AppButton(
                         txt: AppStrings.submit,
-                        onPressed: () {
+                        onPressed: () async {
                           // AppStrings.yourAnswerIsCorrect
                           String value = _controller.validateQuiz();
                           _commonDialog(
                               title: value,
                               barrierDismissible: false,
-                              onPressed: () {
+                              onPressed: () async {
                                 if (value == AppStrings.yourAnswerIsCorrect ||
                                     value
                                         .contains(AppStrings.incorrectAnswer)) {
                                   _controller.updateValuesOnDataBase(
                                       index: _controller.currentPage);
                                   Get.back();
+
+                                  await _controller.consolidatedQuizSubmitApi(context: context,index: _controller.currentPage);
+
                                   _carouselController.nextPage(
                                       duration:
                                           const Duration(milliseconds: 300),
                                       curve: Curves.linear);
                                   debugPrint(
                                       '${_controller.currentPage}   ${_controller.dataList.length - 1}');
-                                  if (_controller.currentPage ==
-                                      _controller.dataList.length - 1) {
-                                    _controller.consolidatedQuizSubmitApi(
-                                        context: context);
-                                  }
+                                  // if (_controller.currentPage ==
+                                  //     _controller.dataList.length - 1) {
+                                  //   _controller.consolidatedQuizSubmitApi(context: context);
+                                  // }
                                 } else {
                                   Get.back();
                                 }

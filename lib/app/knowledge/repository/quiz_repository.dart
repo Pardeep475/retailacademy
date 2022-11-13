@@ -40,6 +40,7 @@ class QuizRepository {
       _quizElementModal.mediaUrl = element.mediaUrl;
       _quizElementModal.quizEnd = element.quizEnd;
       _quizElementModal.quizScore = element.quizScore;
+      _quizElementModal.hasUserAttemptedQuestion = element.hasUserAttemptedQuestion;
       _quizElementModal.answers = convertAnswerElement(element.answers ?? []);
       _quizElementModal.correctAnswersList =
           convertCorrectAnswerElement(element.correctAnswersList ?? []);

@@ -309,7 +309,7 @@ class ApiProvider {
         ApiConstants.consolidatedQuizQuestions,
         data: request.toJson(),
       );
-      return response.statusCode;
+      return response;
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;
