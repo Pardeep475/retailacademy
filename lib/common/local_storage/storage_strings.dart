@@ -13,5 +13,6 @@ class StorageStrings {
   static const userName = "USERNAME";
   static const userId = "USERID";
   static const deviceToken = "DEVICE_ID";
+  static const profileImage = "PROFILE_IMAGE";
 
 }

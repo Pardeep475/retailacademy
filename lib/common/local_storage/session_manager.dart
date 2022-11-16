@@ -58,6 +58,16 @@ class SessionManager {
         .then((value) => value.getString(StorageStrings.deviceToken) ?? '');
   }
 
+  static void setProfileImage(String profileImage) {
+    _pref.then(
+        (value) => value.setString(StorageStrings.profileImage, profileImage));
+  }
+
+  static Future<String> getProfileImage() {
+    return _pref
+        .then((value) => value.getString(StorageStrings.profileImage) ?? '');
+  }
+
   static clearAllData() async {
     _pref.then((value) => value.clear());
   }

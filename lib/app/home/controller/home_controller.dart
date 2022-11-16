@@ -6,11 +6,13 @@ import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 import '../../../network/modal/base/base_response.dart';
 import '../../../network/modal/trending/like_trending_request.dart';
+import '../../../network/modal/trending/trending_pagination_request.dart';
 import '../../../network/modal/trending/trending_response.dart';
 
 class HomeController extends GetxController {
   var showLoader = false.obs;
   RxList<ActivityStream> dataList = RxList();
+  var showPagination = false.obs;
 
   @override
   void onInit() {
@@ -28,6 +30,12 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
     Utils.logger.e("on close");
+  }
+
+  void clearAllData(){
+    showLoader.value = false;
+    dataList = RxList();
+    showPagination.value = false;
   }
 
   Future getTrendingApi({bool isLoader = true}) async {
@@ -63,6 +71,37 @@ class HomeController extends GetxController {
     return null;
   }
 
+  Future getTrendingApiWithPagination() async {
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+        showPagination.value = true;
+        String userId = await SessionManager.getUserId();
+        var response =
+            await ApiProvider.apiProvider.getTrendingApiWithPagination(
+          request: TrendingPaginationRequest(
+              userId: int.parse(userId),
+              orgId: AppStrings.orgId,
+              aIDAfter: dataList[dataList.length - 1].activityStreamId),
+        );
+        if (response != null) {
+          TrendingResponse trendingResponse = (response as TrendingResponse);
+          if (trendingResponse.status) {
+            dataList.addAll(trendingResponse.activityStreams ?? []);
+            dataList.refresh();
+          } else {
+            Utils.errorSnackBar(AppStrings.error, trendingResponse.message);
+          }
+        }
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+        showPagination.value = false;
+      }
+    }
+    return null;
+  }
+
   Future trendingLikeApi(
       {required int index, required int activityStreamId}) async {
     bool value = await Utils.checkConnectivity();
@@ -79,10 +118,7 @@ class HomeController extends GetxController {
         if (response != null) {
           BaseResponse baseResponse = (response as BaseResponse);
           if (baseResponse.status) {
-            ActivityStream item = dataList[index];
-            item.hasLiked = !item.hasLiked;
-            dataList[index] = item;
-            dataList.refresh();
+            updateLikeTrending(index: index);
           } else {
             Utils.errorSnackBar(AppStrings.error, baseResponse.message);
           }
@@ -94,5 +130,17 @@ class HomeController extends GetxController {
       }
     }
     return null;
+  }
+
+  updateLikeTrending({required int index, bool? value}) {
+    ActivityStream item = dataList[index];
+    if (value == null) {
+      item.hasLiked = !item.hasLiked;
+    } else {
+      item.hasLiked = value;
+    }
+
+    dataList[index] = item;
+    dataList.refresh();
   }
 }

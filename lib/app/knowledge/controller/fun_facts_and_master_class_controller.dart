@@ -8,7 +8,7 @@ import '../../../network/modal/knowledge/content_knowledge_request.dart';
 import '../../../network/modal/knowledge/content_knowledge_response.dart';
 
 class FunFactsAndMasterClassController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   RxList<FileElement> dataList = RxList();
   var fileId = 0;
 
@@ -30,7 +30,7 @@ class FunFactsAndMasterClassController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  refreshData() {
+  clearAllData() {
     showLoader.value = false;
     dataList = RxList();
     fileId = 0;

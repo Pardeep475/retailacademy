@@ -18,7 +18,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           : Get.put(ForgotPasswordController());
 
   final TextEditingController _emailController =
-      TextEditingController(text: "sunnymaneshkumar.eagala@raybiztech.com");
+      TextEditingController();
   final _formGlobalKey = GlobalKey<FormState>();
 
   @override

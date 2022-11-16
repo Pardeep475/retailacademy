@@ -9,14 +9,16 @@ class ContentKnowledgeResponse {
   bool status;
   String message;
 
-  factory ContentKnowledgeResponse.fromJson(Map<String, dynamic> json) => ContentKnowledgeResponse(
-    files: json["files"] == null ? null : List<FileElement>.from(json["files"].map((x) => FileElement.fromJson(x))),
-    status: json["status"] ?? false,
-    message: json["message"] ?? '',
-  );
-
+  factory ContentKnowledgeResponse.fromJson(Map<String, dynamic> json) =>
+      ContentKnowledgeResponse(
+        files: json["files"] == null
+            ? null
+            : List<FileElement>.from(
+                json["files"].map((x) => FileElement.fromJson(x))),
+        status: json["status"] ?? false,
+        message: json["message"] ?? '',
+      );
 }
-
 
 class FileElement {
   FileElement({
@@ -27,7 +29,10 @@ class FileElement {
     this.passCode = '',
     this.modifiedDate = '',
     this.filesUrl = '',
+    this.thumbnailImage = '',
     this.fileSize = '',
+    this.quizId = '',
+    this.quizName = '',
     this.hasTags = false,
     this.hasRead = false,
   });
@@ -39,21 +44,26 @@ class FileElement {
   String passCode;
   String modifiedDate;
   String filesUrl;
+  String thumbnailImage;
   String fileSize;
+  String quizId;
+  String quizName;
   bool hasTags;
   bool hasRead;
 
   factory FileElement.fromJson(Map<String, dynamic> json) => FileElement(
-    fileId: json["fileid"] ?? 0,
-    type: json["type"] ?? '',
-    description: json["description"] ?? '',
-    fileName: json["filesname"] ?? '',
-    passCode: json["passCode"] ?? '',
-    modifiedDate: json["modifieddate"] ?? '',
-    filesUrl: json["filesurl"] ?? '',
-    fileSize: json["filesize"] ?? '',
-    hasTags: json["hastags"] ?? false,
-    hasRead: json["hasread"] ?? false,
-  );
-
+        fileId: json["fileid"] ?? 0,
+        type: json["type"] ?? '',
+        description: json["description"] ?? '',
+        fileName: json["filesname"] ?? '',
+        passCode: json["passCode"] ?? '',
+        modifiedDate: json["modifieddate"] ?? '',
+        filesUrl: json["filesurl"] ?? '',
+        thumbnailImage: json["thumbnaiImage"] ?? '',
+        fileSize: json["filesize"] ?? '',
+        quizId: json["quizid"] ?? '',
+        quizName: json["quizname"] ?? '',
+        hasTags: json["hastags"] ?? false,
+        hasRead: json["hasread"] ?? false,
+      );
 }

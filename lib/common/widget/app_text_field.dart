@@ -17,6 +17,8 @@ class AppTextField extends StatelessWidget {
   final bool isEnabled;
   final int minLines;
   final int maxLines;
+  final Color fillColor;
+  final bool isChangePadding;
 
   const AppTextField({
     Key? key,
@@ -28,6 +30,8 @@ class AppTextField extends StatelessWidget {
     this.minLines = 1,
     this.maxLines = 1,
     this.isEnabled = true,
+    this.isChangePadding = false,
+    this.fillColor = AppColor.white,
   }) : super(key: key);
 
   @override
@@ -45,6 +49,9 @@ class AppTextField extends StatelessWidget {
               fontFamily: AppStrings.robotoFont,
               fontSize: 15.sp),
           border: _border(),
+          contentPadding: isChangePadding
+              ? EdgeInsets.symmetric(vertical: 0, horizontal: 10.w)
+              : null,
           disabledBorder: _border(),
           enabledBorder: _border(),
           focusedBorder: _border(),
@@ -53,7 +60,7 @@ class AppTextField extends StatelessWidget {
           errorStyle: const TextStyle(
               color: AppColor.red, fontFamily: AppStrings.robotoFont),
           hintText: placeHolder,
-          fillColor: AppColor.white),
+          fillColor: fillColor),
     );
   }
 
