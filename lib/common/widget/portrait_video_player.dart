@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -15,6 +13,7 @@ class PortraitVideoPlayer extends StatefulWidget {
   final bool isAutoPlay;
   final double aspectRatio;
   final VoidCallback onFullScreen;
+  final VideoPlayerController? videoPlayerController;
 
   const PortraitVideoPlayer(
       {Key? key,
@@ -23,6 +22,7 @@ class PortraitVideoPlayer extends StatefulWidget {
       this.token,
       this.filePath,
       this.isAutoPlay = true,
+      this.videoPlayerController,
       this.aspectRatio = 9 / 16})
       : super(key: key);
 
@@ -37,24 +37,21 @@ class _PortraitVideoPlayerState extends State<PortraitVideoPlayer> {
   void initState() {
     super.initState();
     debugPrint('URL_VIDEO:--   ${widget.url}');
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    if (widget.filePath != null) {
-      controller = VideoPlayerController.file(File(widget.filePath!))
-        ..addListener(() => setState(() {}))
-        ..setLooping(false)
-        ..initialize().then((_) {
-          controller?.seekTo(const Duration());
-          if (widget.isAutoPlay) {
-            controller?.play();
-            controller?.setVolume(0);
-          } else {
-            controller?.pause();
-          }
-          controller?.addListener(() {
-            debugPrint(
-                'CUSTOM_LISTENER:---- --  ${controller?.value.position}');
-          });
-        });
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    if (widget.videoPlayerController != null) {
+      controller = widget.videoPlayerController;
+      controller?.addListener(() => setState(() {}));
+      controller?.setLooping(false);
+      controller?.initialize().then((_) {
+        debugPrint('CUSTOM_LISTENER:---- --  ${controller?.value.position}');
+        controller?.seekTo(const Duration());
+        if (widget.isAutoPlay) {
+          controller?.play();
+          controller?.setVolume(0);
+        } else {
+          controller?.pause();
+        }
+      });
     } else {
       controller = VideoPlayerController.network(widget.url,
           httpHeaders: widget.token != null

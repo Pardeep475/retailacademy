@@ -8,7 +8,7 @@ import '../../../network/api_provider.dart';
 import '../../../network/modal/retails_reels/retail_reels_categories_response.dart';
 
 class RetailReelsController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   RxList<RetailReelsCategoryElement> dataList = RxList();
 
   @override

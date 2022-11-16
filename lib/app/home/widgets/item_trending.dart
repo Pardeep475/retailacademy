@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
@@ -19,16 +21,22 @@ class ItemTrending extends StatelessWidget {
   final VoidCallback onCommentButtonPressed;
   final VoidCallback onItemPressed;
 
-  const ItemTrending(
-      {required this.item,
-      required this.onLikeButtonPressed,
-      required this.onCommentButtonPressed,
-      required this.onItemPressed,
-      Key? key})
+  ItemTrending({required this.item,
+    required this.onLikeButtonPressed,
+    required this.onCommentButtonPressed,
+    required this.onItemPressed,
+    Key? key})
       : super(key: key);
+
+  VideoPlayerController? _controller;
+
 
   @override
   Widget build(BuildContext context) {
+    if (Utils.isVideo(item.activityImage)) {
+      _controller = VideoPlayerController.network(item.activityImage);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -36,11 +44,12 @@ class ItemTrending extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Get.to(
-              () => FunFactsAndMasterClassDetailScreen(
-                fileId: item.contentFileId.toString(),
-                quizId: 0,
-                quizName: '',
-              ),
+                  () =>
+                  FunFactsAndMasterClassDetailScreen(
+                    fileId: item.contentFileId.toString(),
+                    quizId: 0,
+                    quizName: '',
+                  ),
             );
           },
           child: Padding(
@@ -54,45 +63,58 @@ class ItemTrending extends StatelessWidget {
         ),
         Utils.isVideo(item.activityImage)
             ? SizedBox(
-                height: Get.height * 0.4,
-                child: PortraitVideoPlayer(
-                  url: item.activityImage,
-                  isAutoPlay: false,
-                  onFullScreen: onItemPressed,
-                ),
-              )
+          height: Get.height * 0.4,
+          child: VisibilityDetector(
+            key: ObjectKey(item.activityStreamId),
+            onVisibilityChanged: (visibility) {
+              if (visibility.visibleFraction == 0 && _controller != null) {
+                // flickManager?.flickControlManager?.pause();//pausing  functionality
+                _controller?.pause();
+              }
+            },
+            child: PortraitVideoPlayer(
+              url: item.activityImage,
+              isAutoPlay: true,
+              onFullScreen: onItemPressed,
+              videoPlayerController: _controller,
+            ),
+          ),
+        )
             : GestureDetector(
-                onTap: onItemPressed,
-                child: CachedNetworkImage(
-                  imageUrl: item.activityImage,
-                  height: Get.height * 0.4,
-                  imageBuilder: (context, imageProvider) => Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.commentBlack,
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  placeholder: (context, url) => Container(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                        height: 36.r,
-                        width: 36.r,
-                        child: const CircularProgressIndicator()),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(color: AppColor.grey),
-                    child: Image.asset(
-                      AppImages.imgNoImageFound,
-                      height: Get.height * 0.15,
-                      color: AppColor.black,
+          onTap: onItemPressed,
+          child: CachedNetworkImage(
+            imageUrl: item.activityImage,
+            height: Get.height * 0.4,
+            imageBuilder: (context, imageProvider) =>
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColor.commentBlack,
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
-              ),
+            placeholder: (context, url) =>
+                Container(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                      height: 36.r,
+                      width: 36.r,
+                      child: const CircularProgressIndicator()),
+                ),
+            errorWidget: (context, url, error) =>
+                Container(
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(color: AppColor.grey),
+                  child: Image.asset(
+                    AppImages.imgNoImageFound,
+                    height: Get.height * 0.15,
+                    color: AppColor.black,
+                  ),
+                ),
+          ),
+        ),
         SizedBox(height: 5.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,

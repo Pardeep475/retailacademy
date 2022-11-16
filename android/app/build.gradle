@@ -88,8 +88,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:multidex:1.0.3'
     implementation project(path: ':video_player_android')
-//    implementation project(path: ':commonlib')
-//    implementation project(path: ':mobilertc')
+    implementation project(path: ':commonlib')
+    implementation project(path: ':mobilertc')
     implementation project(path: ':native_device_orientation')
     implementation project(path: ':wakelock')
     implementation project(path: ':permission_handler_android')

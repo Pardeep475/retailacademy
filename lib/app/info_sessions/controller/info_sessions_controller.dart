@@ -9,18 +9,18 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/network/modal/info_session/info_session_response.dart';
 
-import '../../../common/app_strings.dart';
 import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 
 class InfoSessionsController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   late Timer timer;
 
   var registrationStatus = false.obs;
   var zoomRegistrationID = ''.obs;
   var zoomMeetingStartDate = ''.obs;
+  var status = false.obs;
 
   static const platform =
       MethodChannel('application.raybiztech.retailacademy/ZOOM_INTEGRATION');
@@ -55,17 +55,18 @@ class InfoSessionsController extends GetxController {
         if (response != null) {
           InfoSessionResponse infoSessionResponse =
               (response as InfoSessionResponse);
+          status.value = infoSessionResponse.status;
           if (infoSessionResponse.status) {
             registrationStatus.value = infoSessionResponse.registrationStatus;
             zoomRegistrationID.value = infoSessionResponse.zoomRegistrationId;
             zoomMeetingStartDate.value =
                 infoSessionResponse.zoomMeetingStartDate;
           } else {
-            Utils.errorSnackBar(AppStrings.error, infoSessionResponse.message);
+            // Utils.errorSnackBar(AppStrings.error, infoSessionResponse.message);
           }
         }
       } catch (e) {
-        Utils.errorSnackBar(AppStrings.error, e.toString());
+        // Utils.errorSnackBar(AppStrings.error, e.toString());
       } finally {
         showLoader.value = false;
       }

@@ -10,7 +10,7 @@ import '../../../network/modal/knowledge/knowledge_api_response.dart';
 import '../modal/knowledge_entity.dart';
 
 class KnowledgeController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   RxList<KnowledgeElement> dataList = RxList();
 
   @override

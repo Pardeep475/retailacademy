@@ -10,7 +10,7 @@ import '../../../network/modal/trending/trending_pagination_request.dart';
 import '../../../network/modal/trending/trending_response.dart';
 
 class HomeController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
   RxList<ActivityStream> dataList = RxList();
   var showPagination = false.obs;
 

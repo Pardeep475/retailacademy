@@ -73,10 +73,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           top: false,
           // child: contentList[_selectedIndex],
           child: Obx(
-            () => IndexedStack(
+            () => /*IndexedStack(
               index: _controller.currentSelectedIndex.value,
               children: contentList,
-            ),
+            )*/ contentList[_controller.currentSelectedIndex.value],
           ),
         ),
       ),
