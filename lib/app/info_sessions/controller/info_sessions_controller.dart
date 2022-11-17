@@ -92,13 +92,13 @@ class InfoSessionsController extends GetxController {
       required String userName,
       required String meetingId,
       required String meetingPassword}) async {
-    if (Platform.isAndroid) {
+
       await platform.invokeMethod('JOIN_MEETING', {
         "USER_NAME": userName,
         "MEETING_ID": meetingId,
         "MEETING_PASSWORD": meetingPassword
       });
-    } else {
+
       // if (meetingId.isNotEmpty) {
       //   ZoomOptions zoomOptions = ZoomOptions(
       //     domain: "zoom.us",
@@ -160,6 +160,5 @@ class InfoSessionsController extends GetxController {
       //     ));
       //   }
       // }
-    }
   }
 }

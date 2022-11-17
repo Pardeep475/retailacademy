@@ -13,7 +13,7 @@ class LoginResponse {
     this.role = "",
     this.jwtToken = "",
     this.emailID = "",
-    this.staffID = "",
+    this.staffID = 0,
   });
 
   String message;
@@ -23,7 +23,7 @@ class LoginResponse {
   String role;
   String jwtToken;
   String emailID;
-  String staffID;
+  int staffID;
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
     message: json["message"] ?? '',
