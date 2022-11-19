@@ -8,6 +8,7 @@ import 'package:retail_academy/app/knowledge/page/pod_cast_screen.dart';
 import 'package:retail_academy/app/knowledge/page/quiz_master_detail_screen.dart';
 import 'package:retail_academy/app/knowledge/page/quiz_master_screen.dart';
 import 'package:retail_academy/app/knowledge/page/whats_hot_blog_screen.dart';
+import 'package:retail_academy/app/notification/page/notification_screen.dart';
 import 'package:retail_academy/app/retails_reels/page/retail_reels_content_screen.dart';
 import 'package:retail_academy/common/routes/route_strings.dart';
 
@@ -60,6 +61,10 @@ class Routes {
         name: RouteString.podCastScreen,
         page: () => const PodCastScreen(),
       ),
+      GetPage(
+        name: RouteString.notificationScreen,
+        page: () => const NotificationScreen(),
+      ),
       // GetPage(
       //   name: RouteString.quizMasterScreen,
       //   page: () => const QuizMasterScreen(),
@@ -72,7 +77,6 @@ class Routes {
       //   name: RouteString.podCastDetailScreen,
       //   page: () => const PodCastDetailScreen(),
       // ),
-
     ];
   }
 }

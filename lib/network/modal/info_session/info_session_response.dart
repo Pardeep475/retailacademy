@@ -15,6 +15,7 @@ class InfoSessionResponse {
     this.meetingRecordedUrl = '',
     this.registrationStatus = false,
     this.zoomRegistrationId = '',
+    this.playUrlPassword = '',
   });
 
   int sessionId;
@@ -31,6 +32,7 @@ class InfoSessionResponse {
   String meetingRecordedUrl;
   bool registrationStatus;
   String zoomRegistrationId;
+  String playUrlPassword;
 
   factory InfoSessionResponse.fromJson(Map<String, dynamic> json) => InfoSessionResponse(
     sessionId: json["sesssionId"] ?? 0,
@@ -47,6 +49,7 @@ class InfoSessionResponse {
     meetingRecordedUrl: json["meetingRecordedUrl"] ?? '',
     registrationStatus: json["registrationStatus"] ?? false,
     zoomRegistrationId: json["zoomRegistrationID"] ?? '',
+    playUrlPassword: json["playUrlPassword"] ?? '',
   );
 
 }

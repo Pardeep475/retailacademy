@@ -4,6 +4,7 @@ import 'package:retail_academy/network/modal/knowledge/like_or_dislike_content_k
 import 'package:retail_academy/network/modal/knowledge/whats_hot_blog_content_response.dart';
 import 'package:retail_academy/network/modal/login/login_request.dart';
 import 'package:retail_academy/network/modal/login/login_response.dart';
+import 'package:retail_academy/network/modal/notification/notification_list_request.dart';
 import 'package:retail_academy/network/modal/podcast/pod_cast_request.dart';
 import 'package:retail_academy/network/modal/points/point_response.dart';
 import 'package:retail_academy/network/modal/trending/like_trending_request.dart';
@@ -14,6 +15,7 @@ import 'api_constants.dart';
 import 'logging_interceptor.dart';
 import 'modal/base/base_response.dart';
 import 'modal/forgot_password/forgot_password_request.dart';
+import 'modal/info_session/info_session_registration_request.dart';
 import 'modal/info_session/info_session_response.dart';
 import 'modal/knowledge/consolidated_quiz_questions_request.dart';
 import 'modal/knowledge/consolidated_quiz_questions_response.dart';
@@ -33,6 +35,8 @@ import 'modal/knowledge/whats_hot_blog_content_request.dart';
 import 'modal/knowledge/whats_hot_blog_delete_comment_request.dart';
 import 'modal/knowledge/whats_hot_blog_response.dart';
 import 'modal/maintainance_message/maintainance_message_response.dart';
+import 'modal/notification/notification_enable_request.dart';
+import 'modal/notification/notification_list_response.dart';
 import 'modal/podcast/pod_cast_category_response.dart';
 import 'modal/podcast/pod_cast_comment_request.dart';
 import 'modal/podcast/pod_cast_comment_response.dart';
@@ -613,6 +617,48 @@ class ApiProvider {
         ApiConstants.infoSession(userId: userId),
       );
       return InfoSessionResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> getInfoSessionRegistration(
+      {required InfoSessionRegistrationRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.infoSessionZoomRegister,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> notificationEnableApi(
+      {required NotificationEnableRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.notificationEnableDisable,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchNotificationListApi(
+      {required NotificationListRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.notificationList,
+        data: request.toJson(),
+      );
+      return NotificationListResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;

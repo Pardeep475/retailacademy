@@ -7,6 +7,8 @@ import 'package:retail_academy/common/widget/app_text.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
+import '../../../common/encrypt_data.dart';
+import '../../../common/utils.dart';
 import '../../../common/widget/app_button.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../controller/info_sessions_controller.dart';
@@ -48,7 +50,7 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                       _controller.joinMeeting(
                           context: context,
                           userName: 'Mahindra',
-                          meetingId: '95784595243',
+                          meetingId: '97025367504',
                           meetingPassword: '');
                     },
                     child: Image.asset(AppImages.imgInfoSessionBackground)),
@@ -57,13 +59,15 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 if (!_controller.status.value) {
                   return const SizedBox();
                 }
-
-                return AppText(
-                  text: AppStrings.nextSession,
-                  textSize: 25.sp,
-                  textAlign: TextAlign.center,
-                  fontWeight: FontWeight.w500,
-                );
+                if (_controller.zoomMeetingStartDate.isNotEmpty) {
+                  return AppText(
+                    text: AppStrings.nextSession,
+                    textSize: 25.sp,
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.w500,
+                  );
+                }
+                return const SizedBox();
               }),
               SizedBox(
                 height: 10.h,
@@ -75,7 +79,8 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
 
                 if (_controller.zoomMeetingStartDate.isNotEmpty) {
                   return AppText(
-                    text: 'Monday XXXXXXXXXX\n7:00 PM',
+                    text: Utils.infoSessionDateFormat(
+                        selectedDate: _controller.zoomMeetingStartDate.value),
                     textSize: 25.sp,
                     lineHeight: 1.5,
                     textAlign: TextAlign.center,
@@ -84,6 +89,9 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 }
                 return const SizedBox();
               }),
+              SizedBox(
+                height: 20.h,
+              ),
               Obx(() {
                 if (!_controller.status.value) {
                   return const SizedBox();
@@ -91,27 +99,36 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 if (!_controller.registrationStatus.value) {
                   return AppButton(
                     txt: AppStrings.register,
-                    onPressed: () {},
+                    onPressed: () {
+                      _controller.fetchInfoSessionRegistration();
+                    },
                     width: Get.width * 0.9,
                   );
                 } else if (!_controller.registrationStatus.value &&
-                    _controller.zoomRegistrationID.isNotEmpty) {
+                    _controller.zoomMeetingID.isNotEmpty) {
                   return AppButton(
                     txt: AppStrings.join,
-                    onPressed: () {},
+                    onPressed: () {
+                      _controller.joinMeeting(
+                          context: context,
+                          userName: 'Mahindra',
+                          meetingId: '97025367504',
+                          meetingPassword: '');
+                    },
                     width: Get.width * 0.9,
                   );
                 }
                 return const SizedBox();
               }),
               SizedBox(
-                height: Get.height * 0.08,
+                height: 20.h,
               ),
             ],
           ),
           Obx(
             () => Positioned.fill(
-              child: _controller.showLoader.value
+              child: _controller.showLoader.value ||
+                      _controller.showLoaderRegistration.value
                   ? Container(
                       color: Colors.transparent,
                       width: Get.width,

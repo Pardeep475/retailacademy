@@ -117,6 +117,26 @@ class Utils {
     }
   }
 
+  static String infoSessionDateFormat({var selectedDate}) {
+    try {
+      // DateFormat originalFormat =  DateFormat("dd/MM/yyyy");
+
+      DateFormat originalFormat =  DateFormat("MM/dd/yyyy hh:mm:ss aaa");
+      DateFormat targetFormat =  DateFormat('EEE, MMM d, ''yyyy \nh:mm a');
+      DateTime date = originalFormat.parse(selectedDate);
+      return targetFormat.format(date.toLocal());
+      // return DateTime.parse(formattedDate);
+      //
+      // DateFormat targetFormat = DateFormat("MM/dd/yyyy hh:mm:ss aaa");
+      // DateTime date = DateTime.parse(selectedDate);
+      // String formattedDate = targetFormat.format(date.toLocal());
+      // return formattedDate;
+      // return DateFormat("yyyy-MM-dd hh:mm:ss").parse(selectedDate).toLocal().toString();
+    } catch (e) {
+      return '';
+    }
+  }
+
   /*static Future<Escort?> getUserData() async {
     String? value = await SessionManager.getUserData();
     if (value != null) {

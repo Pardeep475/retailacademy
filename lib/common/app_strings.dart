@@ -12,6 +12,8 @@ class AppStrings {
 
   static String pointConstant = '00';
   static const String orgId = '6c05d04b-b14f-42a1-ace5-075189d7612a';
+  static const String encryptionSecuredKey = 'b14ca5898a4e4133bbce2ea2315a1916';
+
 
   // application fonts
   static const String robotoFont = "Roboto";

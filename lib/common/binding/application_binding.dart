@@ -15,6 +15,7 @@ import 'package:retail_academy/app/knowledge/controller/pod_cast_controller.dart
 import 'package:retail_academy/app/knowledge/controller/pod_cast_detail_controller.dart';
 import 'package:retail_academy/app/knowledge/controller/quiz_master_controller.dart';
 import 'package:retail_academy/app/knowledge/controller/whats_hot_blog_controller.dart';
+import 'package:retail_academy/app/notification/controller/notification_controller.dart';
 import 'package:retail_academy/app/profile/controller/profile_controller.dart';
 import 'package:retail_academy/app/retails_reels/controller/retail_reels_content_controller.dart';
 import 'package:retail_academy/app/retails_reels/controller/retail_reels_controller.dart';
@@ -83,5 +84,7 @@ class ApplicationBinding implements Bindings {
         tag: BindingConst.commentScreenBinding);
     Get.lazyPut(() => WhatsHotBlogCommentController(),
         tag: BindingConst.whatsHotBlogCommentScreenBinding);
+    Get.lazyPut(() => NotificationController(),
+        tag: BindingConst.notificationScreenBinding);
   }
 }

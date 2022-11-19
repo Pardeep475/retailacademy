@@ -49,6 +49,7 @@ class ItemTrending extends StatelessWidget {
                 fileId: item.contentFileId.toString(),
                 quizId: 0,
                 quizName: '',
+                isTrending: true,
               ),
             );
           },

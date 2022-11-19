@@ -71,5 +71,9 @@ class ApiConstants {
   static String contentDisplayApi = 'ContentDisplay';
   static String whatsHotBlogCommentApi = 'AddBlogPost';
   static String whatsHotBlogDeleteCommentApi = 'BlogDeleteComment';
+  static String infoSessionZoomRegister = 'InfoSessionZoomRegisterDetails';
+  static String notificationEnableDisable = 'NotificationEnableDisable';
+  static String notificationList = 'NotificationList';
   static String infoSession({required String userId}) => 'InfoSession?userId=$userId';
+
 }

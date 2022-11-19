@@ -23,6 +23,6 @@ class RouteString {
   static const String podCastContentScreen = "/POD_CAST_CONTENT_SCREEN";
   static const String podCastDetailScreen = "/POD_CAST_DETAIL_SCREEN";
   static const String quizMasterDetailScreen = "/QUIZ_MASTER_DETAIL_SCREEN";
-  static const String retailReelsContentScreen =
-      "/RETAIL_REELS_CONTENT_SCREEN";
+  static const String retailReelsContentScreen = "/RETAIL_REELS_CONTENT_SCREEN";
+  static const String notificationScreen = "/NOTIFICATION_SCREEN";
 }

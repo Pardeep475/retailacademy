@@ -18,9 +18,14 @@ class FunFactsAndMasterClassDetailScreen extends StatefulWidget {
   final String fileId;
   final int quizId;
   final String quizName;
+  final bool isTrending;
 
   const FunFactsAndMasterClassDetailScreen(
-      {required this.fileId, required this.quizId,required this.quizName, Key? key})
+      {required this.fileId,
+      this.isTrending = false,
+      required this.quizId,
+      required this.quizName,
+      Key? key})
       : super(key: key);
 
   @override
@@ -45,11 +50,15 @@ class _FunFactsAndMasterClassDetailScreenState
   }
 
   onBackPressed() async {
-    try {
-      await Get.keys[KnowledgeNavigation.id]!.currentState!.maybePop();
-    } catch (e) {
-      // error
-      debugPrint('ErrorWhileNavigation:----  $e');
+    if (widget.isTrending) {
+      Get.back();
+    } else {
+      try {
+        await Get.keys[KnowledgeNavigation.id]!.currentState!.maybePop();
+      } catch (e) {
+        // error
+        debugPrint('ErrorWhileNavigation:----  $e');
+      }
     }
   }
 

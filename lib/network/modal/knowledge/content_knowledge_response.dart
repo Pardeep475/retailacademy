@@ -31,7 +31,7 @@ class FileElement {
     this.filesUrl = '',
     this.thumbnailImage = '',
     this.fileSize = '',
-    this.quizId = '',
+    this.quizId = 0,
     this.quizName = '',
     this.hasTags = false,
     this.hasRead = false,
@@ -46,7 +46,7 @@ class FileElement {
   String filesUrl;
   String thumbnailImage;
   String fileSize;
-  String quizId;
+  int quizId;
   String quizName;
   bool hasTags;
   bool hasRead;
@@ -61,7 +61,7 @@ class FileElement {
         filesUrl: json["filesurl"] ?? '',
         thumbnailImage: json["thumbnaiImage"] ?? '',
         fileSize: json["filesize"] ?? '',
-        quizId: json["quizid"] ?? '',
+        quizId: json["quizid"] ?? 0,
         quizName: json["quizname"] ?? '',
         hasTags: json["hastags"] ?? false,
         hasRead: json["hasread"] ?? false,

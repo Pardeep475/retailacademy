@@ -2,13 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:retail_academy/common/local_storage/session_manager.dart';
 import 'package:retail_academy/network/modal/base/base_response.dart';
+import 'package:retail_academy/network/modal/notification/notification_enable_request.dart';
 import 'package:retail_academy/network/modal/profile/update_profile_image_request.dart';
 import '../../../common/app_strings.dart';
-import '../../../common/local_storage/hive/quiz_modal.dart';
 import '../../../common/routes/route_strings.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
@@ -46,7 +45,7 @@ class ProfileController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  void clearAllData(){
+  void clearAllData() {
     showLoader.value = false;
     notificationSwitchEnabled.value = false;
     profileImage.value = '';
@@ -56,9 +55,9 @@ class ProfileController extends GetxController {
     emailAddress.value = '';
   }
 
-
   updateNotificationSwitch(bool value) {
     notificationSwitchEnabled.value = value;
+    notificationApiRequest(notificationStatus: value);
   }
 
   cameraClickListener() async {
@@ -173,6 +172,36 @@ class ProfileController extends GetxController {
           if (value.status) {
             await SessionManager.clearAllData();
             Get.offAndToNamed(RouteString.loginScreen);
+            Utils.errorSnackBar(AppStrings.success, value.message,
+                isSuccess: true);
+          } else {
+            Utils.errorSnackBar(AppStrings.error, value.message);
+          }
+        }
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+        showLoader.value = false;
+      }
+    }
+    return null;
+  }
+
+  Future notificationApiRequest({required bool notificationStatus}) async {
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+        showLoader.value = true;
+        String userId = await SessionManager.getUserId();
+        var response = await ApiProvider.apiProvider.notificationEnableApi(
+          request: NotificationEnableRequest(
+            notificationStatus: notificationStatus,
+            userId: userId,
+          ),
+        );
+        if (response != null) {
+          BaseResponse value = (response as BaseResponse);
+          if (value.status) {
             Utils.errorSnackBar(AppStrings.success, value.message,
                 isSuccess: true);
           } else {

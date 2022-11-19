@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:retail_academy/common/routes/route_strings.dart';
 import 'package:retail_academy/common/widget/app_text.dart';
 
 import '../app_color.dart';
@@ -41,12 +42,12 @@ class CustomAppBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height:  kToolbarHeight *
-                  (isBackButtonVisible ||
-                          isNotificationButtonVisible ||
-                          isSearchButtonVisible
-                      ? 0.7
-                      : 0.8),
+          height: kToolbarHeight *
+              (isBackButtonVisible ||
+                      isNotificationButtonVisible ||
+                      isSearchButtonVisible
+                  ? 0.7
+                  : 0.8),
         ),
         Row(
           children: [
@@ -95,7 +96,9 @@ class CustomAppBar extends StatelessWidget {
                           : const SizedBox(),
                   isNotificationButtonVisible
                       ? IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(RouteString.notificationScreen);
+                          },
                           splashColor: Colors.white54,
                           icon: Icon(
                             Icons.notifications_none_outlined,
