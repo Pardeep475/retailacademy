@@ -7,7 +7,6 @@ import 'package:retail_academy/common/widget/app_text.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
-import '../../../common/encrypt_data.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/app_button.dart';
 import '../../../common/widget/custom_app_bar.dart';
@@ -45,15 +44,7 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 title: AppStrings.infoSessions,
               ),
               Expanded(
-                child: GestureDetector(
-                    onTap: () {
-                      _controller.joinMeeting(
-                          context: context,
-                          userName: 'Mahindra',
-                          meetingId: '97025367504',
-                          meetingPassword: '');
-                    },
-                    child: Image.asset(AppImages.imgInfoSessionBackground)),
+                child: Image.asset(AppImages.imgInfoSessionBackground),
               ),
               Obx(() {
                 if (!_controller.status.value) {
@@ -105,14 +96,26 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                     width: Get.width * 0.9,
                   );
                 } else if (!_controller.registrationStatus.value &&
+                    _controller.meetingRecordedUrl.isNotEmpty) {
+                  return AppButton(
+                    txt: AppStrings.playRecording,
+                    onPressed: () {
+                      // need to dycript password
+                      _controller.joinMeeting(
+                          context: context,
+                          meetingId: _controller.meetingRecordedUrl.value,
+                          meetingPassword: '');
+                    },
+                    width: Get.width * 0.9,
+                  );
+                } else if (!_controller.registrationStatus.value &&
                     _controller.zoomMeetingID.isNotEmpty) {
                   return AppButton(
                     txt: AppStrings.join,
                     onPressed: () {
                       _controller.joinMeeting(
                           context: context,
-                          userName: 'Mahindra',
-                          meetingId: '97025367504',
+                          meetingId: _controller.zoomMeetingID.value,
                           meetingPassword: '');
                     },
                     width: Get.width * 0.9,

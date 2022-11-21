@@ -102,4 +102,5 @@ class AppStrings {
       "No Reels comments are available at this moment.";
   static const String register = "Register";
   static const String join = "Join";
+  static const String playRecording = "Play Recording";
 }

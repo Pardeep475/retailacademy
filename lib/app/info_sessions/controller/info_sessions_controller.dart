@@ -1,11 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-// import 'package:flutter_zoom_sdk/zoom_options.dart';
-// import 'package:flutter_zoom_sdk/zoom_view.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/network/modal/base/base_response.dart';
 import 'package:retail_academy/network/modal/info_session/info_session_response.dart';
@@ -25,6 +21,10 @@ class InfoSessionsController extends GetxController {
   var zoomMeetingID = ''.obs;
   var zoomMeetingPassword = ''.obs;
   var zoomMeetingStartDate = ''.obs;
+  var zoomMeetingEndDate = ''.obs;
+  var meetingRecordedUrl = ''.obs;
+  var playUrlPassword = ''.obs;
+
   var status = false.obs;
 
   static const platform =
@@ -64,8 +64,11 @@ class InfoSessionsController extends GetxController {
           if (infoSessionResponse.status) {
             registrationStatus.value = infoSessionResponse.registrationStatus;
             zoomMeetingID.value = infoSessionResponse.webinarId;
+            zoomMeetingPassword.value = infoSessionResponse.password;
             zoomMeetingStartDate.value =
                 infoSessionResponse.zoomMeetingStartDate;
+            meetingRecordedUrl.value = infoSessionResponse.meetingRecordedUrl;
+            playUrlPassword.value = infoSessionResponse.playUrlPassword;
           } else {
             // Utils.errorSnackBar(AppStrings.error, infoSessionResponse.message);
           }
@@ -112,9 +115,9 @@ class InfoSessionsController extends GetxController {
 
   joinMeeting(
       {required BuildContext context,
-      required String userName,
       required String meetingId,
       required String meetingPassword}) async {
+    var userName = await SessionManager.getUserName();
     await platform.invokeMethod('JOIN_MEETING', {
       "USER_NAME": userName,
       "MEETING_ID": meetingId,
