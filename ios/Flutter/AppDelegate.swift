@@ -32,12 +32,13 @@ import MobileRTC
                 let userName = args["USER_NAME"] as! String
                 let meetingId = args["MEETING_ID"] as! String
                 let meetingPassword = args["MEETING_PASSWORD"] as! String
-                
+                let userEmail = args["USER_EMAIL"] as! String
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                        let mainVC = storyboard.instantiateViewController(withIdentifier: "ViewController") as! ViewController
                 mainVC.userName = userName
                 mainVC.meetingId = meetingId
                 mainVC.meetingPassword = meetingPassword
+                mainVC.userEmail = userEmail
                //        let mainVC = ConversationsViewController()
                        let navigationController = UINavigationController(rootViewController: mainVC)
                 navigationController.title = "zoom call"

@@ -61,8 +61,10 @@ class ApiConstants {
           {required String userId, required String orgId}) =>
       "RecentPodcastList?userid=$userId&orgid=$orgId";
   static String podcastList = 'PodcastList';
-  static String podcastContinueListeningList({required String userId}) => 'ContinueListeningPodcastList?userId=$userId';
-  static String podcastCategory({required String userId}) => 'PodcastCategory?userid=$userId';
+  static String podcastContinueListeningList({required String userId}) =>
+      'ContinueListeningPodcastList?userId=$userId';
+  static String podcastCategory({required String userId}) =>
+      'PodcastCategory?userid=$userId';
   static String podcastLike = 'PodcastLikes';
   static String podcastDeleteComment = 'PodcastDeleteComment';
   static String podcastCommentList = 'PodcastCommentList';
@@ -72,8 +74,9 @@ class ApiConstants {
   static String whatsHotBlogCommentApi = 'AddBlogPost';
   static String whatsHotBlogDeleteCommentApi = 'BlogDeleteComment';
   static String infoSessionZoomRegister = 'InfoSessionZoomRegisterDetails';
+  static String infoSessionZoomRegistration = "InfoSessionZoomRegistration";
   static String notificationEnableDisable = 'NotificationEnableDisable';
   static String notificationList = 'NotificationList';
-  static String infoSession({required String userId}) => 'InfoSession?userId=$userId';
-
+  static String infoSession({required String userId}) =>
+      'InfoSession?userId=$userId';
 }

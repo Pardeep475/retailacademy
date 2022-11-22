@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:retail_academy/common/encrypt_data.dart';
 import 'package:retail_academy/network/modal/base/base_response.dart';
 import 'package:retail_academy/network/modal/info_session/info_session_response.dart';
 
@@ -10,6 +12,7 @@ import '../../../common/app_strings.dart';
 import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
+import '../../../network/modal/info_session/info_session_register_response.dart';
 import '../../../network/modal/info_session/info_session_registration_request.dart';
 
 class InfoSessionsController extends GetxController {
@@ -67,8 +70,6 @@ class InfoSessionsController extends GetxController {
             zoomMeetingPassword.value = infoSessionResponse.password;
             zoomMeetingStartDate.value =
                 infoSessionResponse.zoomMeetingStartDate;
-            meetingRecordedUrl.value = infoSessionResponse.meetingRecordedUrl;
-            playUrlPassword.value = infoSessionResponse.playUrlPassword;
           } else {
             // Utils.errorSnackBar(AppStrings.error, infoSessionResponse.message);
           }
@@ -95,13 +96,14 @@ class InfoSessionsController extends GetxController {
           ),
         );
         if (response != null) {
-          BaseResponse baseResponse = (response as BaseResponse);
-          if (baseResponse.status) {
-            Utils.errorSnackBar(AppStrings.success, baseResponse.message,
+          InfoSessionRegisterRespose baseResponse =
+              (response as InfoSessionRegisterRespose);
+          if (baseResponse.registrantId != null) {
+            Utils.errorSnackBar(AppStrings.success, baseResponse.message ?? "",
                 isSuccess: true);
             fetchInfoSession();
           } else {
-            Utils.errorSnackBar(AppStrings.error, baseResponse.message);
+            Utils.errorSnackBar(AppStrings.error, baseResponse.message ?? "");
           }
         }
       } catch (e) {
@@ -118,10 +120,13 @@ class InfoSessionsController extends GetxController {
       required String meetingId,
       required String meetingPassword}) async {
     var userName = await SessionManager.getUserName();
+    var userEmail = await SessionManager.getUserEmail();
+
     await platform.invokeMethod('JOIN_MEETING', {
       "USER_NAME": userName,
       "MEETING_ID": meetingId,
-      "MEETING_PASSWORD": meetingPassword
+      "MEETING_PASSWORD": meetingPassword,
+      "USER_EMAIL": userEmail
     });
   }
 }

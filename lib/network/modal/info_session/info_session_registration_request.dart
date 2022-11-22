@@ -2,10 +2,11 @@ class InfoSessionRegistrationRequest {
   String webinarMeetingId;
   String userId;
 
-  InfoSessionRegistrationRequest({required this.webinarMeetingId,required this.userId});
+  InfoSessionRegistrationRequest(
+      {required this.webinarMeetingId, required this.userId});
 
-  Map<String, dynamic> toJson() => {
-    "webinarMeetingId": webinarMeetingId,
-    "userId": userId,
-  };
+  Map<String, String> toJson() => {
+        "webinarMeetingId": webinarMeetingId,
+        "userId": userId,
+      };
 }
