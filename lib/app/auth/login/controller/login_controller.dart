@@ -50,7 +50,7 @@ class LoginController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  void clearAllData(){
+  void clearAllData() {
     showLoader.value = false;
   }
 
@@ -62,8 +62,8 @@ class LoginController extends GetxController {
         showLoader.value = true;
         String platform = Platform.isAndroid ? "android" : "ios";
         var response = await ApiProvider.apiProvider.loginApi(
-            request: LoginRequest.name(
-                'employeenumber', userName.trim(), 'deviceToken', platform, password.trim()));
+            request: LoginRequest.name('employeenumber', userName.trim(),
+                'deviceToken', platform, password.trim()));
         if (response != null) {
           LoginResponse loginResponse = (response as LoginResponse);
           if (loginResponse.status) {
@@ -108,6 +108,7 @@ class LoginController extends GetxController {
         Utils.logger.e("token_is:-   ${loginResponse.userid}");
         SessionManager.setToken(loginResponse.jwtToken);
         SessionManager.setUserName(userName);
+        SessionManager.setUserEmail(loginResponse.emailID);
         SessionManager.setUserId(loginResponse.userid);
         var userId = await SessionManager.getUserId();
         Utils.logger.e("token_is:-   $userId");

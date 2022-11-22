@@ -108,7 +108,7 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                     },
                     width: Get.width * 0.9,
                   );
-                } else if (!_controller.registrationStatus.value &&
+                } else if (_controller.registrationStatus.value &&
                     _controller.zoomMeetingID.isNotEmpty) {
                   return AppButton(
                     txt: AppStrings.join,

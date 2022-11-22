@@ -11,6 +11,7 @@ class ViewController: UIViewController {
     var userName = ""
     var meetingId = ""
     var meetingPassword = ""
+    var userEmail = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,9 @@ class ViewController: UIViewController {
     @IBAction func joinAMeetingButtonPressed(_ sender: Any) {
         presentJoinMeetingAlert()
     }
+    
+    
+   
 
     @IBAction func startAnInstantMeetingButtonPressed(_ sender: Any) {
         // Obtain the MobileRTCAuthService from the Zoom SDK, and check if the user is logged into Zoom.
@@ -63,11 +67,16 @@ class ViewController: UIViewController {
             let joinMeetingParameters = MobileRTCMeetingJoinParam()
             joinMeetingParameters.meetingNumber = meetingNumber
             joinMeetingParameters.password = meetingPassword
+            joinMeetingParameters.userName = "Srikanth"
+            joinMeetingParameters.customerKey = "Srikanth"
+            
+//            joinMeetingParameters.
 
             // Call the joinMeeting function in MobileRTCMeetingService. The Zoom SDK will handle the UI for you, unless told otherwise.
             // If the meeting number and meeting password are valid, the user will be put into the meeting. A waiting room UI will be presented or the meeting UI will be presented.
             meetingService.joinMeeting(with: joinMeetingParameters)
         }
+        
     }
 
     /// Logs user into their Zoom account using the user's Zoom email and password.
@@ -151,8 +160,8 @@ class ViewController: UIViewController {
         }
 
         let logInAction = UIAlertAction(title: "Log in", style: .default, handler: { alert -> Void in
-            let emailTextField = alertController.textFields![0] as UITextField
-            let passwordTextField = alertController.textFields![1] as UITextField
+//            let emailTextField = alertController.textFields![0] as UITextField
+//            let passwordTextField = alertController.textFields![1] as UITextField
 
 //            if let email = emailTextField.text, let password = passwordTextField.text {
 //                self.logIn(email: email, password: password)
@@ -178,7 +187,122 @@ class ViewController: UIViewController {
 
 // Conform ViewController to MobileRTCMeetingServiceDelegate.
 // MobileRTCMeetingServiceDelegate listens to updates about meetings, such as meeting state changes, join attempt status, meeting errors, etc.
-extension ViewController: MobileRTCMeetingServiceDelegate {
+extension ViewController: MobileRTCMeetingServiceDelegate, MobileRTCWebinarServiceDelegate{
+    func onSinkSelfAllowTalkNotification() {
+        
+    }
+    
+    func onSinkSelfDisallowTalkNotification() {
+        
+    }
+    
+    func onSinkQAConnectStarted() {
+        
+    }
+    
+    func onSinkQAConnected(_ connected: Bool) {
+        
+    }
+    
+    func onSinkQAOpenQuestionChanged(_ count: Int) {
+        
+    }
+    
+    func onSinkQAAddQuestion(_ questionID: String, success: Bool) {
+        
+    }
+    
+    func onSinkQAAddAnswer(_ answerID: String, success: Bool) {
+        
+    }
+    
+    func onSinkQuestionMarked(asDismissed questionID: String) {
+        
+    }
+    
+    func onSinkReopenQuestion(_ questionID: String) {
+        
+    }
+    
+    func onSinkReceiveQuestion(_ questionID: String) {
+        
+    }
+    
+    func onSinkReceiveAnswer(_ answerID: String) {
+        
+    }
+    
+    func onSinkUserLivingReply(_ questionID: String) {
+        
+    }
+    
+    func onSinkUserEndLiving(_ questionID: String) {
+        
+    }
+    
+    func onSinkVoteupQuestion(_ questionID: String, orderChanged: Bool) {
+        
+    }
+    
+    func onSinkRevokeVoteupQuestion(_ questionID: String, orderChanged: Bool) {
+        
+    }
+    
+    func onSinkDeleteQuestion(_ questionIDArray: [Any]) {
+        
+    }
+    
+    func onSinkDeleteAnswer(_ answerIDArray: [Any]) {
+        
+    }
+    
+    func onSinkQAAllowAskQuestionAnonymouslyNotification(_ beAllowed: Bool) {
+        
+    }
+    
+    func onSinkQAAllowAttendeeViewAllQuestionNotification(_ beAllowed: Bool) {
+        
+    }
+    
+    func onSinkQAAllowAttendeeUpVoteQuestionNotification(_ beAllowed: Bool) {
+        
+    }
+    
+    func onSinkQAAllowAttendeeAnswerQuestionNotification(_ beAllowed: Bool) {
+        
+    }
+    
+    func onSinkWebinarNeedRegister(_ registerURL: String) {
+        
+    }
+    
+    func onSinkPanelistCapacityExceed() {
+        
+    }
+    
+    func onSinkPromptAttendee2PanelistResult(_ errorCode: MobileRTCWebinarPromoteorDepromoteError) {
+        
+    }
+    
+    func onSinkDePromptPanelist2AttendeeResult(_ errorCode: MobileRTCWebinarPromoteorDepromoteError) {
+        
+    }
+    
+    func onSinkAllowAttendeeChatNotification(_ currentPrivilege: MobileRTCChatAllowAttendeeChat) {
+        
+    }
+    
+    func onSinkAttendeePromoteConfirmResult(_ agree: Bool, userId: UInt) {
+        
+    }
+  
+    
+  
+    func onSinkJoinWebinarNeedUserNameAndEmail(completion: @escaping (String, String, Bool) -> Bool) {
+        let _ =  completion(self.userName, self.userEmail, false)
+    }
+
+
 
     // Is called upon in-meeting errors, join meeting errors, start meeting errors, meeting connection errors, etc.
     func onMeetingError(_ error: MobileRTCMeetError, message: String?) {
@@ -197,6 +321,7 @@ extension ViewController: MobileRTCMeetingServiceDelegate {
         print("Join meeting confirmed.")
     }
 
+    
     // Is called upon meeting state changes.
     func onMeetingStateChange(_ state: MobileRTCMeetingState) {
         print("Current meeting state: \(state)")

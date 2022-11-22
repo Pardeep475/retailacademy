@@ -15,6 +15,7 @@ import 'api_constants.dart';
 import 'logging_interceptor.dart';
 import 'modal/base/base_response.dart';
 import 'modal/forgot_password/forgot_password_request.dart';
+import 'modal/info_session/info_session_register_response.dart';
 import 'modal/info_session/info_session_registration_request.dart';
 import 'modal/info_session/info_session_response.dart';
 import 'modal/knowledge/consolidated_quiz_questions_request.dart';
@@ -627,10 +628,11 @@ class ApiProvider {
       {required InfoSessionRegistrationRequest request}) async {
     try {
       Response response = await _dio.post(
-        ApiConstants.infoSessionZoomRegister,
+        ApiConstants.infoSessionZoomRegistration,
         data: request.toJson(),
       );
-      return BaseResponse.fromJson(response.data);
+      debugPrint(request.toJson().toString());
+      return InfoSessionRegisterRespose.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;
