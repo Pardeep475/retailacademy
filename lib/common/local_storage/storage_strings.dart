@@ -12,6 +12,7 @@ class StorageStrings {
   static const jwtToken = "JWT_TOKEN";
   static const userName = "USERNAME";
   static const userId = "USERID";
+  static const userEmail = "USEREMAIL";
   static const deviceToken = "DEVICE_ID";
-
+  static const profileImage = "PROFILE_IMAGE";
 }

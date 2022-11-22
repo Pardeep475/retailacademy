@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/network/modal/points/point_request.dart';
 import 'package:retail_academy/network/modal/points/point_response.dart';
@@ -59,7 +60,7 @@ class SplashController extends GetxController {
         }
       } finally {
         bool isLogin = await SessionManager.isLogin();
-
+        
         Get.offAndToNamed(
             isLogin ? RouteString.dashBoardScreen : RouteString.loginScreen);
       }

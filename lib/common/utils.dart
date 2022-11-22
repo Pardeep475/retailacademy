@@ -33,15 +33,17 @@ class Utils {
         printEmojis: true,
         // Print an emoji for each log message
         printTime: false // Should each log print contain a timestamp
-        ),
+    ),
   );
 
-  static errorSnackBar(String title, String message,{bool isSuccess = false}) {
+  static errorSnackBar(String title, String message, {bool isSuccess = false}) {
     Get.snackbar(
       title,
       message,
       margin: EdgeInsets.fromLTRB(10.w, 0, 10.w, 10.h),
-      backgroundColor: isSuccess ? AppColor.greenKnowledge.withOpacity(0.9) : AppColor.red.withOpacity(0.9),
+      backgroundColor: isSuccess
+          ? AppColor.greenKnowledge.withOpacity(0.9)
+          : AppColor.red.withOpacity(0.9),
       borderRadius: 5.sp,
       snackPosition: SnackPosition.BOTTOM,
       colorText: AppColor.red,
@@ -88,7 +90,7 @@ class Utils {
   static DateTime stringToDateOtherFormat({var selectedDate}) {
     try {
       DateTime dateTime =
-          DateTime.fromMillisecondsSinceEpoch(selectedDate /*, isUtc: true*/);
+      DateTime.fromMillisecondsSinceEpoch(selectedDate /*, isUtc: true*/);
       debugPrint("date time :-   $dateTime");
       return dateTime;
       // DateFormat originalFormat = new DateFormat("dd/MM/yyyy");
@@ -112,6 +114,26 @@ class Utils {
       return DateTime.parse(selectedDate);
     } catch (e) {
       return DateTime.now();
+    }
+  }
+
+  static String infoSessionDateFormat({var selectedDate}) {
+    try {
+      // DateFormat originalFormat =  DateFormat("dd/MM/yyyy");
+
+      DateFormat originalFormat =  DateFormat("MM/dd/yyyy hh:mm:ss aaa");
+      DateFormat targetFormat =  DateFormat('EEE, MMM d, ''yyyy \nh:mm a');
+      DateTime date = originalFormat.parse(selectedDate);
+      return targetFormat.format(date.toLocal());
+      // return DateTime.parse(formattedDate);
+      //
+      // DateFormat targetFormat = DateFormat("MM/dd/yyyy hh:mm:ss aaa");
+      // DateTime date = DateTime.parse(selectedDate);
+      // String formattedDate = targetFormat.format(date.toLocal());
+      // return formattedDate;
+      // return DateFormat("yyyy-MM-dd hh:mm:ss").parse(selectedDate).toLocal().toString();
+    } catch (e) {
+      return '';
     }
   }
 
@@ -154,12 +176,31 @@ class Utils {
         .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
   }
 
-  static bool checkIfDatesExistInCurrentWeek(DateTime currentDate){
+  static bool checkIfDatesExistInCurrentWeek(DateTime currentDate) {
     DateTime firstDate = findFirstDateOfTheWeek();
     DateTime lastDate = findLastDateOfTheWeek();
 
-    return currentDate.isAfter(firstDate.subtract(const Duration(days: 1))) && currentDate.isBefore(lastDate);
+    return currentDate.isAfter(firstDate.subtract(const Duration(days: 1))) &&
+        currentDate.isBefore(lastDate);
 
     // return (firstDate.isAfter(currentDate) && lastDate.isBefore(currentDate));
+  }
+
+  static Color hexToColor(String code) {
+    return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+  }
+
+  static bool isVideo(String path) {
+    if (path.toUpperCase().contains('MP4') ||
+        path.toUpperCase().contains('MOV') ||
+        path.toUpperCase().contains('WMV') ||
+        path.toUpperCase().contains('AVI') ||
+        path.toUpperCase().contains('MKV') ||
+        path.toUpperCase().contains('MPEG-2') ||
+        path.toUpperCase().contains('WEBM') ||
+        path.toUpperCase().contains('AVCHD')) {
+      return true;
+    }
+    return false;
   }
 }

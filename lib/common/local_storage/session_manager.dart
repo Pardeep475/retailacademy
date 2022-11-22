@@ -44,6 +44,15 @@ class SessionManager {
     _pref.then((value) => value.setString(StorageStrings.userId, userId));
   }
 
+  static void setUserEmail(String userEmail) {
+    _pref.then((value) => value.setString(StorageStrings.userEmail, userEmail));
+  }
+
+  static Future<String> getUserEmail() {
+    return _pref
+        .then((value) => value.getString(StorageStrings.userEmail) ?? '');
+  }
+
   static Future<String> getUserId() {
     return _pref.then((value) => value.getString(StorageStrings.userId) ?? '');
   }
@@ -56,6 +65,16 @@ class SessionManager {
   static Future<String> getDeviceToken() {
     return _pref
         .then((value) => value.getString(StorageStrings.deviceToken) ?? '');
+  }
+
+  static void setProfileImage(String profileImage) {
+    _pref.then(
+        (value) => value.setString(StorageStrings.profileImage, profileImage));
+  }
+
+  static Future<String> getProfileImage() {
+    return _pref
+        .then((value) => value.getString(StorageStrings.profileImage) ?? '');
   }
 
   static clearAllData() async {

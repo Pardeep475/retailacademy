@@ -12,6 +12,8 @@ class LoginResponse {
     this.firstLogin = false,
     this.role = "",
     this.jwtToken = "",
+    this.emailID = "",
+    this.staffID = 0,
   });
 
   String message;
@@ -20,6 +22,8 @@ class LoginResponse {
   bool firstLogin;
   String role;
   String jwtToken;
+  String emailID;
+  int staffID;
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
     message: json["message"] ?? '',
@@ -28,6 +32,8 @@ class LoginResponse {
     firstLogin: json["firstlogin"] ?? false,
     role: json["role"] ?? '',
     jwtToken: json["jwtToken"] ?? '',
+    emailID: json["emailID"] ?? '',
+    staffID: json["staffID"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +43,7 @@ class LoginResponse {
     "firstlogin": firstLogin,
     "role": role,
     "jwtToken": jwtToken,
+    "emailID": emailID,
+    "staffID": staffID,
   };
 }

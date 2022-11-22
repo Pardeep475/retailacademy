@@ -1,0 +1,132 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:retail_academy/common/app_strings.dart';
+
+import '../../../common/app_color.dart';
+import '../../../common/routes/route_strings.dart';
+import '../../../common/widget/custom_app_bar.dart';
+import '../../../common/widget/no_data_available.dart';
+import '../../../network/modal/knowledge/whats_hot_blog_response.dart';
+import '../controller/whats_hot_blog_controller.dart';
+import '../knowledge_navigation/knowledge_navigation.dart';
+import '../widget/item_whats_hot_blog.dart';
+
+class WhatsHotBlogScreen extends StatefulWidget {
+  const WhatsHotBlogScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _WhatsHotBlogScreenState();
+}
+
+class _WhatsHotBlogScreenState extends State<WhatsHotBlogScreen> {
+  final WhatsHotBlogController _controller =
+      Get.isRegistered<WhatsHotBlogController>()
+          ? Get.find<WhatsHotBlogController>()
+          : Get.put(WhatsHotBlogController());
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.clearAllData();
+      _controller.fetchWhatsHotApi();
+    });
+  }
+
+  onBackPressed() async {
+    try {
+      Get.keys[KnowledgeNavigation.id]!.currentState!.maybePop();
+    } catch (e) {
+      // error
+      debugPrint('ErrorWhileNavigation:----  $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              CustomAppBar(
+                title: AppStrings.whatsHotBlog,
+                isBackButtonVisible: true,
+                isSearchButtonVisible: false,
+                isNotificationButtonVisible: true,
+                onBackPressed: () async {
+                  await onBackPressed();
+                },
+              ),
+              Expanded(
+                child: Obx(() {
+                  if (!_controller.showLoader.value &&
+                      _controller.dataList.isEmpty) {
+                    return NoDataAvailable(
+                      onPressed: () => _controller.fetchWhatsHotApi(),
+                    );
+                  }
+
+                  return RefreshIndicator(
+                    onRefresh: () =>
+                        _controller.fetchWhatsHotApi(isLoader: false),
+                    child: GridView.builder(
+                      itemCount: _controller.dataList.length,
+                      physics: const BouncingScrollPhysics(
+                          parent: ClampingScrollPhysics()),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.symmetric(vertical: 20.h),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 3.0,
+                              childAspectRatio: 1,
+                              mainAxisSpacing: 3.0),
+                      itemBuilder: (BuildContext context, int index) {
+                        BlogCategoryElement item = _controller.dataList[index];
+                        return ItemWhatsHotBlog(
+                          item: item,
+                          onItemClick: () {
+                            Get.toNamed(
+                                KnowledgeNavigation.whatsHotBlogContentScreen,
+                                id: KnowledgeNavigation.id,
+                                arguments: {
+                                  "title": item.blogCategory,
+                                  "categoryId": item.categoryId,
+                                  "description": item.description,
+                                });
+                          },
+                        );
+                      },
+                    ),
+                  );
+                }),
+              ),
+            ],
+          ),
+          Obx(
+            () => Positioned.fill(
+              child: _controller.showLoader.value
+                  ? Container(
+                      color: Colors.transparent,
+                      width: Get.width,
+                      height: Get.height,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColor.loaderColor),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      width: 0,
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

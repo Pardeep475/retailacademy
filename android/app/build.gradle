@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -43,21 +43,108 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.mobisprint.retailacademy.retail_academy"
-        minSdkVersion flutter.minSdkVersion
+        applicationId "application.raybiztech.retailacademy"
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
+//        ndk { abiFilters "armeabi", "x86", "armeabi-v7a","x86_64", "mips",
+//                "mips64", "arm64-v8a" }
     }
+
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "Instantiatable"
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    }
+
+//    splits {
+//        density {
+//            enable true
+//            reset()
+//            include "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+//        }
+//        // Configures multiple APKs based on ABI.
+//        abi {
+//
+//            // Enables building multiple APKs per ABI.
+//            enable true
+//
+//            // By default all ABIs are included, so use reset() and include to specify that we only
+//            // want APKs for x86 and x86_64.
+//
+//            // Resets the list of ABIs that Gradle should create APKs for to none.
+//            reset()
+//
+//            // Specifies a list of ABIs that Gradle should create APKs for.
+//            include "x86", "armeabi-v7a", "arm64-v8a", "x86_64"
+//
+//            // Specifies that we do not want to also generate a universal APK that includes all ABIs.
+//            universalApk false
+//        }
+//    }
 }
+
+// Map for the version code that gives each ABI a value.
+ext.abiCodes = ['armeabi-v7a': 1, x86: 2, x86_64: 3, 'arm64-v8a': 4]
+
+// For per-density APKs, create a similar map like this:
+// ext.densityCodes = ['mdpi': 1, 'hdpi': 2, 'xhdpi': 3]
+
+//import com.android.build.OutputFile
+//
+//// For each APK output variant, override versionCode with a combination of
+//// ext.abiCodes * 1000 + variant.versionCode. In this example, variant.versionCode
+//// is equal to defaultConfig.versionCode. If you configure product flavors that
+//// define their own versionCode, variant.versionCode uses that value instead.
+//android.applicationVariants.all { variant ->
+//
+//    // Assigns a different version code for each output APK
+//    // other than the universal APK.
+//    variant.outputs.each { output ->
+//
+//        // Stores the value of ext.abiCodes that is associated with the ABI for this variant.
+//        def baseAbiVersionCode =
+//                // Determines the ABI for this variant and returns the mapped value.
+//                project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+//
+//        // Because abiCodes.get() returns null for ABIs that are not mapped by ext.abiCodes,
+//        // the following code does not override the version code for universal APKs.
+//        // However, because we want universal APKs to have the lowest version code,
+//        // this outcome is desirable.
+//        if (baseAbiVersionCode != null) {
+//
+//            // Assigns the new version code to versionCodeOverride, which changes the version code
+//            // for only the output APK, not for the variant itself. Skipping this step simply
+//            // causes Gradle to use the value of variant.versionCode for the APK.
+//            output.versionCodeOverride =
+//                    baseAbiVersionCode * 1000 + variant.versionCode
+//        }
+//    }
+//}
+
 
 flutter {
     source '../..'
@@ -65,4 +152,25 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation project(path: ':video_player_android')
+    implementation project(path: ':commonlib')
+    implementation project(path: ':mobilertc')
+    implementation project(path: ':native_device_orientation')
+    implementation project(path: ':wakelock')
+    implementation project(path: ':permission_handler_android')
+    implementation project(path: ':path_provider_android')
+    implementation project(path: ':flutter_pdfview')
+    implementation project(path: ':shared_preferences_android')
+    implementation project(path: ':sqflite')
+    implementation project(path: ':flutter_plugin_android_lifecycle')
+    implementation project(path: ':image_picker_android')
+    implementation project(path: ':auto_orientation')
+    implementation project(path: ':audioplayers_android')
+//    implementation "com.google.android.exoplayer:exoplayer-core:2.17.1"
+//    implementation "com.google.android.exoplayer:exoplayer-ui:2.17.1"
+    dependencies.add("default", "com.google.android.exoplayer:exoplayer-core:2.17.1")
+    dependencies.add("default", "com.google.android.exoplayer:exoplayer-ui:2.17.1")
+//    implementation project(':commonlib')
+//    implementation project(':mobilertc')
 }

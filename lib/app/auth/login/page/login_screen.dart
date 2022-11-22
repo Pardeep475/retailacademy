@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:retail_academy/app/auth/login/page/help_and_contact_retail_screen.dart';
 import '../../../../common/app_color.dart';
 import '../../../../common/app_images.dart';
 import '../../../../common/app_strings.dart';
@@ -21,6 +22,10 @@ class LoginScreen extends StatelessWidget {
       TextEditingController(text: "15224");
   final TextEditingController _passwordController =
       TextEditingController(text: "feb12345");
+
+  // final TextEditingController _emailController = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
+
   final _formGlobalKey = GlobalKey<FormState>();
 
   @override
@@ -93,7 +98,11 @@ class LoginScreen extends StatelessWidget {
                         ),
                         const Expanded(child: SizedBox()),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            // help == 0, contact retail == 1
+                            Get.to(() =>
+                                HelpAndContactRetailScreen(screenType: 0));
+                          },
                           child: Container(
                               padding: EdgeInsets.fromLTRB(20.w, 10.h, 0, 10.h),
                               child: const AppText(text: AppStrings.help)),

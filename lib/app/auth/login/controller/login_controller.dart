@@ -34,6 +34,7 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    clearAllData();
     Utils.logger.e("on init");
   }
 
@@ -49,6 +50,10 @@ class LoginController extends GetxController {
     Utils.logger.e("on close");
   }
 
+  void clearAllData() {
+    showLoader.value = false;
+  }
+
   Future fetchUserResponseApi(
       {required String userName, required String password}) async {
     bool value = await Utils.checkConnectivity();
@@ -57,8 +62,8 @@ class LoginController extends GetxController {
         showLoader.value = true;
         String platform = Platform.isAndroid ? "android" : "ios";
         var response = await ApiProvider.apiProvider.loginApi(
-            request: LoginRequest.name(
-                'employeenumber', userName, 'deviceToken', platform, password));
+            request: LoginRequest.name('employeenumber', userName.trim(),
+                'deviceToken', platform, password.trim()));
         if (response != null) {
           LoginResponse loginResponse = (response as LoginResponse);
           if (loginResponse.status) {
@@ -82,10 +87,9 @@ class LoginController extends GetxController {
     if (value) {
       try {
         showLoader.value = true;
-        String userId = await SessionManager.getUserId();
         var response = await ApiProvider.apiProvider.pointsApi(
           request: PointRequest(
-            userid: userId,
+            userid: loginResponse.userid,
           ),
         );
         if (response != null) {
@@ -101,9 +105,13 @@ class LoginController extends GetxController {
       } finally {
         showLoader.value = false;
         Utils.logger.e("token_is:-   ${loginResponse.jwtToken}");
+        Utils.logger.e("token_is:-   ${loginResponse.userid}");
         SessionManager.setToken(loginResponse.jwtToken);
         SessionManager.setUserName(userName);
+        SessionManager.setUserEmail(loginResponse.emailID);
         SessionManager.setUserId(loginResponse.userid);
+        var userId = await SessionManager.getUserId();
+        Utils.logger.e("token_is:-   $userId");
         SessionManager.setDeviceToken('deviceToken');
         SessionManager.setLogin(true);
         Get.offAndToNamed(
