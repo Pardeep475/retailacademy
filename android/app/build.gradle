@@ -45,12 +45,12 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "application.raybiztech.retailacademy"
         minSdkVersion 21
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
-//        ndk { abiFilters "armeabi", "x86", "armeabi-v7a","x86_64", "mips",
-//                "mips64", "arm64-v8a" }
+//        ndk { abiFilters "x86", "armeabi-v7a", "arm64-v8a", "x86_64" }
+
     }
 
 
@@ -81,11 +81,11 @@ android {
     }
 
 //    splits {
-//        density {
-//            enable true
-//            reset()
-//            include "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
-//        }
+////        density {
+////            enable true
+////            reset()
+////            include "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+////        }
 //        // Configures multiple APKs based on ABI.
 //        abi {
 //
@@ -108,17 +108,17 @@ android {
 }
 
 // Map for the version code that gives each ABI a value.
-ext.abiCodes = ['armeabi-v7a': 1, x86: 2, x86_64: 3, 'arm64-v8a': 4]
+//ext.abiCodes = ['armeabi-v7a': 1, x86: 2, x86_64: 3, 'arm64-v8a': 4]
 
 // For per-density APKs, create a similar map like this:
 // ext.densityCodes = ['mdpi': 1, 'hdpi': 2, 'xhdpi': 3]
 
 //import com.android.build.OutputFile
-//
-//// For each APK output variant, override versionCode with a combination of
-//// ext.abiCodes * 1000 + variant.versionCode. In this example, variant.versionCode
-//// is equal to defaultConfig.versionCode. If you configure product flavors that
-//// define their own versionCode, variant.versionCode uses that value instead.
+
+// For each APK output variant, override versionCode with a combination of
+// ext.abiCodes * 1000 + variant.versionCode. In this example, variant.versionCode
+// is equal to defaultConfig.versionCode. If you configure product flavors that
+// define their own versionCode, variant.versionCode uses that value instead.
 //android.applicationVariants.all { variant ->
 //
 //    // Assigns a different version code for each output APK
