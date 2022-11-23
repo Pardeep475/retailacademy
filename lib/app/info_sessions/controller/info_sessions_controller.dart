@@ -27,6 +27,7 @@ class InfoSessionsController extends GetxController {
   var zoomMeetingEndDate = ''.obs;
   var meetingRecordedUrl = ''.obs;
   var playUrlPassword = ''.obs;
+  var meetingTitle = ''.obs;
 
   var status = false.obs;
 
@@ -65,6 +66,7 @@ class InfoSessionsController extends GetxController {
               (response as InfoSessionResponse);
           status.value = infoSessionResponse.status;
           if (infoSessionResponse.status) {
+            meetingTitle.value = infoSessionResponse.sessionDescription;
             registrationStatus.value = infoSessionResponse.registrationStatus;
             zoomMeetingID.value = infoSessionResponse.webinarId;
             zoomMeetingPassword.value = infoSessionResponse.password;

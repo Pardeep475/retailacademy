@@ -16,7 +16,7 @@ class PodCastDetailController extends GetxController {
   PodcastElement? item;
   var hasLiked = false.obs;
   RxList<BlogCategoryElement> dataList = RxList();
-  var timeSpentOnPodcast = '00:00';
+  var timeSpentOnPodcast = '00:00:00';
 
   @override
   void onInit() {

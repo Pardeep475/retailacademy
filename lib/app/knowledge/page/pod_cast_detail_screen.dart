@@ -169,6 +169,7 @@ class _PodCastDetailScreenState extends State<PodCastDetailScreen> {
                             'POSITION_ON_PRESSED:------ -- -- -- -- -  $value');
                         _controller.timeSpentOnPodcast = value;
                       },
+                      currentDuration: widget.item.timeSpentOnPodcast,
                       // url: widget.item.podcastFile,
                     );
                   }),

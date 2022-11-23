@@ -73,6 +73,6 @@ class PodcastElement {
         podcastFile: json["podcastFile"] ?? '',
         podcastFileName: json["podcastFileName"] ?? '',
         thumbnailPath: json["ThumbnailPath"] ?? '',
-        timeSpentOnPodcast: json["timeSepentOnPodcast"] ?? '00:00',
+        timeSpentOnPodcast: json["timeSepentOnPodcast"] ?? '00:00:00',
       );
 }

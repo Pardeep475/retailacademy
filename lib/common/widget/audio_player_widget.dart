@@ -18,6 +18,7 @@ class AudioPlayerWidget extends StatefulWidget {
   final VoidCallback? onCommentPressed;
   final Function(bool value)? showLoader;
   final Function(String position) positionOnPressed;
+  final String? currentDuration;
   final bool hasLiked;
 
   const AudioPlayerWidget({
@@ -28,6 +29,7 @@ class AudioPlayerWidget extends StatefulWidget {
     required this.positionOnPressed,
     this.showLoader,
     this.hasLiked = false,
+    this.currentDuration,
     this.mode = PlayerMode.mediaPlayer,
   }) : super(key: key);
 
@@ -56,6 +58,8 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   String get positionText => _position?.toString().split('.').first ?? '';
 
   bool isAudioMute = false;
+
+  bool playFirstTime = true;
 
   @override
   void initState() {
@@ -270,7 +274,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             _position!.inMilliseconds > 0 &&
             _position!.inMilliseconds < _duration!.inMilliseconds)
         ? _position
-        : null;
+        : widget.currentDuration == null
+            ? null
+            : null /*parseDuration(widget.currentDuration ?? "00:00:00")*/;
     if (widget.showLoader != null) {
       widget.showLoader!(true);
     }
@@ -279,7 +285,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         .play(UrlSource(widget.url), position: playPosition)
         .onError((error, stackTrace) {
       debugPrint('AUDIO_PLAYER_ERROR:----  $error');
-      Utils.errorSnackBar(AppStrings.error, AppStrings.audioPlayingError);
+      // Utils.errorSnackBar(AppStrings.error, AppStrings.audioPlayingError);
       if (widget.showLoader != null) {
         widget.showLoader!(false);
       }
@@ -287,9 +293,31 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     if (widget.showLoader != null) {
       widget.showLoader!(false);
     }
-    if(_audioPlayer.state == PlayerState.playing){
+    if (_audioPlayer.state == PlayerState.playing) {
+      if (widget.currentDuration != null && playFirstTime) {
+        _audioPlayer.seek(parseDuration(widget.currentDuration ?? '00:00:00'));
+        playFirstTime = false;
+      }
+
       setState(() => _playerState = PlayerState.playing);
     }
+  }
+
+  Duration parseDuration(String s) {
+    int hours = 0;
+    int minutes = 0;
+    int micros;
+    List<String> parts = s.split(':');
+    if (parts.length > 2) {
+      hours = int.parse(parts[parts.length - 3]);
+    }
+    if (parts.length > 1) {
+      minutes = int.parse(parts[parts.length - 2]);
+    }
+    micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
+    var duration =
+        Duration(hours: hours, minutes: minutes, microseconds: micros);
+    return Duration(milliseconds: duration.inMilliseconds.round());
   }
 
   _pause() async {
