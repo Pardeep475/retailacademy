@@ -19,6 +19,9 @@ class AppTextField extends StatelessWidget {
   final int maxLines;
   final Color fillColor;
   final bool isChangePadding;
+  final bool isBorderRequired;
+  final Function(String)? onChanged;
+  final VoidCallback? onEditingComplete;
 
   const AppTextField({
     Key? key,
@@ -26,12 +29,15 @@ class AppTextField extends StatelessWidget {
     this.suffix,
     this.obscureText = false,
     this.controller,
+    this.isBorderRequired = true,
     this.validator,
     this.minLines = 1,
     this.maxLines = 1,
     this.isEnabled = true,
     this.isChangePadding = false,
     this.fillColor = AppColor.white,
+    this.onChanged,
+    this.onEditingComplete,
   }) : super(key: key);
 
   @override
@@ -42,6 +48,10 @@ class AppTextField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       validator: (value) => validator == null ? null : validator!(value),
+      onChanged: (value) => onChanged == null ? null : onChanged!(value),
+      onEditingComplete: onEditingComplete,
+      onFieldSubmitted: (value) {},
+      onSaved: (value) {},
       decoration: InputDecoration(
           filled: true,
           hintStyle: TextStyle(
@@ -65,11 +75,18 @@ class AppTextField extends StatelessWidget {
   }
 
   OutlineInputBorder _border() {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(4.0.sp)),
-      borderSide: const BorderSide(
-        color: AppColor.outlineBorderColor,
-      ),
-    );
+    return isBorderRequired
+        ? OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4.0.sp)),
+            borderSide: const BorderSide(
+              color: AppColor.outlineBorderColor,
+            ),
+          )
+        : OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4.0.sp)),
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+            ),
+          );
   }
 }

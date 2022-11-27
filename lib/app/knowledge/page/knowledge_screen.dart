@@ -42,7 +42,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
         children: [
           Column(
             children: [
-              const CustomAppBar(
+               CustomAppBar(
                 title: AppStrings.knowledge,
               ),
               Expanded(

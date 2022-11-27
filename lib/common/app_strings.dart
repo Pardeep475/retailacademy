@@ -52,6 +52,7 @@ class AppStrings {
   static const String logout = "Logout";
   static const String notification = "Notification";
   static const String nextSession = "Next Session:";
+  static const String pastSession = "Past Session:";
 
   static const String funFacts = "Fun Facts";
   static const String masterClass = "Master Class";
@@ -103,4 +104,5 @@ class AppStrings {
   static const String register = "Register";
   static const String join = "Join";
   static const String playRecording = "Play Recording";
+  static const String title = "Title: ";
 }

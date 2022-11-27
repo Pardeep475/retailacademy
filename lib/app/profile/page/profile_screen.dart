@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Column(
             children: [
-              const CustomAppBar(
+               CustomAppBar(
                 title: AppStrings.profile,
               ),
               Expanded(

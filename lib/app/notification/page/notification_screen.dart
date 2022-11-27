@@ -39,7 +39,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         children: [
           Column(
             children: [
-              const CustomAppBar(
+               CustomAppBar(
                 title: AppStrings.notification,
                 isBackButtonVisible: true,
               ),

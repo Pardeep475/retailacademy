@@ -165,8 +165,8 @@ class _QuizMasterDetailScreenState extends State<QuizMasterDetailScreen> {
                                 if (value == AppStrings.yourAnswerIsCorrect ||
                                     value
                                         .contains(AppStrings.incorrectAnswer)) {
-                                  _controller.updateValuesOnDataBase(
-                                      index: _controller.currentPage);
+                                  // _controller.updateValuesOnDataBase(
+                                  //     index: _controller.currentPage);
                                   Get.back();
 
                                   await _controller.consolidatedQuizSubmitApi(

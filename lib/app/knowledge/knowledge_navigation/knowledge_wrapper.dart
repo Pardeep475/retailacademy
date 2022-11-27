@@ -51,6 +51,7 @@ class KnowledgeWrapper extends StatelessWidget {
                   fileId: arg['fileId'],
                   fileName: arg['title'],
                 ),
+
               );
             }
           case KnowledgeNavigation.funFactsAndMasterClassDetailScreen:

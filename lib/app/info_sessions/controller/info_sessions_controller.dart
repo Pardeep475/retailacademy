@@ -66,14 +66,15 @@ class InfoSessionsController extends GetxController {
               (response as InfoSessionResponse);
           status.value = infoSessionResponse.status;
           if (infoSessionResponse.status) {
-            meetingTitle.value = infoSessionResponse.sessionDescription;
             registrationStatus.value = infoSessionResponse.registrationStatus;
             zoomMeetingID.value = infoSessionResponse.webinarId;
             zoomMeetingPassword.value = infoSessionResponse.password;
             zoomMeetingStartDate.value =
                 infoSessionResponse.zoomMeetingStartDate;
-          } else {
-            // Utils.errorSnackBar(AppStrings.error, infoSessionResponse.message);
+            zoomMeetingEndDate.value = infoSessionResponse.zoomMeetingEndDate;
+            meetingRecordedUrl.value = infoSessionResponse.meetingRecordedUrl;
+            playUrlPassword.value = infoSessionResponse.playUrlPassword;
+            meetingTitle.value = infoSessionResponse.sessionDescription;
           }
         }
       } catch (e) {
@@ -131,4 +132,9 @@ class InfoSessionsController extends GetxController {
       "USER_EMAIL": userEmail
     });
   }
+
+  playRecording(
+      {required BuildContext context,
+      required String recordedMeetingUrl,
+      required String recordedMeetingPassword}) {}
 }

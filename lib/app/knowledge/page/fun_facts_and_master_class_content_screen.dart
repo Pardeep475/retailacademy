@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -25,6 +27,11 @@ class FunFactsAndMasterClassContentScreen extends StatefulWidget {
 
 class _FunFactsAndMasterClassContentScreenState
     extends State<FunFactsAndMasterClassContentScreen> {
+
+  final TextEditingController _searchController = TextEditingController();
+
+  Timer? _debounce;
+
   final FunFactsAndMasterClassContentController _controller =
       Get.isRegistered<FunFactsAndMasterClassContentController>()
           ? Get.find<FunFactsAndMasterClassContentController>()
@@ -50,6 +57,14 @@ class _FunFactsAndMasterClassContentScreenState
     }
   }
 
+  _initDebounce({required String value}) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      // do something with query
+      _controller.searchFunctionality(value: value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,18 +75,33 @@ class _FunFactsAndMasterClassContentScreenState
               CustomAppBar(
                 title: widget.fileName,
                 isBackButtonVisible: true,
+                key: UniqueKey(),
                 isSearchButtonVisible: true,
                 onBackPressed: () async {
                   await onBackPressed();
+                },
+                textController: _searchController,
+                onEditingComplete: () {
+                  debugPrint('Search_Functionality:----  onEditingComplete');
+                  _controller.searchFunctionality(
+                      value: _searchController.text.toString());
+                },
+                onChanged: (value) {
+                  debugPrint('Search_Functionality:---- onChanged $value');
+                  _initDebounce(value: value);
+                },
+                onCrossClick: () {
+                  debugPrint('Search_Functionality:---- onCrossClick ');
+                  _controller.searchFunctionality(value: '');
                 },
               ),
               Expanded(
                 child: Obx(() {
                   debugPrint(
-                      'item length:---   ${_controller.dataList.length}');
+                      'item length:---   ${_controller.searchDataList.length}');
 
                   if (!_controller.showLoader.value &&
-                      _controller.dataList.isEmpty) {
+                      _controller.searchDataList.isEmpty) {
                     return NoDataAvailable(
                       onPressed: () {
                         _controller.getContentKnowledgeSection();
@@ -83,7 +113,7 @@ class _FunFactsAndMasterClassContentScreenState
                     onRefresh: () => _controller.getContentKnowledgeSection(
                         isLoader: false),
                     child: GridView.builder(
-                      itemCount: _controller.dataList.length,
+                      itemCount: _controller.searchDataList.length,
                       padding: EdgeInsets.symmetric(
                           horizontal: 16.w, vertical: 20.h),
                       gridDelegate:
@@ -93,7 +123,7 @@ class _FunFactsAndMasterClassContentScreenState
                               childAspectRatio: 1.3,
                               mainAxisSpacing: 16.0),
                       itemBuilder: (BuildContext context, int index) {
-                        FileElement item = _controller.dataList[index];
+                        FileElement item = _controller.searchDataList[index];
                         return ItemContentKnowledge(
                           item: item,
                           onPressed: () async {

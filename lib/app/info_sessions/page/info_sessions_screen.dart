@@ -7,6 +7,7 @@ import 'package:retail_academy/common/widget/app_text.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_strings.dart';
+import '../../../common/encrypt_data.dart';
 import '../../../common/utils.dart';
 import '../../../common/widget/app_button.dart';
 import '../../../common/widget/custom_app_bar.dart';
@@ -40,19 +41,22 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
         children: [
           Column(
             children: [
-              const CustomAppBar(
+               CustomAppBar(
                 title: AppStrings.infoSessions,
               ),
               Expanded(
-                child: Image.asset(AppImages.imgInfoSessionBackground),
+                child: GestureDetector(onTap:(){
+                  EncryptData.decryptAES(value: 'kj');
+                },child: Image.asset(AppImages.imgInfoSessionBackground)),
               ),
               Obx(() {
                 if (!_controller.status.value) {
                   return const SizedBox();
                 }
-                if (_controller.zoomMeetingStartDate.isNotEmpty) {
+                if (_controller.meetingTitle.isNotEmpty) {
                   return AppText(
-                    text: AppStrings.nextSession,
+                    text:
+                        '${AppStrings.title} ${_controller.meetingTitle.value}',
                     textSize: 25.sp,
                     textAlign: TextAlign.center,
                     fontWeight: FontWeight.w500,
@@ -60,18 +64,37 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 }
                 return const SizedBox();
               }),
-              SizedBox(
-                height: 10.h,
-              ),
               Obx(() {
                 if (!_controller.status.value) {
                   return const SizedBox();
                 }
-
-                if (_controller.zoomMeetingStartDate.isNotEmpty) {
+                if (_controller.meetingTitle.isNotEmpty) {
+                  return SizedBox(
+                    height: 16.h,
+                  );
+                }
+                return const SizedBox.shrink();
+              }),
+              Obx(() {
+                if (!_controller.status.value) {
+                  return const SizedBox();
+                }
+                if (_controller.zoomMeetingStartDate.isNotEmpty &&
+                    _controller.zoomMeetingEndDate.isNotEmpty) {
+                  if (Utils.infoSessionCompareDates(
+                      value: _controller.zoomMeetingEndDate.value)) {
+                    return AppText(
+                      text:
+                          "${AppStrings.pastSession} ${Utils.infoSessionDateFormat(selectedDate: _controller.zoomMeetingEndDate.value)}",
+                      textSize: 25.sp,
+                      lineHeight: 1.5,
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w500,
+                    );
+                  }
                   return AppText(
-                    text: Utils.infoSessionDateFormat(
-                        selectedDate: _controller.zoomMeetingStartDate.value),
+                    text:
+                        "${AppStrings.nextSession} ${Utils.infoSessionDateFormat(selectedDate: _controller.zoomMeetingStartDate.value)}",
                     textSize: 25.sp,
                     lineHeight: 1.5,
                     textAlign: TextAlign.center,
@@ -87,6 +110,11 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 if (!_controller.status.value) {
                   return const SizedBox();
                 }
+                if (Utils.infoSessionCompareDates(
+                    value: _controller.zoomMeetingEndDate.value)) {
+                 return const SizedBox();
+                }
+
                 if (!_controller.registrationStatus.value) {
                   return AppButton(
                     txt: AppStrings.register,
@@ -95,28 +123,29 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                     },
                     width: Get.width * 0.9,
                   );
-                } else if (!_controller.registrationStatus.value &&
-                    _controller.meetingRecordedUrl.isNotEmpty) {
+                } else if (_controller.meetingRecordedUrl.isNotEmpty) {
                   return AppButton(
                     txt: AppStrings.playRecording,
                     onPressed: () {
                       // need to dycript password
-                      _controller.joinMeeting(
+                      _controller.playRecording(
                           context: context,
-                          meetingId: _controller.meetingRecordedUrl.value,
-                          meetingPassword: '');
+                          recordedMeetingUrl:
+                              _controller.meetingRecordedUrl.value,
+                          recordedMeetingPassword:
+                              _controller.playUrlPassword.value);
                     },
                     width: Get.width * 0.9,
                   );
-                } else if (_controller.registrationStatus.value &&
-                    _controller.zoomMeetingID.isNotEmpty) {
+                } else if (_controller.zoomMeetingID.isNotEmpty) {
                   return AppButton(
                     txt: AppStrings.join,
                     onPressed: () {
                       _controller.joinMeeting(
                           context: context,
                           meetingId: _controller.zoomMeetingID.value,
-                          meetingPassword: '');
+                          meetingPassword:
+                              _controller.zoomMeetingPassword.value);
                     },
                     width: Get.width * 0.9,
                   );

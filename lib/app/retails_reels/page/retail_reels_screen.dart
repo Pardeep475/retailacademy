@@ -39,7 +39,7 @@ class _RetailReelsScreenState extends State<RetailReelsScreen> {
         children: [
           Column(
             children: [
-              const CustomAppBar(
+               CustomAppBar(
                 title: AppStrings.retailReels,
               ),
               Expanded(

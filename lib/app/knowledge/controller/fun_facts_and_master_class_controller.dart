@@ -10,6 +10,7 @@ import '../../../network/modal/knowledge/content_knowledge_response.dart';
 class FunFactsAndMasterClassController extends GetxController {
   var showLoader = true.obs;
   RxList<FileElement> dataList = RxList();
+  RxList<FileElement> searchDataList = RxList();
   var fileId = 0;
 
   @override
@@ -33,6 +34,7 @@ class FunFactsAndMasterClassController extends GetxController {
   clearAllData() {
     showLoader.value = false;
     dataList = RxList();
+    searchDataList = RxList();
     fileId = 0;
   }
 
@@ -53,8 +55,10 @@ class FunFactsAndMasterClassController extends GetxController {
               (response as ContentKnowledgeResponse);
           if (contentResponse.status) {
             dataList.clear();
+            searchDataList.clear();
             dataList.addAll(contentResponse.files ?? []);
-            dataList.refresh();
+            searchDataList.addAll(contentResponse.files ?? []);
+            searchDataList.refresh();
           } else {
             Utils.errorSnackBar(AppStrings.error, contentResponse.message);
           }
@@ -68,5 +72,22 @@ class FunFactsAndMasterClassController extends GetxController {
       }
     }
     return null;
+  }
+
+  void searchFunctionality({required String value}) {
+    if (value.isEmpty) {
+      searchDataList.clear();
+      searchDataList.addAll(dataList);
+      searchDataList.refresh();
+    } else {
+      List<FileElement> searchList = dataList
+          .where((element) =>
+              element.fileName.toLowerCase().contains(value.toLowerCase()) ||
+              element.description.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+      searchDataList.clear();
+      searchDataList.addAll(searchList);
+      searchDataList.refresh();
+    }
   }
 }

@@ -26,6 +26,8 @@ class QuizRepository {
         quizResponse: _convertToQuizElementModal()));
   }
 
+  List<QuizElementModal> getQuizElementModalList() => _convertToQuizElementModal();
+
   List<QuizElementModal> _convertToQuizElementModal() {
     List<QuizElementModal> _quizElementModalList = [];
     for (var element in quizResponse) {

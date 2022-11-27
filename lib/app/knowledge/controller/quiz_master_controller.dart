@@ -8,7 +8,8 @@ import '../../../network/modal/knowledge/quiz_category_response.dart';
 
 class QuizMasterController extends GetxController {
   var showLoader = true.obs;
-   RxList<QuizCategoryElement> dataList = RxList();
+  RxList<QuizCategoryElement> dataList = RxList();
+  RxList<QuizCategoryElement> searchDataList = RxList();
 
   @override
   void onInit() {
@@ -28,9 +29,10 @@ class QuizMasterController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  void clearAllData(){
+  void clearAllData() {
     showLoader.value = false;
     dataList = RxList();
+    searchDataList = RxList();
   }
 
   Future getQuizMasterApi({bool isLoader = true}) async {
@@ -50,8 +52,10 @@ class QuizMasterController extends GetxController {
               (response as QuizCategoryResponse);
           if (quizCategoryResponse.status) {
             dataList.clear();
+            searchDataList.clear();
             dataList.addAll(quizCategoryResponse.quizCategories ?? []);
-            dataList.refresh();
+            searchDataList.addAll(quizCategoryResponse.quizCategories ?? []);
+            searchDataList.refresh();
           } else {
             Utils.errorSnackBar(AppStrings.error, quizCategoryResponse.message);
           }
@@ -65,5 +69,26 @@ class QuizMasterController extends GetxController {
       }
     }
     return null;
+  }
+
+  void searchFunctionality({required String value}) {
+    if (value.isEmpty) {
+      searchDataList.clear();
+      searchDataList.addAll(dataList);
+      searchDataList.refresh();
+    } else {
+      List<QuizCategoryElement> searchList = dataList
+          .where((element) =>
+              element.categoryName
+                  .toLowerCase()
+                  .contains(value.toLowerCase()) ||
+              element.categoryDescription
+                  .toLowerCase()
+                  .contains(value.toLowerCase()))
+          .toList();
+      searchDataList.clear();
+      searchDataList.addAll(searchList);
+      searchDataList.refresh();
+    }
   }
 }

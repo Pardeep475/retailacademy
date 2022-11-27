@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Column(
               children: [
-                const CustomAppBar(
+                 CustomAppBar(
                   title: AppStrings.trending,
                 ),
                 Expanded(

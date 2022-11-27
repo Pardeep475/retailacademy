@@ -75,6 +75,7 @@ class _FunFactsAndMasterClassDetailScreenState
               CustomAppBar(
                 title: '',
                 isBackButtonVisible: true,
+                key: UniqueKey(),
                 isSearchButtonVisible: false,
                 onBackPressed: () async {
                   await onBackPressed();

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -23,6 +25,11 @@ class QuizMasterScreen extends StatefulWidget {
 }
 
 class _QuizMasterScreenState extends State<QuizMasterScreen> {
+
+  final TextEditingController _searchController = TextEditingController();
+
+  Timer? _debounce;
+
   final QuizMasterController _controller =
       Get.isRegistered<QuizMasterController>()
           ? Get.find<QuizMasterController>()
@@ -46,6 +53,15 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
     }
   }
 
+  _initDebounce({required String value}) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      // do something with query
+      _controller.searchFunctionality(value: value);
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,13 +76,27 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
                 onBackPressed: () async {
                   await onBackPressed();
                 },
+                textController: _searchController,
+                onEditingComplete: () {
+                  debugPrint('Search_Functionality:----  onEditingComplete');
+                  _controller.searchFunctionality(
+                      value: _searchController.text.toString());
+                },
+                onChanged: (value) {
+                  debugPrint('Search_Functionality:---- onChanged $value');
+                  _initDebounce(value: value);
+                },
+                onCrossClick: () {
+                  debugPrint('Search_Functionality:---- onCrossClick ');
+                  _controller.searchFunctionality(value: '');
+                },
               ),
               Expanded(
                 child: Obx(() {
-                  debugPrint('length:-  ${_controller.dataList.length}');
+                  debugPrint('length:-  ${_controller.searchDataList.length}');
 
                   if (!_controller.showLoader.value &&
-                      _controller.dataList.isEmpty) {
+                      _controller.searchDataList.isEmpty) {
                     return NoDataAvailable(
                       onPressed: () => _controller.getQuizMasterApi(),
                     );
@@ -79,12 +109,12 @@ class _QuizMasterScreenState extends State<QuizMasterScreen> {
                         physics: const BouncingScrollPhysics(
                             parent: ClampingScrollPhysics()),
                         shrinkWrap: true,
-                        itemCount: _controller.dataList.length,
+                        itemCount: _controller.searchDataList.length,
                         padding: EdgeInsets.symmetric(
                             horizontal: 16.w, vertical: 20.h),
                         itemBuilder: (BuildContext context, int index) {
                           QuizCategoryElement item =
-                              _controller.dataList[index];
+                              _controller.searchDataList[index];
                           return ItemQuizMaster(
                             item: item,
                             color: widget.color,

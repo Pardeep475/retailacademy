@@ -52,7 +52,7 @@ class QuizMasterDetailController extends GetxController {
     dataList = RxList();
     categoryValue = -1;
     currentPage = 0;
-    quizModalLocalRepository = Hive.box<QuizModal>(AppStrings.quizDataBaseName);
+    // quizModalLocalRepository = Hive.box<QuizModal>(AppStrings.quizDataBaseName);
   }
 
   Future consolidatedQuizQuestionsApi({required int categoryId}) async {
@@ -61,12 +61,15 @@ class QuizMasterDetailController extends GetxController {
     if (value) {
       try {
         showLoader.value = true;
-        bool isResumed =
-            await _checkIfQuizExistInLocalDataBase(categoryId: categoryId);
-        if (!isResumed) {
-          return;
-        }
         String userId = await SessionManager.getUserId();
+        // bool isResumed =
+        //     await _checkIfQuizExistInLocalDataBase(categoryId: categoryId,userId:userId);
+        //
+        // Utils.errorSnackBar('IS_RESumed', '$isResumed');
+        // if (!isResumed) {
+        //   return;
+        // }
+
         var response =
             await ApiProvider.apiProvider.consolidatedQuizQuestionsApi(
           request: ConsolidatedQuizQuestions(
@@ -84,8 +87,9 @@ class QuizMasterDetailController extends GetxController {
                 quizResponse:
                     consolidatedQuizQuestionsResponse.quizResponse ?? [],
                 localRepository: quizModalLocalRepository);
-            _quizRepository.saveDataToLocal();
-            _updateDataList(categoryId: categoryId, userId: int.parse(userId));
+            // _quizRepository.saveDataToLocal();
+            List<QuizElementModal> list = _quizRepository.getQuizElementModalList();
+            _updateDataListRemote(list: list);
             // dataList
             //     .addAll(consolidatedQuizQuestionsResponse.quizResponse ?? []);
             // dataList.refresh();
@@ -100,13 +104,26 @@ class QuizMasterDetailController extends GetxController {
     return null;
   }
 
-  Future<bool> _checkIfQuizExistInLocalDataBase(
-      {required int categoryId}) async {
-    if (!quizModalLocalRepository.isOpen) {
-      await Hive.openBox<QuizModal>(AppStrings.quizDataBaseName);
+  _updateDataListRemote({required List<QuizElementModal> list}) {
+    for (int i = 0; i < list.length; i++) {
+      var element = list[i];
+      if (element.hasUserAttemptedQuestion) {
+        currentPage = i + 1;
+      }
     }
+    // Utils.errorSnackBar('CurrentPage', '$currentPage');
+    dataList.clear();
+    dataList.addAll(list);
+    dataList.refresh();
+  }
+
+/*  Future<bool> _checkIfQuizExistInLocalDataBase(
+      {required int categoryId,required String userId}) async {
+    // if (!quizModalLocalRepository.isOpen) {
+    //   await Hive.openBox<QuizModal>(AppStrings.quizDataBaseName);
+    // }
     QuizModal? modal = quizModalLocalRepository.values
-        .firstWhereOrNull((element) => element.categoryId == categoryId);
+        .firstWhereOrNull((element) => element.categoryId == categoryId && int.parse(userId) == element.userId);
     if (modal == null) {
       return true;
     }
@@ -114,6 +131,10 @@ class QuizMasterDetailController extends GetxController {
     // currentPage = modal.lastAnswered + 1;
     for (int i = 0; i < modal.quizResponse!.length; i++) {
       var element = modal.quizResponse![i];
+      if (i == 0) {
+        Utils.errorSnackBar(
+            'CurrentPage Local', '$i    ${element.hasUserAttemptedQuestion}');
+      }
       if (element.hasUserAttemptedQuestion) {
         currentPage = i + 1;
       }
@@ -126,7 +147,7 @@ class QuizMasterDetailController extends GetxController {
         }
       }
     }
-
+    Utils.errorSnackBar('CurrentPage Local', '$currentPage');
     dataList.addAll(modal.quizResponse ?? []);
     dataList.refresh();
     return false;
@@ -145,10 +166,11 @@ class QuizMasterDetailController extends GetxController {
         currentPage = i + 1;
       }
     }
+    Utils.errorSnackBar('CurrentPage', '$currentPage');
     dataList.clear();
     dataList.addAll(modal.quizResponse ?? []);
     dataList.refresh();
-  }
+  }*/
 
   updateAnswers(
       {required int baseIndex,
@@ -166,17 +188,18 @@ class QuizMasterDetailController extends GetxController {
   }
 
   // update group value
-  updateValuesOnDataBase({required int index}) {
+  /*updateValuesOnDataBase({required int index}) async{
     int? modal = quizModalLocalRepository.keys.firstWhereOrNull((element) =>
         quizModalLocalRepository.getAt(element)!.categoryId == categoryValue);
     if (modal != null) {
       QuizModal _quizModal = quizModalLocalRepository.getAt(modal)!;
       _quizModal.lastAnswered = index;
-      _quizModal.quizResponse![index] = dataList[index];
-      _quizModal.quizResponse![index].hasUserAttemptedQuestion = true;
+      QuizElementModal item = dataList[index];
+      item.hasUserAttemptedQuestion = true;
+      _quizModal.quizResponse![index] = item;
       quizModalLocalRepository.put(modal, _quizModal);
     }
-  }
+  }*/
 
   // checkHive() async {
   //   // Returns a List<String> of all keys
@@ -333,25 +356,25 @@ class QuizMasterDetailController extends GetxController {
     return _list;
   }
 
-  List<SubmitAnswerElement> _listSubmitAns() {
-    List<SubmitAnswerElement> _list = [];
-    for (var element in dataList) {
-      if (element.questionType == 'Multiple Choice - Single Answer') {
-        _list.add(SubmitAnswerElement(
-            questionId: element.questionId.toString(),
-            answerSubmitted: element.groupValue,
-            attemptedQuestions: element.questionId.toString()));
-      } else {
-        _list.add(SubmitAnswerElement(
-          questionId: element.questionId.toString(),
-          answerSubmitted:
-              _makeCommaSeparatedMultipleQuestion(list: element.answers ?? []),
-          attemptedQuestions: element.questionId.toString(),
-        ));
-      }
-    }
-    return _list;
-  }
+  // List<SubmitAnswerElement> _listSubmitAns() {
+  //   List<SubmitAnswerElement> _list = [];
+  //   for (var element in dataList) {
+  //     if (element.questionType == 'Multiple Choice - Single Answer') {
+  //       _list.add(SubmitAnswerElement(
+  //           questionId: element.questionId.toString(),
+  //           answerSubmitted: element.groupValue,
+  //           attemptedQuestions: element.questionId.toString()));
+  //     } else {
+  //       _list.add(SubmitAnswerElement(
+  //         questionId: element.questionId.toString(),
+  //         answerSubmitted:
+  //             _makeCommaSeparatedMultipleQuestion(list: element.answers ?? []),
+  //         attemptedQuestions: element.questionId.toString(),
+  //       ));
+  //     }
+  //   }
+  //   return _list;
+  // }
 
   String _makeCommaSeparatedMultipleQuestion(
       {required List<AnswerElementModal> list}) {
@@ -457,11 +480,11 @@ class QuizMasterDetailController extends GetxController {
     ).show();
   }
 
-  String _checkScore() {
-    double passingPercentageValue =
-        100 * checkCorrectAnswers() / dataList.length;
-    return '${passingPercentageValue.toStringAsFixed(2)}%';
-  }
+  // String _checkScore() {
+  //   double passingPercentageValue =
+  //       100 * checkCorrectAnswers() / dataList.length;
+  //   return '${passingPercentageValue.toStringAsFixed(2)}%';
+  // }
 
   int checkCorrectAnswers() {
     int score = 0;
@@ -499,19 +522,19 @@ class QuizMasterDetailController extends GetxController {
     return false;
   }
 
-  _deleteDataFromLocal() async {
-    dynamic key;
-    int modal = quizModalLocalRepository.keys.firstWhereOrNull((element) {
-      if (quizModalLocalRepository.getAt(element)?.categoryId ==
-          categoryValue) {
-        key = element;
-        return true;
-      } else {
-        return false;
-      }
-    });
-    if (key != null) {
-      await quizModalLocalRepository.delete(key);
-    }
-  }
+  // _deleteDataFromLocal() async {
+  //   dynamic key;
+  //   int modal = quizModalLocalRepository.keys.firstWhereOrNull((element) {
+  //     if (quizModalLocalRepository.getAt(element)?.categoryId ==
+  //         categoryValue) {
+  //       key = element;
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+  //   if (key != null) {
+  //     await quizModalLocalRepository.delete(key);
+  //   }
+  // }
 }

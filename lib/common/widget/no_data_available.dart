@@ -7,8 +7,11 @@ import 'app_button.dart';
 
 class NoDataAvailable extends StatelessWidget {
   final VoidCallback onPressed;
+  final bool isButtonVisible;
 
-  const NoDataAvailable({required this.onPressed, Key? key}) : super(key: key);
+  const NoDataAvailable(
+      {required this.onPressed, this.isButtonVisible = true, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +19,14 @@ class NoDataAvailable extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(AppImages.imgNoDataFound),
-        AppButton(
-          txt: AppStrings.tapToReload,
-          onPressed: onPressed,
-          width: Get.width * 0.9,
+        Expanded(child: Image.asset(AppImages.imgNoDataFound)),
+        Visibility(
+          visible: isButtonVisible,
+          child: AppButton(
+            txt: AppStrings.tapToReload,
+            onPressed: onPressed,
+            width: Get.width * 0.9,
+          ),
         )
       ],
     );
