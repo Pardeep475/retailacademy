@@ -136,6 +136,7 @@ class InfoSessionsController extends GetxController {
       {required String title,
       required String recordedMeetingUrl,
       required String recordedMeetingPassword}) {
+
     Get.to(
       RecordedMeetingScreen(
         title: title,

@@ -5,11 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
-import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../common/widget/custom_read_more_text.dart';
 import '../../../common/widget/portrait_landscape_player_page.dart';
-import '../../../common/widget/portrait_video_player.dart';
 import '../../../network/modal/retails_reels/retail_reels_list_response.dart';
 import '../../comment/page/retail_reels_comment_screen.dart';
 import '../controller/retail_reels_detail_controller.dart';
@@ -240,7 +238,6 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
 
   @override
   void dispose() {
-    
     super.dispose();
   }
 

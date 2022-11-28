@@ -154,7 +154,8 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
   Widget buildVideoPlayer(bool isPortrait) {
     final video = SizedBox.expand(
       child: FittedBox(
-        fit: BoxFit.cover,
+        fit: isPortrait ? BoxFit.cover : BoxFit.contain,
+        alignment: Alignment.center,
         child: SizedBox(
           width: widget.controller!.value.size.width,
           height: widget.controller!.value.size.height,
@@ -163,9 +164,9 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
       ),
     );
     // final video = AspectRatio(
-    //   aspectRatio: isPortrait
+    //   aspectRatio: /*isPortrait
     //       ? widget.aspectRatio
-    //       : widget.controller!.value.aspectRatio,
+    //       :*/ widget.controller!.value.aspectRatio,
     //   child: VideoPlayer(widget.controller!),
     // );
 

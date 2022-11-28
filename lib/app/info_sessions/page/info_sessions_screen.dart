@@ -45,11 +45,7 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 title: AppStrings.infoSessions,
               ),
               Expanded(
-                child: GestureDetector(
-                    onTap: () {
-                      EncryptData.decryptAES(value: 'kj');
-                    },
-                    child: Image.asset(AppImages.imgInfoSessionBackground)),
+                child: Image.asset(AppImages.imgInfoSessionBackground),
               ),
               Obx(() {
                 if (!_controller.status.value) {
@@ -119,12 +115,17 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                       txt: AppStrings.playRecording,
                       onPressed: () {
                         // need to dycript password
+                        var password = '';
+                        if (_controller.playUrlPassword.isNotEmpty) {
+                          password = EncryptData.decryptAES(
+                              value: _controller.playUrlPassword.value);
+                        }
+
                         _controller.playRecording(
                             title: _controller.meetingTitle.value,
                             recordedMeetingUrl:
                                 _controller.meetingRecordedUrl.value,
-                            recordedMeetingPassword:
-                                _controller.playUrlPassword.value);
+                            recordedMeetingPassword: password);
                       },
                       width: Get.width * 0.9,
                     );
@@ -145,12 +146,17 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                     txt: AppStrings.playRecording,
                     onPressed: () {
                       // need to dycript password
+                      var password = '';
+                      if (_controller.playUrlPassword.isNotEmpty) {
+                        password = EncryptData.decryptAES(
+                            value: _controller.playUrlPassword.value);
+                      }
+
                       _controller.playRecording(
                           title: _controller.meetingTitle.value,
                           recordedMeetingUrl:
                               _controller.meetingRecordedUrl.value,
-                          recordedMeetingPassword:
-                              _controller.playUrlPassword.value);
+                          recordedMeetingPassword: password);
                     },
                     width: Get.width * 0.9,
                   );
@@ -158,10 +164,15 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                   return AppButton(
                     txt: AppStrings.join,
                     onPressed: () {
+                      var password = '';
+                      if (_controller.playUrlPassword.isNotEmpty) {
+                        password = EncryptData.decryptAES(
+                            value: _controller.zoomMeetingPassword.value);
+                      }
+
                       _controller.joinMeeting(
                           meetingId: _controller.zoomMeetingID.value,
-                          meetingPassword:
-                              _controller.zoomMeetingPassword.value);
+                          meetingPassword: password);
                     },
                     width: Get.width * 0.9,
                   );
