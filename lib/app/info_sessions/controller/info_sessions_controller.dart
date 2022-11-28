@@ -14,6 +14,7 @@ import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 import '../../../network/modal/info_session/info_session_register_response.dart';
 import '../../../network/modal/info_session/info_session_registration_request.dart';
+import '../page/recorded_meeting_screen.dart';
 
 class InfoSessionsController extends GetxController {
   var showLoader = true.obs;
@@ -119,9 +120,7 @@ class InfoSessionsController extends GetxController {
   }
 
   joinMeeting(
-      {required BuildContext context,
-      required String meetingId,
-      required String meetingPassword}) async {
+      {required String meetingId, required String meetingPassword}) async {
     var userName = await SessionManager.getUserName();
     var userEmail = await SessionManager.getUserEmail();
 
@@ -134,7 +133,15 @@ class InfoSessionsController extends GetxController {
   }
 
   playRecording(
-      {required BuildContext context,
+      {required String title,
       required String recordedMeetingUrl,
-      required String recordedMeetingPassword}) {}
+      required String recordedMeetingPassword}) {
+    Get.to(
+      RecordedMeetingScreen(
+        title: title,
+        recordedMeetingPassword: recordedMeetingPassword,
+        recordedMeetingUrl: recordedMeetingUrl,
+      ),
+    );
+  }
 }

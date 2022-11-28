@@ -1,14 +1,10 @@
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../app_color.dart';
 import '../app_images.dart';
-import '../app_strings.dart';
-import '../utils.dart';
 import 'app_text.dart';
 
 class AudioPlayerWidget extends StatefulWidget {

@@ -11,6 +11,7 @@ import '../../../common/app_strings.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../auth/login/page/help_and_contact_retail_screen.dart';
+import '../../info_sessions/page/recorded_meeting_screen.dart';
 import '../controller/profile_controller.dart';
 import '../widget/item_custom_button_profile.dart';
 
@@ -42,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Column(
             children: [
-               CustomAppBar(
+              const CustomAppBar(
                 title: AppStrings.profile,
               ),
               Expanded(
@@ -55,34 +56,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: Get.height * 0.3,
                         child: Stack(
                           children: [
-                            CachedNetworkImage(
-                              imageUrl: _controller.profileImage.value,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(
+                                  RecordedMeetingScreen(
+                                    title: '',
+                                    recordedMeetingPassword: '',
+                                    recordedMeetingUrl: '',
+                                  ),
+                                );
+                              },
+                              child: CachedNetworkImage(
+                                imageUrl: _controller.profileImage.value,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              placeholder: (context, url) => Container(
-                                alignment: Alignment.center,
-                                child: SizedBox(
-                                    height: 36.r,
-                                    width: 36.r,
-                                    child: const CircularProgressIndicator()),
-                              ),
-                              errorWidget: (context, url, error) => Container(
-                                alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColor.grey),
-                                child: SvgPicture.asset(
-                                  AppImages.iconUserImagePlaceHolder,
-                                  height: Get.height * 0.2,
-                                  color: AppColor.black,
+                                placeholder: (context, url) => Container(
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                      height: 36.r,
+                                      width: 36.r,
+                                      child: const CircularProgressIndicator()),
+                                ),
+                                errorWidget: (context, url, error) => Container(
+                                  alignment: Alignment.center,
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColor.grey),
+                                  child: SvgPicture.asset(
+                                    AppImages.iconUserImagePlaceHolder,
+                                    height: Get.height * 0.2,
+                                    color: AppColor.black,
+                                  ),
                                 ),
                               ),
                             ),

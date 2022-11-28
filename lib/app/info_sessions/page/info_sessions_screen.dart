@@ -41,13 +41,15 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
         children: [
           Column(
             children: [
-               CustomAppBar(
+              const CustomAppBar(
                 title: AppStrings.infoSessions,
               ),
               Expanded(
-                child: GestureDetector(onTap:(){
-                  EncryptData.decryptAES(value: 'kj');
-                },child: Image.asset(AppImages.imgInfoSessionBackground)),
+                child: GestureDetector(
+                    onTap: () {
+                      EncryptData.decryptAES(value: 'kj');
+                    },
+                    child: Image.asset(AppImages.imgInfoSessionBackground)),
               ),
               Obx(() {
                 if (!_controller.status.value) {
@@ -112,7 +114,22 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                 }
                 if (Utils.infoSessionCompareDates(
                     value: _controller.zoomMeetingEndDate.value)) {
-                 return const SizedBox();
+                  if (_controller.meetingRecordedUrl.isNotEmpty) {
+                    return AppButton(
+                      txt: AppStrings.playRecording,
+                      onPressed: () {
+                        // need to dycript password
+                        _controller.playRecording(
+                            title: _controller.meetingTitle.value,
+                            recordedMeetingUrl:
+                                _controller.meetingRecordedUrl.value,
+                            recordedMeetingPassword:
+                                _controller.playUrlPassword.value);
+                      },
+                      width: Get.width * 0.9,
+                    );
+                  }
+                  return const SizedBox();
                 }
 
                 if (!_controller.registrationStatus.value) {
@@ -129,7 +146,7 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                     onPressed: () {
                       // need to dycript password
                       _controller.playRecording(
-                          context: context,
+                          title: _controller.meetingTitle.value,
                           recordedMeetingUrl:
                               _controller.meetingRecordedUrl.value,
                           recordedMeetingPassword:
@@ -142,7 +159,6 @@ class _InfoSessionsScreenState extends State<InfoSessionsScreen> {
                     txt: AppStrings.join,
                     onPressed: () {
                       _controller.joinMeeting(
-                          context: context,
                           meetingId: _controller.zoomMeetingID.value,
                           meetingPassword:
                               _controller.zoomMeetingPassword.value);

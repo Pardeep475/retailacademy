@@ -59,6 +59,7 @@ dependencies:
 #  flutter_zoom_sdk: ^1.1.0+4
   visibility_detector: ^0.3.3
   encrypt: ^5.0.1
+  flutter_inappwebview: ^5.7.2
 
 
 dev_dependencies:
