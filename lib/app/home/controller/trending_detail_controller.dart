@@ -5,9 +5,8 @@ import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
 import '../../../network/modal/base/base_response.dart';
+import '../../../network/modal/trending/activity_stream_viewed_request.dart';
 import '../../../network/modal/trending/like_trending_request.dart';
-import '../../../network/modal/trending/trending_pagination_request.dart';
-import '../../../network/modal/trending/trending_response.dart';
 
 class TrendingDetailController extends GetxController {
   var showLoader = false.obs;
@@ -31,13 +30,12 @@ class TrendingDetailController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  void clearAllData(){
+  void clearAllData() {
     showLoader.value = false;
     hasLike.value = false;
   }
 
-  Future trendingLikeApi(
-      { required int activityStreamId}) async {
+  Future trendingLikeApi({required int activityStreamId}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
       try {
@@ -45,10 +43,10 @@ class TrendingDetailController extends GetxController {
         String userId = await SessionManager.getUserId();
         var response = await ApiProvider.apiProvider.trendingLikeApi(
             request: LikeTrendingRequest(
-              orgId: AppStrings.orgId,
-              activityStreamId: activityStreamId,
-              userid: userId,
-            ));
+          orgId: AppStrings.orgId,
+          activityStreamId: activityStreamId,
+          userid: userId,
+        ));
         if (response != null) {
           BaseResponse baseResponse = (response as BaseResponse);
           if (baseResponse.status) {
@@ -57,6 +55,27 @@ class TrendingDetailController extends GetxController {
             Utils.errorSnackBar(AppStrings.error, baseResponse.message);
           }
         }
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+        showLoader.value = false;
+      }
+    }
+    return null;
+  }
+
+  Future fetchActivityStreamViewedApi({required int activityStreamId}) async {
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+        showLoader.value = true;
+        String userId = await SessionManager.getUserId();
+        await ApiProvider.apiProvider.onActivityStreamViewedApi(
+          request: ActivityStreamViewedRequest(
+            activityStreamId: activityStreamId.toString(),
+            userid: userId,
+          ),
+        );
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());
       } finally {

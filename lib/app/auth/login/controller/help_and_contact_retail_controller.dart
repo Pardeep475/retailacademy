@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
+import 'package:retail_academy/common/local_storage/session_manager.dart';
 import 'package:retail_academy/network/modal/base/base_response.dart';
-import 'package:retail_academy/network/modal/forgot_password/forgot_password_request.dart';
-
 import '../../../../common/app_strings.dart';
 import '../../../../common/utils.dart';
 import '../../../../network/api_provider.dart';
+import '../../../../network/modal/login/send_messages_to_retail_team_request.dart';
 
 class HelpAndContactRetailController extends GetxController {
   var showLoader = false.obs;
@@ -40,47 +40,26 @@ class HelpAndContactRetailController extends GetxController {
     Utils.logger.e("on close");
   }
 
-  void clearAllData(){
+  void clearAllData() {
     showLoader.value = false;
   }
 
-  Future helpApi({
-    required String txt,
-  }) async {
+  Future helpApi(
+      {required String txt,
+      required int screenType,
+      }) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
       try {
         showLoader.value = true;
-        var response = await ApiProvider.apiProvider
-            .forgotPasswordApi(request: ForgotPasswordRequest(emailId: txt));
-        if (response != null) {
-          BaseResponse baseResponse = (response as BaseResponse);
-          if (baseResponse.status) {
-            Get.back();
-            Utils.errorSnackBar(AppStrings.success, baseResponse.message,
-                isSuccess: true);
-          } else {
-            Utils.errorSnackBar(AppStrings.error, baseResponse.message);
-          }
-        }
-      } catch (e) {
-        Utils.errorSnackBar(AppStrings.error, e.toString());
-      } finally {
-        showLoader.value = false;
-      }
-    }
-    return null;
-  }
-
-  Future contactRetailApi({
-    required String txt,
-  }) async {
-    bool value = await Utils.checkConnectivity();
-    if (value) {
-      try {
-        showLoader.value = true;
-        var response = await ApiProvider.apiProvider
-            .forgotPasswordApi(request: ForgotPasswordRequest(emailId: txt));
+        var userName = await SessionManager.getUserName();
+        var response =
+            await ApiProvider.apiProvider.onSendMessageToRetailTeamApi(
+          request: SendMessagesToRetailTeam(
+              body: txt,
+              userID: userName,
+              subject: screenType == 0 ? "Help" : "Contact retail team"),
+        );
         if (response != null) {
           BaseResponse baseResponse = (response as BaseResponse);
           if (baseResponse.status) {

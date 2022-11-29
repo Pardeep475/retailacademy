@@ -116,15 +116,8 @@ class HelpAndContactRetailScreen extends StatelessWidget {
   _submitClickListener() {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_formGlobalKey.currentState!.validate()) {
-      if (screenType == 0) {
-        _controller.helpApi(
-          txt: _txtController.text.toString(),
-        );
-      } else {
-        _controller.contactRetailApi(
-          txt: _txtController.text.toString(),
-        );
-      }
+      _controller.helpApi(
+          txt: _txtController.text.toString(), screenType: screenType);
     }
   }
 }

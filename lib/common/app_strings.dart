@@ -12,6 +12,7 @@ class AppStrings {
 
   static String pointConstant = '00';
   static const String orgId = '6c05d04b-b14f-42a1-ace5-075189d7612a';
+  static const String brandUDID = 'f5f1849b-7975-4c12-b699-0f4bc58fae28';
   static const String encryptionSecuredKey = 'b14ca5898a4e4133bbce2ea2315a1916';
 
 

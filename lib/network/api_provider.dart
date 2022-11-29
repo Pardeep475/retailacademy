@@ -35,6 +35,9 @@ import 'modal/knowledge/whats_hot_blog_content_like_or_dislike.dart';
 import 'modal/knowledge/whats_hot_blog_content_request.dart';
 import 'modal/knowledge/whats_hot_blog_delete_comment_request.dart';
 import 'modal/knowledge/whats_hot_blog_response.dart';
+import 'modal/login/recent_user_activity_request.dart';
+import 'modal/login/send_messages_to_retail_team_request.dart';
+import 'modal/login/user_verification_request.dart';
 import 'modal/maintainance_message/maintainance_message_response.dart';
 import 'modal/notification/notification_enable_request.dart';
 import 'modal/notification/notification_list_response.dart';
@@ -57,6 +60,7 @@ import 'modal/retails_reels/retail_reels_delete_comment_request.dart';
 import 'modal/retails_reels/retail_reels_like_request.dart';
 import 'modal/retails_reels/retail_reels_list_request.dart';
 import 'modal/retails_reels/retail_reels_list_response.dart';
+import 'modal/trending/activity_stream_viewed_request.dart';
 import 'modal/trending/delete_trending_request.dart';
 import 'modal/trending/trending_comment_request.dart';
 import 'modal/trending/trending_comment_response.dart';
@@ -92,6 +96,34 @@ class ApiProvider {
     }
   }
 
+  Future<dynamic> onUserVerificationApi(
+      {required UserVerificationRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.onUserVerificationApi,
+        data: request.toJson(),
+      );
+      return LoginResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> onRecentUserActivityApi(
+      {required RecentUserActivityRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.onRecentUserActivityApi,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
   Future<dynamic> logoutApi({required LogoutRequest request}) async {
     try {
       Response response = await _dio.post(
@@ -99,6 +131,20 @@ class ApiProvider {
         data: request.toJson(),
       );
       return LogoutResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> onSendMessageToRetailTeamApi(
+      {required SendMessagesToRetailTeam request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.sendMessagesToRetailTeam,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
     } catch (error) {
       Utils.errorSnackBar(AppStrings.error, error.toString());
       return null;
@@ -176,6 +222,20 @@ class ApiProvider {
     try {
       Response response = await _dio.post(
         ApiConstants.addTrendingLike,
+        data: request.toJson(),
+      );
+      return BaseResponse.fromJson(response.data);
+    } catch (error) {
+      Utils.errorSnackBar(AppStrings.error, error.toString());
+      return null;
+    }
+  }
+
+  Future<dynamic> onActivityStreamViewedApi(
+      {required ActivityStreamViewedRequest request}) async {
+    try {
+      Response response = await _dio.post(
+        ApiConstants.onRecentUserActivityApi,
         data: request.toJson(),
       );
       return BaseResponse.fromJson(response.data);

@@ -17,6 +17,8 @@ class ApiConstants {
 
   // live
   static String onLoginApi = "UserAuthentication";
+  static String onUserVerificationApi = "UserVerification";
+  static String onRecentUserActivityApi = "RecentUserActivity";
   static String onForgotPasswordApi = "ForgotPasswordV2";
   static String onLogoutApi = "Logout";
 
@@ -36,9 +38,11 @@ class ApiConstants {
   static String addTrendingLike = "ActivityStreamLike";
   static String getContentKnowledgeSection = "ContentListV2";
   static String likeOrDislikeContentKnowledgeSection = "ContentLikes";
+  static String activityStreamViewed = "ActivityStreamViewed";
   static String fetchBlogCategories = "BlogCategory";
   static String fetchBlogContent = "Blog";
   static String fetchBlogLikeContent = "BlogLikes";
+  static String sendMessagesToRetailTeam = "SendMessagesToRetailTeam";
 
   static String getQuizCategory(
           {required String userId, required String orgId}) =>

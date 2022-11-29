@@ -35,6 +35,8 @@ class _TrendingDetailScreenState extends State<TrendingDetailScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.clearAllData();
+      _controller.fetchActivityStreamViewedApi(
+          activityStreamId: widget.item.activityStreamId);
       _controller.hasLike.value = widget.item.hasLiked;
     });
   }

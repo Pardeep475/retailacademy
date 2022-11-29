@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:retail_academy/network/modal/login/login_request.dart';
 import 'package:retail_academy/network/modal/login/login_response.dart';
-
 import '../../../../common/app_strings.dart';
 import '../../../../common/local_storage/session_manager.dart';
 import '../../../../common/routes/route_strings.dart';
 import '../../../../common/utils.dart';
 import '../../../../network/api_provider.dart';
+import '../../../../network/modal/login/recent_user_activity_request.dart';
 import '../../../../network/modal/points/point_request.dart';
 import '../../../../network/modal/points/point_response.dart';
 
@@ -102,6 +101,14 @@ class LoginController extends GetxController {
             }
           }
         }
+
+        await ApiProvider.apiProvider.onRecentUserActivityApi(
+          request: RecentUserActivityRequest(
+              userId: loginResponse.userid,
+              startDate: '2022-06-01',
+              endDate: '2022-06-06',
+              brandGuid: AppStrings.brandUDID),
+        );
       } finally {
         showLoader.value = false;
         Utils.logger.e("token_is:-   ${loginResponse.jwtToken}");
