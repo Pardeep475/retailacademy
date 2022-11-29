@@ -341,10 +341,10 @@ class ApiProvider {
   }
 
   Future<dynamic> getQuizCategoryApi(
-      {required String userId, required String orgId}) async {
+      {required String userId, required String orgId,int? quizId}) async {
     try {
       Response response = await _dio.get(
-        ApiConstants.getQuizCategory(userId: userId, orgId: orgId),
+        ApiConstants.getQuizCategory(userId: userId, orgId: orgId,quizId: quizId),
       );
       return QuizCategoryResponse.fromJson(response.data);
     } catch (error) {

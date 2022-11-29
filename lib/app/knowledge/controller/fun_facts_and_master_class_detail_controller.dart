@@ -15,6 +15,8 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../network/modal/knowledge/quiz_category_response.dart';
+
 class FunFactsAndMasterClassDetailController extends GetxController {
   var showLoader = false.obs;
 
@@ -70,7 +72,7 @@ class FunFactsAndMasterClassDetailController extends GetxController {
           if (contentDisplayResponse.status) {
             hasLiked.value = contentDisplayResponse.likeByUser;
             fileName.value = contentDisplayResponse.fileName;
-            description.value = ''/*contentDisplayResponse.message*/;
+            description.value = '' /*contentDisplayResponse.message*/;
             getFileFromUrl(contentDisplayResponse.filesUrl);
           } else {
             Utils.errorSnackBar(
@@ -172,5 +174,41 @@ class FunFactsAndMasterClassDetailController extends GetxController {
       return await requestPermission();
     }
     return false;
+  }
+
+  Future<QuizCategoryElement?> getQuizMasterApi({required int quizId}) async {
+    QuizCategoryElement? item;
+
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+          showLoader.value = true;
+        String userId = await SessionManager.getUserId();
+        var response = await ApiProvider.apiProvider.getQuizCategoryApi(
+          userId: userId,
+          orgId: AppStrings.orgId,
+          quizId: quizId
+        );
+        if (response != null) {
+          QuizCategoryResponse quizCategoryResponse =
+              (response as QuizCategoryResponse);
+          if (quizCategoryResponse.status) {
+            if (quizCategoryResponse.quizCategories != null &&
+                quizCategoryResponse.quizCategories!.isNotEmpty) {
+              item = quizCategoryResponse.quizCategories!.first;
+            }
+          } else {
+            Utils.errorSnackBar(AppStrings.error, quizCategoryResponse.message);
+          }
+        }
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+
+          showLoader.value = false;
+
+      }
+    }
+    return item;
   }
 }

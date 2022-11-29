@@ -45,8 +45,8 @@ class ApiConstants {
   static String sendMessagesToRetailTeam = "SendMessagesToRetailTeam";
 
   static String getQuizCategory(
-          {required String userId, required String orgId}) =>
-      "UserQuizCategoryInfoV2?userid=$userId&orgid=$orgId";
+          {required String userId, required String orgId, int? quizId}) =>
+      "UserQuizCategoryInfoV2?userid=$userId&orgid=$orgId${quizId == null ? '' : '&quizCategoryID=$quizId'}";
   static String consolidatedQuizQuestions = "ConsolidatedQuizQuestions";
   static String trendingCommentList = "ActivityStreamCommentList";
   static String knowledgeCommentList = "ContentComments";
@@ -65,8 +65,10 @@ class ApiConstants {
           {required String userId, required String orgId}) =>
       "RecentPodcastList?userid=$userId&orgid=$orgId";
   static String podcastList = 'PodcastList';
+
   static String podcastContinueListeningList({required String userId}) =>
       'ContinueListeningPodcastList?userId=$userId';
+
   static String podcastCategory({required String userId}) =>
       'PodcastCategory?userid=$userId';
   static String podcastLike = 'PodcastLikes';
@@ -81,6 +83,7 @@ class ApiConstants {
   static String infoSessionZoomRegistration = "InfoSessionZoomRegistration";
   static String notificationEnableDisable = 'NotificationEnableDisable';
   static String notificationList = 'NotificationList';
+
   static String infoSession({required String userId}) =>
       'InfoSession?userId=$userId';
 }

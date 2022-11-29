@@ -8,8 +8,10 @@ import 'package:retail_academy/app/comment/page/knowledge_content_comment_screen
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/app_strings.dart';
+import '../../../common/widget/alert_dialog_box.dart';
 import '../../../common/widget/app_text.dart';
 import '../../../common/widget/custom_app_bar.dart';
+import '../../../network/modal/knowledge/quiz_category_response.dart';
 import '../controller/fun_facts_and_master_class_detail_controller.dart';
 import '../knowledge_navigation/knowledge_navigation.dart';
 import 'quiz_master_detail_screen.dart';
@@ -156,11 +158,29 @@ class _FunFactsAndMasterClassDetailScreenState
                   Visibility(
                     visible: widget.quizId > 0,
                     child: IconButton(
-                      onPressed: () {
-                        Get.to(() => QuizMasterDetailScreen(
+                      onPressed: () async {
+                        QuizCategoryElement? item =
+                            await _controller.getQuizMasterApi(quizId: widget.quizId);
+                        if (item == null) {
+                          Get.to(
+                            () => QuizMasterDetailScreen(
                               quizId: widget.quizId,
                               quizName: widget.quizName,
-                            ));
+                            ),
+                          );
+                        } else {
+                          if (item.isAttempted) {
+                            openAlreadySubmittedDialogBox(
+                                title: item.categoryName);
+                          } else {
+                            Get.to(
+                              () => QuizMasterDetailScreen(
+                                quizId: widget.quizId,
+                                quizName: widget.quizName,
+                              ),
+                            );
+                          }
+                        }
                       },
                       icon: const Icon(Icons.quiz_outlined),
                     ),
@@ -277,5 +297,80 @@ class _FunFactsAndMasterClassDetailScreenState
     //     // _controller.updateLikeTrending(index: index, value: value);
     //   }
     // });
+  }
+
+  openAlreadySubmittedDialogBox({required String title}) {
+    AlertDialogBox(
+      showCrossIcon: true,
+      context: context,
+      barrierDismissible: true,
+      padding: EdgeInsets.zero,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 15.h,
+              ),
+              AppText(
+                text: AppStrings.alert,
+                textSize: 22.sp,
+                color: AppColor.black,
+                maxLines: 2,
+                lineHeight: 1.3,
+                fontWeight: FontWeight.w600,
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              Divider(
+                height: 1.sp,
+                color: AppColor.grey,
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              AppText(
+                text: '\'$title\' ${AppStrings.quizAlreadyAttempted}',
+                textSize: 18.sp,
+                color: AppColor.black,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                lineHeight: 1.3,
+                fontWeight: FontWeight.w400,
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Divider(
+                height: 1.sp,
+                color: AppColor.grey,
+              ),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => Get.back(),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.h),
+                    child: AppText(
+                      text: AppStrings.ok,
+                      textSize: 18.sp,
+                      color: Colors.lightBlue,
+                      maxLines: 2,
+                      lineHeight: 1.3,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ).show();
   }
 }
