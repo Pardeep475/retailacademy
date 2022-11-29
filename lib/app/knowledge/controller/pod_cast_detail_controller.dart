@@ -12,7 +12,8 @@ import '../../../network/modal/podcast/pod_cast_response.dart';
 import '../../../network/modal/podcast/pod_cast_viewed_by_user_request.dart';
 
 class PodCastDetailController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
+  var showLoaderQuiz = false.obs;
   PodcastElement? item;
   var hasLiked = false.obs;
   RxList<BlogCategoryElement> dataList = RxList();
@@ -38,6 +39,7 @@ class PodCastDetailController extends GetxController {
 
   void clearAllData() {
     showLoader.value = false;
+    showLoaderQuiz.value = false;
     item = null;
     hasLiked.value = false;
     dataList = RxList();
@@ -88,7 +90,7 @@ class PodCastDetailController extends GetxController {
         );
         if (response != null) {
           BaseResponse baseResponse = (response as BaseResponse);
-          hasLiked.value = baseResponse.status;
+          hasLiked.value =baseResponse.status;
         }
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());

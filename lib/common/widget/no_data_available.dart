@@ -19,7 +19,9 @@ class NoDataAvailable extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(child: Image.asset(AppImages.imgNoDataFound)),
+        isButtonVisible
+            ? Expanded(child: Image.asset(AppImages.imgNoDataFound))
+            : Image.asset(AppImages.imgNoDataFound),
         Visibility(
           visible: isButtonVisible,
           child: AppButton(
