@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/common/app_color.dart';
+import '../../../common/utils.dart';
 import '../../../common/widget/custom_app_bar.dart';
 import '../../../common/widget/no_data_available.dart';
 import '../../../network/modal/knowledge/content_knowledge_response.dart';
 import '../controller/fun_facts_and_master_class_content_controller.dart';
 import '../knowledge_navigation/knowledge_navigation.dart';
 import '../widget/item_fun_facts_and_master_class.dart';
-
+import 'fun_facts_and_master_class_detail_screen.dart';
 
 class FunFactsAndMasterClassContentScreen extends StatefulWidget {
   final String fileName;
@@ -27,7 +28,6 @@ class FunFactsAndMasterClassContentScreen extends StatefulWidget {
 
 class _FunFactsAndMasterClassContentScreenState
     extends State<FunFactsAndMasterClassContentScreen> {
-
   final TextEditingController _searchController = TextEditingController();
 
   Timer? _debounce;
@@ -110,8 +110,8 @@ class _FunFactsAndMasterClassContentScreenState
                   }
 
                   return RefreshIndicator(
-                    onRefresh: () => _controller.getContentKnowledgeSection(
-                        isLoader: false),
+                    onRefresh: () =>
+                        _controller.getContentKnowledgeSection(isLoader: false),
                     child: GridView.builder(
                       itemCount: _controller.searchDataList.length,
                       padding: EdgeInsets.symmetric(
@@ -127,34 +127,24 @@ class _FunFactsAndMasterClassContentScreenState
                         return ItemContentKnowledge(
                           item: item,
                           onPressed: () async {
-                            Get.toNamed(
-                                KnowledgeNavigation
-                                    .funFactsAndMasterClassDetailScreen,
-                                id: KnowledgeNavigation.id,
-                                arguments: {
-                                  "fileId": item.fileId.toString(),
-                                  "quizId": item.quizId,
-                                  "quizName": item.quizName,
-                                });
-
-                            // Get.to(
-                            //   () => FunFactsAndMasterClassDetailScreen(
-                            //     fileId: item.fileId.toString(),
-                            //   ),
-                            // );
-
-                            // String? filePath =
-                            //     await _controller.getFileFromUrl(item.filesUrl);
-                            // if (filePath != null) {
-                            //   Get.to(
-                            //     () => FunFactsAndMasterClassDetailScreen(
-                            //       fileId: item.fileId.toString(),
-                            //     ),
-                            //   );
-                            // } else {
-                            //   Utils.errorSnackBar(
-                            //       AppStrings.error, 'Something went wrong');
-                            // }
+                            if (Utils.isPdf(item.filesUrl)) {
+                              Get.toNamed(
+                                  KnowledgeNavigation
+                                      .funFactsAndMasterClassDetailScreen,
+                                  id: KnowledgeNavigation.id,
+                                  arguments: {
+                                    "fileId": item.fileId.toString(),
+                                    "quizId": item.quizId,
+                                    "quizName": item.quizName,
+                                  });
+                            } else {
+                              Get.to(FunFactsAndMasterClassDetailScreen(
+                                fileId: item.fileId.toString(),
+                                quizName: item.quizName,
+                                quizId: item.quizId,
+                                isTrending: true,
+                              ));
+                            }
                           },
                         );
                       },

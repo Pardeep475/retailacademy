@@ -208,4 +208,8 @@ class Utils {
     }
     return false;
   }
+
+  static bool isPdf(String path){
+    return path.toLowerCase().contains('pdf');
+  }
 }

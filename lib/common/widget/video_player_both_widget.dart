@@ -16,6 +16,7 @@ class VideoPlayerBothWidget extends StatefulWidget {
   final Widget? likeIcon;
   final Widget? titleWidget;
   final Widget? descriptionWidget;
+  final Widget? quizWidget;
 
   const VideoPlayerBothWidget({
     Key? key,
@@ -25,6 +26,7 @@ class VideoPlayerBothWidget extends StatefulWidget {
     this.likeIcon,
     this.titleWidget,
     this.descriptionWidget,
+    this.quizWidget,
   }) : super(key: key);
 
   @override
@@ -117,6 +119,7 @@ class _VideoPlayerBothWidgetState extends State<VideoPlayerBothWidget> {
                     commentIcon: widget.commentIcon,
                     likeIcon: widget.likeIcon,
                     titleWidget: widget.titleWidget,
+                    quizWidget: widget.quizWidget,
                     descriptionWidget: widget.descriptionWidget,
                     isCrossIconShown: true,
                     onClickedFullScreen: () {

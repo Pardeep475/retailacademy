@@ -17,6 +17,7 @@ class AdvancedOverlayWidget extends StatefulWidget {
   final Widget? likeIcon;
   final Widget? titleWidget;
   final Widget? descriptionWidget;
+  final Widget? quizWidget;
   final bool isCrossIconShown;
   final bool isAudioOn;
 
@@ -31,6 +32,7 @@ class AdvancedOverlayWidget extends StatefulWidget {
         this.isAudioOn = true,
       this.titleWidget,
       this.descriptionWidget,
+      this.quizWidget,
       this.isCrossIconShown = false,
       required this.isPortrait})
       : super(key: key);
@@ -133,11 +135,14 @@ class _AdvancedOverlayWidgetState extends State<AdvancedOverlayWidget> {
                       Column(
                         children: [
                           widget.likeIcon == null
-                              ? const SizedBox()
+                              ? const SizedBox.shrink()
                               : widget.likeIcon!,
                           widget.commentIcon == null
-                              ? const SizedBox()
+                              ? const SizedBox.shrink()
                               : widget.commentIcon!,
+                          widget.quizWidget == null
+                              ? const SizedBox.shrink()
+                              : widget.quizWidget!,
                           GestureDetector(
                             child: Icon(
                               getMuteOrUnMuteIcons(),

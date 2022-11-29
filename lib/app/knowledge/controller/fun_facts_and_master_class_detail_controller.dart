@@ -18,7 +18,8 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../network/modal/knowledge/quiz_category_response.dart';
 
 class FunFactsAndMasterClassDetailController extends GetxController {
-  var showLoader = false.obs;
+  var showLoader = true.obs;
+  var showLoaderQuiz = false.obs;
 
   var isError = false.obs;
   var hasLiked = false.obs;
@@ -73,7 +74,11 @@ class FunFactsAndMasterClassDetailController extends GetxController {
             hasLiked.value = contentDisplayResponse.likeByUser;
             fileName.value = contentDisplayResponse.fileName;
             description.value = '' /*contentDisplayResponse.message*/;
-            getFileFromUrl(contentDisplayResponse.filesUrl);
+            if (Utils.isPdf(contentDisplayResponse.filesUrl)) {
+              await getFileFromUrl(contentDisplayResponse.filesUrl);
+            } else {
+              filePath.value = contentDisplayResponse.filesUrl;
+            }
           } else {
             Utils.errorSnackBar(
                 AppStrings.error, contentDisplayResponse.message);
@@ -88,11 +93,13 @@ class FunFactsAndMasterClassDetailController extends GetxController {
     return null;
   }
 
-  Future likeOrDislikeContentKnowledgeSectionApi({required int fileId}) async {
+  Future likeOrDislikeContentKnowledgeSectionApi(
+      {required int fileId, bool isLoader = false}) async {
     bool value = await Utils.checkConnectivity();
     if (value) {
       try {
-        showLoader.value = true;
+        showLoaderQuiz.value = true;
+
         String userId = await SessionManager.getUserId();
         var response = await ApiProvider.apiProvider
             .likeOrDislikeContentKnowledgeSectionApi(
@@ -112,7 +119,7 @@ class FunFactsAndMasterClassDetailController extends GetxController {
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());
       } finally {
-        showLoader.value = false;
+        showLoaderQuiz.value = false;
       }
     }
     return null;
@@ -182,13 +189,10 @@ class FunFactsAndMasterClassDetailController extends GetxController {
     bool value = await Utils.checkConnectivity();
     if (value) {
       try {
-          showLoader.value = true;
+        showLoaderQuiz.value = true;
         String userId = await SessionManager.getUserId();
         var response = await ApiProvider.apiProvider.getQuizCategoryApi(
-          userId: userId,
-          orgId: AppStrings.orgId,
-          quizId: quizId
-        );
+            userId: userId, orgId: AppStrings.orgId, quizId: quizId);
         if (response != null) {
           QuizCategoryResponse quizCategoryResponse =
               (response as QuizCategoryResponse);
@@ -204,9 +208,7 @@ class FunFactsAndMasterClassDetailController extends GetxController {
       } catch (e) {
         Utils.errorSnackBar(AppStrings.error, e.toString());
       } finally {
-
-          showLoader.value = false;
-
+        showLoaderQuiz.value = false;
       }
     }
     return item;

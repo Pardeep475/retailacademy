@@ -17,6 +17,7 @@ class PortraitLandscapePlayerPage extends StatefulWidget {
   final Widget? likeIcon;
   final Widget? titleWidget;
   final Widget? descriptionWidget;
+  final Widget? quizWidget;
 
   const PortraitLandscapePlayerPage(
       {Key? key,
@@ -29,6 +30,7 @@ class PortraitLandscapePlayerPage extends StatefulWidget {
       this.likeIcon,
       this.titleWidget,
       this.descriptionWidget,
+      this.quizWidget,
       this.duration})
       : super(key: key);
 
@@ -91,6 +93,7 @@ class _PortraitLandscapePlayerPageState
           commentIcon: widget.commentIcon,
           likeIcon: widget.likeIcon,
           titleWidget: widget.titleWidget,
+          quizWidget: widget.quizWidget,
           descriptionWidget: widget.descriptionWidget,
         ),
       );
