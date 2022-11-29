@@ -414,7 +414,7 @@ class _FunFactsAndMasterClassDetailScreenState
                           AppImages.iconHeart,
                           color: _controller.hasLiked.value
                               ? AppColor.red
-                              : AppColor.black,
+                              : AppColor.white,
                           height: 24.r,
                         );
                       }),
@@ -423,7 +423,7 @@ class _FunFactsAndMasterClassDetailScreenState
                       onPressed: () => _commentButtonPressed(),
                       icon: SvgPicture.asset(
                         AppImages.iconChat,
-                        color: AppColor.black,
+                        color: AppColor.white,
                         height: 24.r,
                       ),
                     ),
