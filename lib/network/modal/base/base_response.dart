@@ -8,7 +8,7 @@ class BaseResponse {
   bool status;
 
   factory BaseResponse.fromJson(Map<String, dynamic> json) => BaseResponse(
-        message: json["message"] == null ? json["Message"]  ?? '': '',
-        status: json["status"] == null ? json["Status"]  ?? false: false,
+        message: json["message"] ?? json["Message"]  ?? '',
+        status: json["status"] ?? json["Status"]  ?? false,
       );
 }

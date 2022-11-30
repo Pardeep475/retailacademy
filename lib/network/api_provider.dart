@@ -235,7 +235,7 @@ class ApiProvider {
       {required ActivityStreamViewedRequest request}) async {
     try {
       Response response = await _dio.post(
-        ApiConstants.onRecentUserActivityApi,
+        ApiConstants.activityStreamViewed,
         data: request.toJson(),
       );
       return BaseResponse.fromJson(response.data);
