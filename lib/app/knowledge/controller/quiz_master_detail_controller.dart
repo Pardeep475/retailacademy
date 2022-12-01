@@ -88,7 +88,8 @@ class QuizMasterDetailController extends GetxController {
                     consolidatedQuizQuestionsResponse.quizResponse ?? [],
                 localRepository: quizModalLocalRepository);
             // _quizRepository.saveDataToLocal();
-            List<QuizElementModal> list = _quizRepository.getQuizElementModalList();
+            List<QuizElementModal> list =
+                _quizRepository.getQuizElementModalList();
             _updateDataListRemote(list: list);
             // dataList
             //     .addAll(consolidatedQuizQuestionsResponse.quizResponse ?? []);
@@ -297,7 +298,7 @@ class QuizMasterDetailController extends GetxController {
             if (index == dataList.length - 1) {
               _commonDialog(
                   title: AppStrings.finalScore +
-                      /*_checkScore()*/ value +
+                      //*_checkScore()*//* value +
                       AppStrings.thanksForAttemptThisQuiz,
                   context: context,
                   onPressed: () async {
@@ -379,7 +380,7 @@ class QuizMasterDetailController extends GetxController {
   String _makeCommaSeparatedMultipleQuestion(
       {required List<AnswerElementModal> list}) {
     String value = '';
-    for (int i = 0; i < list.length - 1; i++) {
+    for (int i = 0; i < list.length; i++) {
       AnswerElementModal element = list[i];
       if (element.isSelected) {
         if (i == 0) {
@@ -522,19 +523,19 @@ class QuizMasterDetailController extends GetxController {
     return false;
   }
 
-  // _deleteDataFromLocal() async {
-  //   dynamic key;
-  //   int modal = quizModalLocalRepository.keys.firstWhereOrNull((element) {
-  //     if (quizModalLocalRepository.getAt(element)?.categoryId ==
-  //         categoryValue) {
-  //       key = element;
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-  //   if (key != null) {
-  //     await quizModalLocalRepository.delete(key);
-  //   }
-  // }
+// _deleteDataFromLocal() async {
+//   dynamic key;
+//   int modal = quizModalLocalRepository.keys.firstWhereOrNull((element) {
+//     if (quizModalLocalRepository.getAt(element)?.categoryId ==
+//         categoryValue) {
+//       key = element;
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   });
+//   if (key != null) {
+//     await quizModalLocalRepository.delete(key);
+//   }
+// }
 }
