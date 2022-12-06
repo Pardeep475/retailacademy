@@ -1,7 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:retail_academy/app/retails_reels/page/retail_reels_detail_screen.dart';
+import 'package:video_player/video_player.dart';
+
 
 import '../../../common/app_color.dart';
 import '../../../common/widget/custom_app_bar.dart';
@@ -24,8 +27,6 @@ class RetailReelsContentScreen extends StatefulWidget {
 }
 
 class _RetailReelsContentScreenState extends State<RetailReelsContentScreen> {
-
-
   final RetailReelsContentController _controller =
       Get.isRegistered<RetailReelsContentController>()
           ? Get.find<RetailReelsContentController>()
@@ -100,6 +101,9 @@ class _RetailReelsContentScreenState extends State<RetailReelsContentScreen> {
                               RetailReelsDetailScreen(
                                 item: item,
                                 categoryId: _controller.categoryId,
+                                videoPlayerController:
+                                    VideoPlayerController.network(
+                                        'https://retailacademyuatdemo.blob.core.windows.net/newcontainer/Free_Test_Data_10MB_MP4Free_Test_Data_10MB_MP4Free_Test_Data_10MB_MP4Free_Test_Data_10MB_MP4.mp4'),
                               ),
                             );
                           },

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
@@ -18,6 +16,7 @@ class PortraitLandscapePlayerPage extends StatefulWidget {
   final Widget? titleWidget;
   final Widget? descriptionWidget;
   final Widget? quizWidget;
+  final VideoPlayerController? videoPlayerController;
 
   const PortraitLandscapePlayerPage(
       {Key? key,
@@ -31,6 +30,7 @@ class PortraitLandscapePlayerPage extends StatefulWidget {
       this.titleWidget,
       this.descriptionWidget,
       this.quizWidget,
+      this.videoPlayerController,
       this.duration})
       : super(key: key);
 
@@ -47,8 +47,9 @@ class _PortraitLandscapePlayerPageState
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    if (widget.filePath != null) {
-      controller = VideoPlayerController.file(File(widget.filePath!))
+
+    if (widget.videoPlayerController == null) {
+      controller = widget.videoPlayerController!
         ..addListener(() => setState(() {}))
         ..setLooping(false)
         ..initialize().then((_) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:retail_academy/common/utils.dart';
 
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
@@ -25,12 +26,12 @@ class ItemNotification extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.h),
         ),
         margin: EdgeInsets.only(bottom: 10.h),
-        padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SvgPicture.asset(
+            Image.asset(
               AppImages.iconReels,
               color: AppColor.white,
               height: 60,
@@ -45,12 +46,11 @@ class ItemNotification extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppText(
-                    text: item.moduleName,
+                    text: item.moduleName.notificationTypeValue,
                     textSize: 16.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
                     maxLines: 2,
-
                   ),
                   SizedBox(
                     height: 8.h,

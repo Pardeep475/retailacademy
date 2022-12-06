@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 import '../../../common/app_color.dart';
 import '../../../common/app_images.dart';
 import '../../../common/widget/custom_app_bar.dart';
@@ -15,9 +16,13 @@ import '../controller/retail_reels_detail_controller.dart';
 class RetailReelsDetailScreen extends StatefulWidget {
   final ReelElement item;
   final int categoryId;
+  final VideoPlayerController? videoPlayerController;
 
   const RetailReelsDetailScreen(
-      {required this.item, required this.categoryId, Key? key})
+      {required this.item,
+      required this.categoryId,
+      this.videoPlayerController,
+      Key? key})
       : super(key: key);
 
   @override
@@ -72,8 +77,10 @@ class _RetailReelsDetailScreenState extends State<RetailReelsDetailScreen> {
                   return const SizedBox();
                 }
                 return PortraitLandscapePlayerPage(
-                  url: _controller.videoUrl.value,
+                  url:
+                      'https://retailacademyuatdemo.blob.core.windows.net/newcontainer/Free_Test_Data_10MB_MP4Free_Test_Data_10MB_MP4Free_Test_Data_10MB_MP4Free_Test_Data_10MB_MP4.mp4' /*_controller.videoUrl.value*/,
                   aspectRatio: 2 / 3,
+                  videoPlayerController: widget.videoPlayerController,
                   duration: _controller.refreshDuration.value,
                   commentIcon: IconButton(
                     onPressed: () => _showCommentsBottomSheet(),

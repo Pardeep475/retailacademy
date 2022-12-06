@@ -106,4 +106,7 @@ class AppStrings {
   static const String join = "Join";
   static const String playRecording = "Play Recording";
   static const String title = "Title: ";
+  static const String content = "Content";
+  static const String quiz = "Quiz";
+  static const String message = "Message";
 }

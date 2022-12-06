@@ -1,13 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 
+
 import '../app_color.dart';
-import '../app_strings.dart';
 import 'audio_player_widget.dart';
 
 class AdvancedOverlayWidget extends StatefulWidget {
+  // final VideoPlayerController? controller;
   final VideoPlayerController? controller;
   final VoidCallback? onClickedFullScreen;
   final VoidCallback? onBackPressed;

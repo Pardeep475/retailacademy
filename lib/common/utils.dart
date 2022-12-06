@@ -33,7 +33,7 @@ class Utils {
         printEmojis: true,
         // Print an emoji for each log message
         printTime: false // Should each log print contain a timestamp
-    ),
+        ),
   );
 
   static errorSnackBar(String title, String message, {bool isSuccess = false}) {
@@ -90,7 +90,7 @@ class Utils {
   static DateTime stringToDateOtherFormat({var selectedDate}) {
     try {
       DateTime dateTime =
-      DateTime.fromMillisecondsSinceEpoch(selectedDate /*, isUtc: true*/);
+          DateTime.fromMillisecondsSinceEpoch(selectedDate /*, isUtc: true*/);
       debugPrint("date time :-   $dateTime");
       return dateTime;
       // DateFormat originalFormat = new DateFormat("dd/MM/yyyy");
@@ -119,8 +119,8 @@ class Utils {
 
   static String infoSessionDateFormat({var selectedDate}) {
     try {
-      DateFormat originalFormat =  DateFormat("MM/dd/yyyy hh:mm:ss aaa");
-      DateFormat targetFormat =  DateFormat('EEE, MMM d, ''yyyy \nh:mm a');
+      DateFormat originalFormat = DateFormat("MM/dd/yyyy hh:mm:ss aaa");
+      DateFormat targetFormat = DateFormat('EEE, MMM d, ' 'yyyy \nh:mm a');
       DateTime date = originalFormat.parse(selectedDate);
       return targetFormat.format(date.toLocal());
     } catch (e) {
@@ -128,16 +128,16 @@ class Utils {
     }
   }
 
-  static bool infoSessionCompareDates({var value}){
-    try{
-      DateFormat originalFormat =  DateFormat("MM/dd/yyyy hh:mm:ss aaa");
+  static bool infoSessionCompareDates({var value}) {
+    try {
+      DateFormat originalFormat = DateFormat("MM/dd/yyyy hh:mm:ss aaa");
       DateTime date = originalFormat.parse(value);
-      if(DateTime.now().compareTo(date) > 0){
+      if (DateTime.now().compareTo(date) > 0) {
         return true;
       } else {
         return false;
       }
-    } catch (e){
+    } catch (e) {
       return false;
     }
   }
@@ -209,7 +209,64 @@ class Utils {
     return false;
   }
 
-  static bool isPdf(String path){
+  static bool isPdf(String path) {
     return path.toLowerCase().contains('pdf');
+  }
+}
+
+enum NotificationType {
+  reels,
+  content,
+  quiz,
+  blog,
+  info,
+  message,
+  podcast,
+}
+
+extension ToNotificationType on String {
+  NotificationType toNotificationType() {
+    if (toLowerCase() == 'QUIZ'.toLowerCase()) {
+      return NotificationType.quiz;
+    } else if (toLowerCase() == 'CONTENT'.toLowerCase()) {
+      return NotificationType.content;
+    } else if (toLowerCase() == 'Message'.toLowerCase()) {
+      return NotificationType.message;
+    } else if (toLowerCase() == 'WHATSHOT'.toLowerCase()) {
+      return NotificationType.blog;
+    } else if (toLowerCase() == 'Podcast'.toLowerCase()) {
+      return NotificationType.podcast;
+    } else if (toLowerCase() == 'Reels'.toLowerCase()) {
+      return NotificationType.reels;
+    } else if (toLowerCase() == 'InfoSession'.toLowerCase()) {
+      return NotificationType.info;
+    } else {
+      return NotificationType.content;
+    }
+  }
+}
+
+extension FromNotificationType on NotificationType {
+  // QUIZ,CONTENT,Message,WHATSHOT,Podcast,Reels,InfoSession
+  String get notificationTypeValue {
+    switch (this) {
+      case NotificationType.reels:
+        return AppStrings.reels;
+      case NotificationType.content:
+        return AppStrings.content;
+      case NotificationType.quiz:
+        return AppStrings.quiz;
+      case NotificationType.blog:
+        return AppStrings.whatsHotBlog;
+      case NotificationType.info:
+        return AppStrings.infoSessions;
+      case NotificationType.message:
+        return AppStrings.message;
+      case NotificationType.podcast:
+        return AppStrings.podCast;
+
+      default:
+        return AppStrings.content;
+    }
   }
 }

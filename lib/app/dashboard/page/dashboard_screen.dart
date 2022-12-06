@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:new_version/new_version.dart';
 import 'package:retail_academy/app/dashboard/controller/dashboard_controller.dart';
 import 'package:retail_academy/app/home/page/home_screen.dart';
 import 'package:retail_academy/app/info_sessions/page/info_sessions_screen.dart';
@@ -39,8 +39,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _controller.clearAllData();
+      _showForceUpdateDialog();
       _controller.maintenanceMessageApi();
     });
+  }
+
+  void _showForceUpdateDialog() async {
+    final newVersion = NewVersion(
+      iOSId: 'com.cwretailservices.staffapp',
+      androidId: 'cy.com.cap.academy4',
+    //
+    );
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      debugPrint(status.releaseNotes);
+      debugPrint(status.appStoreLink);
+      debugPrint(status.localVersion);
+      debugPrint(status.storeVersion);
+      debugPrint(status.canUpdate.toString());
+      newVersion.showUpdateDialog(
+        context: context,
+        versionStatus: status,
+        dialogTitle: 'Custom Title',
+        dialogText: 'Custom Text',
+      );
+    }
   }
 
   Future<bool> stackBackPressed() async {
@@ -76,7 +99,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             () => /*IndexedStack(
               index: _controller.currentSelectedIndex.value,
               children: contentList,
-            )*/ contentList[_controller.currentSelectedIndex.value],
+            )*/
+                contentList[_controller.currentSelectedIndex.value],
           ),
         ),
       ),
@@ -97,9 +121,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: InkWell(
                   onTap: () => _controller.currentSelectedIndex.value = 0,
                   splashColor: Colors.white54,
-                  child: SvgPicture.asset(
-                    AppImages.iconHome,
-                    color: AppColor.white,
+                  child: Padding(
+                    padding: EdgeInsets.all(15.r),
+                    child: Image.asset(
+                      AppImages.iconHome,
+                      fit: BoxFit.contain,
+                    ),
                   )
                   // child: Column(
                   //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,9 +158,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: InkWell(
                   onTap: () => _controller.currentSelectedIndex.value = 1,
                   splashColor: Colors.white54,
-                  child: SvgPicture.asset(
-                    AppImages.iconKnowledge,
-                    color: AppColor.white,
+                  child: Padding(
+                    padding: EdgeInsets.all(15.r),
+                    child: Image.asset(
+                      AppImages.iconKnowledge,
+                      fit: BoxFit.contain,
+                    ),
                   )
                   // child: Column(
                   //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -165,9 +195,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: InkWell(
                   onTap: () => _controller.currentSelectedIndex.value = 2,
                   splashColor: Colors.white54,
-                  child: SvgPicture.asset(
-                    AppImages.iconReels,
-                    color: AppColor.white,
+                  child: Padding(
+                    padding: EdgeInsets.all(7.r),
+                    child: Image.asset(
+                      AppImages.iconReels,
+                      fit: BoxFit.contain,
+                    ),
                   )
                   // child: Column(
                   //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -199,9 +232,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: InkWell(
                   onTap: () => _controller.currentSelectedIndex.value = 3,
                   splashColor: Colors.white54,
-                  child: SvgPicture.asset(
-                    AppImages.iconInfo,
-                    color: AppColor.white,
+                  child: Padding(
+                    padding: EdgeInsets.all(10.r),
+                    child: Image.asset(
+                      AppImages.iconInfo,
+                      fit: BoxFit.contain,
+                    ),
                   )
                   // child: Column(
                   //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -233,9 +269,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: InkWell(
                 onTap: () => _controller.currentSelectedIndex.value = 4,
                 splashColor: Colors.white54,
-                child: SvgPicture.asset(
-                  AppImages.iconProfile,
-                  color: AppColor.white,
+                child: Padding(
+                  padding: EdgeInsets.all(15.r),
+                  child: Image.asset(
+                    AppImages.iconProfile,
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 // child: Column(
                 //   crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -19,6 +22,8 @@ import 'common/routes/route_strings.dart';
 import 'common/routes/routes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'firebase_options.dart';
+
 /*
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -37,15 +42,28 @@ void main() async {
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
-  final document = await getApplicationDocumentsDirectory();
-  Hive
-    ..init(document.path)
-    ..registerAdapter(QuizModalAdapter())
-    ..registerAdapter(QuizElementModalAdapter())
-    ..registerAdapter(CorrectAnswerElementModalAdapter())
-    ..registerAdapter(AnswerElementModalAdapter());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = (errorDetails) {
+    // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    // If you wish to record a "non-fatal" exception, please remove the "fatal" parameter
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  // final document = await getApplicationDocumentsDirectory();
+  // Hive
+  //   ..init(document.path)
+  //   ..registerAdapter(QuizModalAdapter())
+  //   ..registerAdapter(QuizElementModalAdapter())
+  //   ..registerAdapter(CorrectAnswerElementModalAdapter())
+  //   ..registerAdapter(AnswerElementModalAdapter());
 
-  await Hive.openBox<QuizModal>(AppStrings.quizDataBaseName);
+  // await Hive.openBox<QuizModal>(AppStrings.quizDataBaseName);
 
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
@@ -115,6 +133,7 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
 }
 
 

@@ -1,3 +1,5 @@
+import '../../../common/utils.dart';
+
 class NotificationListResponse {
   NotificationListResponse({
     this.listNotification,
@@ -27,7 +29,7 @@ class NotificationElement {
     this.id = 0,
     this.message = '',
     this.sendDate = '',
-    this.moduleName = '',
+    this.moduleName = NotificationType.content,
     this.moduleId = 0,
     this.isRead = false,
     this.brandUid = '',
@@ -43,7 +45,7 @@ class NotificationElement {
   int id;
   String message;
   String sendDate;
-  String moduleName;
+  NotificationType moduleName;
   int moduleId;
   bool isRead;
   String brandUid;
@@ -60,7 +62,9 @@ class NotificationElement {
         id: json["Id"] ?? 0,
         message: json["message"] ?? '',
         sendDate: json["sendDate"] ?? '',
-        moduleName: json["moduleName"] ?? '',
+        moduleName: json["moduleName"] == null
+            ? NotificationType.content
+            : (json["moduleName"] as String).toNotificationType(),
         moduleId: json["moduleId"] ?? 0,
         isRead: json["isRead"] ?? false,
         brandUid: json["brandguid"] ?? '',

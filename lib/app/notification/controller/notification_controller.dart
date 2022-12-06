@@ -4,11 +4,13 @@ import 'package:retail_academy/common/app_strings.dart';
 import '../../../common/local_storage/session_manager.dart';
 import '../../../common/utils.dart';
 import '../../../network/api_provider.dart';
+import '../../../network/modal/knowledge/quiz_category_response.dart';
 import '../../../network/modal/notification/notification_list_request.dart';
 import '../../../network/modal/notification/notification_list_response.dart';
 
 class NotificationController extends GetxController {
   var showLoader = true.obs;
+  var showLoaderQuiz = false.obs;
   RxList<NotificationElement> dataList = RxList();
 
   @override
@@ -31,6 +33,7 @@ class NotificationController extends GetxController {
 
   void clearAllData() {
     showLoader.value = false;
+    showLoaderQuiz.value = false;
     dataList = RxList();
   }
 
@@ -69,6 +72,37 @@ class NotificationController extends GetxController {
       }
     }
     return null;
+  }
+
+  Future<QuizCategoryElement?> getQuizMasterApi({required int quizId}) async {
+    QuizCategoryElement? item;
+
+    bool value = await Utils.checkConnectivity();
+    if (value) {
+      try {
+        showLoaderQuiz.value = true;
+        String userId = await SessionManager.getUserId();
+        var response = await ApiProvider.apiProvider.getQuizCategoryApi(
+            userId: userId, orgId: AppStrings.orgId, quizId: quizId);
+        if (response != null) {
+          QuizCategoryResponse quizCategoryResponse =
+          (response as QuizCategoryResponse);
+          if (quizCategoryResponse.status) {
+            if (quizCategoryResponse.quizCategories != null &&
+                quizCategoryResponse.quizCategories!.isNotEmpty) {
+              item = quizCategoryResponse.quizCategories!.first;
+            }
+          } else {
+            Utils.errorSnackBar(AppStrings.error, quizCategoryResponse.message);
+          }
+        }
+      } catch (e) {
+        Utils.errorSnackBar(AppStrings.error, e.toString());
+      } finally {
+        showLoaderQuiz.value = false;
+      }
+    }
+    return item;
   }
 
   
